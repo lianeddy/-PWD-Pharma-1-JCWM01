@@ -134,7 +134,7 @@ class Home extends React.Component {
                   >
                     <img
                       className="d-block w-100"
-                      src="https://smartairfilters.com/wordpress/wp-content/uploads/2020/04/N95-vs-KN95-Difference-Cover.jpg"
+                      src="https://www.afd.fr/sites/afd/files/styles/visuel_principal/public/2019-10-09-27-46/flickr-marco-verch.jpg?itok=XH4x7-Y4"
                       alt="Image"
                     />
                   </div>
