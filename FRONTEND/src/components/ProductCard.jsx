@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 class ProductCard extends React.Component {
   render() {
@@ -21,9 +22,14 @@ class ProductCard extends React.Component {
             </div>
           </div>
           <div className="card-footer d-flex justify-content-between bg-light border">
-            <a href="" className="btn btn-sm text-dark p-0">
-              <i className="fas fa-eye text-primary mr-1"></i>View Detail
-            </a>
+            <Link
+              to={`/product-detail/${this.props.productData.idobat}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <a href="" className="btn btn-sm text-dark p-0">
+                <i className="fas fa-eye text-primary mr-1"></i>View Detail
+              </a>
+            </Link>
             <a href="" className="btn btn-sm text-dark p-0">
               <i className="fas fa-shopping-cart text-primary mr-1"></i>
               Add To Cart
