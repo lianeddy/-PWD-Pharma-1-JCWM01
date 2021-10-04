@@ -208,8 +208,13 @@ class Home extends React.Component {
           <div className="col-md-5 p-lg-5 mx-auto my-5">
             <h1 className="display-4 font-weight-normal">KIRIM RESEP</h1>
             <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore,
-              maxime.
+              AMR Pharmacy memberikan kemudahan bagi Anda untuk tebus obat resep
+              tanpa antre secara online dengan adanya layanan upload resep
+              dokter. Tidak perlu antri menebus resep di Rumah Sakit, Klinik,
+              atau Apotek, sekarang Anda bisa langsung upload resep dokter di
+              website AMR Pharmacy. Caranya mudah, dengan foto langsung resep
+              obat menggunakan smartphone dan upload pada menu kirim resep yang
+              tersedia di AMR Pharmacy.
             </p>
             <a className="btn btn-outline-secondary" href="/prescription-page">
               Kirim Resep
