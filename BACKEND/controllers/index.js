@@ -1,3 +1,4 @@
 const drugsController = require("./drugsController");
+const userController = require("./userController");
 
-module.exports = { drugsController };
+module.exports = { drugsController, userController };

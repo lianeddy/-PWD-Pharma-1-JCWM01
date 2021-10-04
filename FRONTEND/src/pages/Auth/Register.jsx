@@ -4,7 +4,7 @@ import Axios from "axios";
 
 class Register extends React.Component {
   onBtAdd = () => {
-    Axios.post("http://localhost:3300/add-user", {
+    Axios.post("http://localhost:3300/user/add-user", {
       nama_depan: this.nama_depan.value,
       nama_belakang: this.nama_belakang.value,
       jenis_kelamin: this.jenis_kelamin.value,
@@ -13,6 +13,7 @@ class Register extends React.Component {
       password: this.password.value,
     })
       .then((res) => {
+        alert("Berhasil Mendaftar");
         console.log(res.data);
       })
       .catch((err) => {

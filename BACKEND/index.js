@@ -12,7 +12,9 @@ app.get("/", (req, res) => {
 });
 
 const { drugsRouters } = require("./routers");
+const { userRouter } = require("./routers");
 
 app.use("/obat", drugsRouters);
+app.use("/user", userRouter);
 
 app.listen(PORT, () => console.log("API Running: ", PORT));
