@@ -102,9 +102,6 @@ class Home extends React.Component {
                         </a>
                       </div>
                       <div className="navbar-nav ml-auto py-0">
-                        <a href="/profile-page" className="nav-item nav-link">
-                          PROFILE <i className="fa fa-user-cog"></i>
-                        </a>
                         {this.props.userGlobal.role === "ADMIN" ? (
                           <a href="/admin" className="nav-item nav-link">
                             ADMIN <i className="fa fa-user-lock"></i>
@@ -113,9 +110,6 @@ class Home extends React.Component {
                         <a href="/cart" className="nav-item nav-link">
                           CART <i className="fa fa-shopping-cart"></i>
                           <span>0</span>
-                        </a>
-                        <a href="/cart" className="nav-item nav-link">
-                          KELUAR <i className="fa fa-sign-out-alt"></i>
                         </a>
                       </div>
                     </div>

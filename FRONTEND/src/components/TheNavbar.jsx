@@ -1,5 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import {
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 import { connect } from "react-redux";
 
 class TheNavbar extends React.Component {
@@ -29,15 +35,62 @@ class TheNavbar extends React.Component {
                 </button>
               </form>
               <div className="col-md-3 text-end">
-                <button
-                  type="button"
-                  href="/"
-                  className="btn btn-outline-success me-2 "
-                >
-                  <Link to="/login" className="text-light text-decoration-none">
-                    Login / Register
-                  </Link>
-                </button>
+                {this.props.userGlobal.username ? (
+                  <UncontrolledDropdown>
+                    <DropdownToggle
+                      className="text-uppercase btn btn-success"
+                      caret
+                    >
+                      {this.props.userGlobal.username}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem>
+                        <Link
+                          style={{ textDecoration: "none" }}
+                          className="text-dark"
+                          to="/profile-page"
+                        >
+                          EDIT PROFIL
+                        </Link>
+                      </DropdownItem>
+                      {this.props.userGlobal.role === "ADMIN" ? (
+                        <DropdownItem>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            className="text-dark"
+                            to="/admin"
+                          >
+                            ADMIN
+                          </Link>
+                        </DropdownItem>
+                      ) : null}
+                      <DropdownItem>
+                        <Link
+                          style={{ textDecoration: "none" }}
+                          className="text-dark"
+                          to="/cart"
+                        >
+                          KERANJANG
+                        </Link>
+                      </DropdownItem>
+                      <DropdownItem divider />
+                      <DropdownItem>LOG OUT</DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                ) : (
+                  <button
+                    type="button"
+                    href="/"
+                    className="btn btn-outline-success me-2 "
+                  >
+                    <Link
+                      to="/login"
+                      className="text-light text-decoration-none"
+                    >
+                      Login / Register
+                    </Link>
+                  </button>
+                )}
               </div>
             </div>
           </div>
