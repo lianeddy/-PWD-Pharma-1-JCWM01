@@ -12,6 +12,7 @@ import ProductDetail from "./pages/ProductDetail";
 import TheNavbar from "./components/TheNavbar";
 import Footer from "./components/Footer";
 import PrescriptionPage from "./pages/PrescriptionPage";
+import ProfilePage from "./pages/ProfilePage";
 
 class App extends React.Component {
   render() {
@@ -24,6 +25,7 @@ class App extends React.Component {
             <Route component={Register} path="/register" />
             <Route component={Admin} path="/admin" />
             <Route component={Cart} path="/cart" />
+            <Route component={ProfilePage} path="/profile-page" />
             <Route component={History} path="/history" />
             <Route component={ProductDetail} path="/product-detail/:obatid" />
             <Route component={PrescriptionPage} path="/prescription-page" />

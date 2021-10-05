@@ -1,6 +1,7 @@
 import React from "react";
 import ProductCard from "../components/ProductCard";
 import Axios from "axios";
+import { connect } from "react-redux";
 
 class Home extends React.Component {
   state = {
@@ -85,43 +86,63 @@ class Home extends React.Component {
               </nav>
             </div>
             <div className="col-lg-9">
-              <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                <a href="" class="text-decoration-none d-block d-lg-none">
-                  <h1 class="m-0 display-5 font-weight-semi-bold">
-                    <span class="text-primary font-weight-bold border px-3 mr-1">
-                      E
-                    </span>
-                    Shopper
-                  </h1>
-                </a>
-                <button
-                  type="button"
-                  class="navbar-toggler"
-                  data-toggle="collapse"
-                  data-target="#navbarCollapse"
-                >
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-                <div
-                  class="collapse navbar-collapse justify-content-between"
-                  id="navbarCollapse"
-                >
-                  <div class="navbar-nav mr-auto py-0">
-                    <a
-                      href="/prescription-page"
-                      class="nav-item nav-link active"
+              {this.props.userGlobal.username ? (
+                <>
+                  <nav className="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
+                    <div
+                      className="collapse navbar-collapse justify-content-between"
+                      id="navbarCollapse"
                     >
-                      KIRIM RESEP<i className="fa fa-upload"></i>
-                    </a>
+                      <div className="navbar-nav mr-auto py-0">
+                        <a
+                          href="/prescription-page"
+                          className="nav-item nav-link active"
+                        >
+                          KIRIM RESEP<i className="fa fa-upload"></i>
+                        </a>
+                      </div>
+                      <div className="navbar-nav ml-auto py-0">
+                        <a href="/profile-page" className="nav-item nav-link">
+                          PROFILE <i className="fa fa-user-cog"></i>
+                        </a>
+                        {this.props.userGlobal.role === "ADMIN" ? (
+                          <a href="/admin" className="nav-item nav-link">
+                            ADMIN <i className="fa fa-user-lock"></i>
+                          </a>
+                        ) : null}
+                        <a href="/cart" className="nav-item nav-link">
+                          CART <i className="fa fa-shopping-cart"></i>
+                          <span>0</span>
+                        </a>
+                        <a href="/cart" className="nav-item nav-link">
+                          KELUAR <i className="fa fa-sign-out-alt"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </nav>
+                </>
+              ) : (
+                <nav className="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
+                  <div
+                    className="collapse navbar-collapse justify-content-between"
+                    id="navbarCollapse"
+                  >
+                    <div className="navbar-nav mr-auto py-0">
+                      <a
+                        href="/prescription-page"
+                        className="nav-item nav-link active"
+                      >
+                        KIRIM RESEP<i className="fa fa-upload"></i>
+                      </a>
+                    </div>
+                    <div className="navbar-nav ml-auto py-0">
+                      <a href="/login" className="nav-item nav-link">
+                        Masuk / Daftar <i className="fa fa-sign-in-alt"></i>
+                      </a>
+                    </div>
                   </div>
-                  <div class="navbar-nav ml-auto py-0">
-                    <a href="" class="nav-item nav-link">
-                      CART <i className="fa fa-shopping-cart"></i>
-                      <span>0</span>
-                    </a>
-                  </div>
-                </div>
-              </nav>
+                </nav>
+              )}
               <div
                 id="header-carousel"
                 className="carousel slide"
@@ -227,4 +248,10 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    userGlobal: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(Home);

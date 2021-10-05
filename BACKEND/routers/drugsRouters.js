@@ -8,3 +8,5 @@ routers.patch("/edit-obat/:id", drugsController.editData);
 routers.delete("/delete-obat/:idobat", drugsController.deleteData);
 
 module.exports = routers;
+
+// /get/:id select * from obat where id = req.params.id

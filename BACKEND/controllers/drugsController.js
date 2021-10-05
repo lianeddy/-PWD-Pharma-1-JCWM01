@@ -4,8 +4,8 @@ module.exports = {
   getData: (req, res) => {
     let scriptQuery = "Select * from obat;";
     if (req.query.nama_obat) {
-      scriptQuery = `Select * from obat where nama_obat = ${db.escape(
-        req.query.nama_obat
+      scriptQuery = `Select * from obat where idobat = ${db.escape(
+        req.query.idobat
       )};`;
     }
     db.query(scriptQuery, (err, results) => {

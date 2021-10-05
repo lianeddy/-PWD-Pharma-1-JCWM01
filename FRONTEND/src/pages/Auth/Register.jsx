@@ -1,20 +1,46 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Axios from "axios";
+import { API_URL } from "../../constants/API";
+import { registerUser } from "../../redux/actions/user";
+import { connect } from "react-redux";
 
 class Register extends React.Component {
-  onBtAdd = () => {
-    Axios.post("http://localhost:3300/user/add-user", {
-      nama_depan: this.nama_depan.value,
-      nama_belakang: this.nama_belakang.value,
-      jenis_kelamin: this.jenis_kelamin.value,
-      username: this.username.value,
-      email: this.email.value,
-      password: this.password.value,
+  state = {
+    nama_depan: "",
+    nama_belakang: "",
+    jenis_kelamin: "",
+    username: "",
+    email: "",
+    password: "",
+  };
+
+  inputHandler = (event) => {
+    const value = event.target.value;
+    const name = event.target.name;
+
+    this.setState({ [name]: value });
+  };
+
+  registerHandler = () => {
+    const {
+      nama_depan,
+      nama_belakang,
+      jenis_kelamin,
+      username,
+      email,
+      password,
+    } = this.state;
+    Axios.post(`${API_URL}/user/add-user`, {
+      nama_depan,
+      nama_belakang,
+      jenis_kelamin,
+      username,
+      email,
+      password,
     })
-      .then((res) => {
+      .then(() => {
         alert("Berhasil Mendaftar");
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -40,52 +66,54 @@ class Register extends React.Component {
                 <h5 className="font-weight-bold mb-3">Register</h5>
                 <input
                   name="nama_depan"
+                  onChange={this.inputHandler}
                   placeholder="Nama Depan"
                   type="text"
                   className="form-control my-2"
-                  ref={(nama_depan) => (this.nama_depan = nama_depan)}
                 />
                 <input
                   name="nama_belakang"
+                  onChange={this.inputHandler}
                   placeholder="Nama Belakang"
                   type="text"
                   className="form-control my-2"
-                  ref={(nama_belakang) => (this.nama_belakang = nama_belakang)}
                 />
                 <input
                   name="jenis_kelamin"
+                  onChange={this.inputHandler}
                   placeholder="Jenis Kelamin"
                   type="text"
                   className="form-control my-2"
-                  ref={(jenis_kelamin) => (this.jenis_kelamin = jenis_kelamin)}
                 />
 
                 <input
                   name="username"
+                  onChange={this.inputHandler}
                   placeholder="Username"
                   type="text"
                   className="form-control my-2"
-                  ref={(username) => (this.username = username)}
                 />
                 <input
                   name="email"
+                  onChange={this.inputHandler}
                   placeholder="E-mail"
                   type="text"
                   className="form-control my-2"
-                  ref={(email) => (this.email = email)}
                 />
                 <input
                   name="password"
+                  onChange={this.inputHandler}
                   placeholder="Password"
                   type="password"
                   className="form-control my-2"
-                  ref={(password) => (this.password = password)}
                 />
-                <div
-                  className="d-flex flex-row justify-content-between align-items-center"
-                  onClick={this.onBtAdd}
-                >
-                  <button className="btn btn-primary mt-2">Daftar</button>
+                <div className="d-flex flex-row justify-content-between align-items-center">
+                  <button
+                    onClick={() => this.props.registerUser(this.state)}
+                    className="btn btn-primary mt-2"
+                  >
+                    Daftar
+                  </button>
                   <Link to="/login" className="text-decoration-none">
                     Atau Masuk
                   </Link>
@@ -99,4 +127,12 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+const mapStateToProps = () => {
+  return {};
+};
+
+const mapDispatchToProps = {
+  registerUser,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

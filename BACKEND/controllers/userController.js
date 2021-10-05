@@ -4,7 +4,7 @@ module.exports = {
   getUser: (req, res) => {
     let scriptQuery = "Select * from user;";
     if (req.query.username) {
-      scriptQuery = `Select * from obat where username = ${db.escape(
+      scriptQuery = `Select * from user where username = ${db.escape(
         req.query.username
       )};`;
     }
@@ -27,6 +27,7 @@ module.exports = {
       tanggal_lahir,
       usia,
       foto_profil,
+      role,
     } = req.body;
     let insertQuery = `Insert into user values (null, ${db.escape(
       nama_depan
@@ -36,7 +37,7 @@ module.exports = {
       verifikasi
     )}, ${db.escape(alamat)}, ${db.escape(tanggal_lahir)}, ${db.escape(
       usia
-    )}, ${db.escape(foto_profil)});`;
+    )}, ${db.escape(foto_profil)}, ${db.escape(role)});`;
     console.log(insertQuery);
     db.query(insertQuery, (err, results) => {
       if (err) res.status(500).send(err);

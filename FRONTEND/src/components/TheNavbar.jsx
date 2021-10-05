@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 class TheNavbar extends React.Component {
   render() {
@@ -46,4 +47,10 @@ class TheNavbar extends React.Component {
   }
 }
 
-export default TheNavbar;
+const mapStateToProps = (state) => {
+  return {
+    userGlobal: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(TheNavbar);
