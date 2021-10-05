@@ -3,7 +3,7 @@ const { db } = require("../database");
 module.exports = {
   getData: (req, res) => {
     let scriptQuery = "Select * from obat;";
-    if (req.query.nama_obat) {
+    if (req.query.idobat) {
       scriptQuery = `Select * from obat where idobat = ${db.escape(
         req.query.idobat
       )};`;
