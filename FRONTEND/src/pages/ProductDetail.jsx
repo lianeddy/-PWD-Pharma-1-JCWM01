@@ -78,13 +78,36 @@ class ProductDetail extends React.Component {
               <h3 className="font-weight-semi-bold">
                 {this.state.productData.nama_obat}
               </h3>
-
               <h3 className="font-weight-semi-bold mb-4">
                 Rp. {this.state.productData.harga_jual},-
               </h3>
+              <div>
+                <p>
+                  <strong className="text-uppercase">Deskripsi</strong>
+                </p>
+              </div>
               <p className="mb-4">{this.state.productData.deskripsi}</p>
-
-              <div className="d-flex align-items-center mb-4 pt-2">
+              <div>
+                <p>
+                  <strong className="text-uppercase">
+                    Indikasi / Kegunaan / Manfaat
+                  </strong>
+                </p>
+              </div>
+              <p>{this.state.productData.manfaat}</p>
+              <div>
+                <p>
+                  <strong className="text-uppercase">Dosis</strong>
+                </p>
+              </div>
+              <p>{this.state.productData.dosis}</p>
+              <div>
+                <p>
+                  <strong className="text-uppercase">Kemasan</strong>
+                </p>
+              </div>
+              <p>{this.state.productData.kemasan}</p>
+              <div className="d-flex mb-4 pt-2 mx-sm-1">
                 <div
                   className="input-group quantity mr-3"
                   style={{ width: "130px" }}
@@ -105,7 +128,7 @@ class ProductDetail extends React.Component {
                     </button>
                   </div>
                 </div>
-                <button className="btn btn-success px-3 ml-1">
+                <button className="btn btn-success px-10">
                   <i className="fa fa-shopping-cart mr-1"></i> Add To Cart
                 </button>
               </div>
