@@ -1,5 +1,6 @@
 import React from "react";
 import Axios from "axios";
+import { CustomInput } from 'reactstrap'
 
 import "../../assets/styles/admin_upload_product.css";
 import camera from "../../assets/images/admin/camera.png"
@@ -32,22 +33,26 @@ class AdminUploadProduct extends React.Component {
         this.setState({ [name]: value })
     }
 
-    btnAddNewProduct = () => {
-        console.log(this.state)
-    }
 
     onBtnAddFile = (e) => {
 
+
         if (e.target.files[0]) {
-            this.setState({ fotoObat: e.target.files[0].name, dataFile: e.target.files[0] })
+            this.setState({ fotoObat: e.target.value, dataFile: e.target.files[0] })
             let preview = document.getElementById("imgPreview")
             preview.src = URL.createObjectURL(e.target.files[0])
+        } else {
+            // mengubah default value  dari image preview
+            this.setState({ fotoObat: e.target.value, dataFile: null })
+            let preview = document.getElementById("imgPreview")
+            preview.src = camera
         }
-
     }
 
+
     btnSendData = () => {
-        if (this.state.dataFile) {
+        console.log(Boolean)
+        if (this.state.namaObat && this.state.jumlahObat && this.state.deskripsi && this.state.manfaat && this.state.komposisi && this.state.dosis && this.state.golongan && this.state.hargaJual && this.state.hargaPokok && this.state.dataFile) {
             let formData = new FormData();
 
             let obj = {
@@ -80,6 +85,7 @@ class AdminUploadProduct extends React.Component {
                         hargaJual: Number,
                         fotoObat: "",
                         dataFile: null,
+                        namaFile: "Pilih file...",
 
                         success: res.data.success,
                         message: res.data.message,
@@ -89,13 +95,17 @@ class AdminUploadProduct extends React.Component {
                     let preview = document.getElementById("imgPreview")
                     preview.src = camera
 
+                    // mengembailkan value image
+                    let image = document.getElementById("image")
+                    image.value = ""
+
                 })
                 .catch((err) => {
                     alert(`Terjadi kesalahan di server`)
                     console.log(err)
                 })
         } else {
-            alert(`Masukkan data dengan benar`)
+            alert(`Masukkan seluruh data`)
         }
     }
 
@@ -221,13 +231,11 @@ class AdminUploadProduct extends React.Component {
                         <div className="row  h-100 admin-upload-image ">
                             <div className="col-4 d-flex flex-column justify-content-center">
                                 <label htmlFor="" className="d-block">Pilih Gambar </label>
-                                <input type="file" title="" id="" onChange={this.onBtnAddFile} className="input-file" />
+                                <input type="file" id="image" onChange={this.onBtnAddFile} className="input-file" />
                             </div>
 
                             <div className="col-8 d-flex align-items-center justify-content-center">
-
-                                <img id="imgPreview" src={camera} height="150" width="" alt="no image select" className={this.state.fotoObat == "" ? "no-img-selected" : null} />
-
+                                <img id="imgPreview" value="" src={camera} height="150" width="" alt="no image select" className={this.state.fotoObat == "" ? "no-img-selected" : null} />
                             </div>
                         </div>
 
