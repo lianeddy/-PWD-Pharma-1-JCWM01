@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import Home from "./pages/Home";
 import Login from "./pages/Auth/Login";
-import Forgot from "./pages/Auth/Forgot";
+import Forgot from "./pages/Auth/forgot";
 import Register from "./pages/Auth/Register";
 import Admin from "./pages/Admin";
 import Cart from "./pages/Cart";
