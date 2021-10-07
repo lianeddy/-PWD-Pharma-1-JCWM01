@@ -61,6 +61,11 @@ class Register extends React.Component {
         </div>
         <div className="row mt-5">
           <div className="col-4 offset-4">
+            {this.props.userGlobal.errMsg ? (
+              <div className="alert alert-danger">
+                {this.props.userGlobal.errMsg}
+              </div>
+            ) : null}
             <div className="card">
               <div className="card-body">
                 <h5 className="font-weight-bold mb-3">Register</h5>
@@ -127,8 +132,8 @@ class Register extends React.Component {
   }
 }
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = (state) => {
+  return { userGlobal: state.user };
 };
 
 const mapDispatchToProps = {

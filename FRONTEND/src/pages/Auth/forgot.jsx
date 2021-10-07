@@ -17,7 +17,7 @@ class Forgot extends React.Component {
                   <h5 className="font-weight-bold mb-3">Enter your email</h5>
                   <input
                     name="Email"
-                    placeholder="email"
+                    placeholder="E-mail"
                     type="text"
                     className="form-control my-2"
                   />

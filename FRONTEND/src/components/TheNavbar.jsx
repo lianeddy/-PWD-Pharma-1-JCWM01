@@ -14,7 +14,7 @@ class TheNavbar extends React.Component {
     return (
       <header className="sticky-top bg-dark text-white">
         <div className="container">
-          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between">
+          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
             <a
               href="/"
               className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-white text-decoration-none"

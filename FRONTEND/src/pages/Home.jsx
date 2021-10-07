@@ -85,7 +85,7 @@ class Home extends React.Component {
           </div>
         </div>
         {/* KIRIM RESEP START */}
-        <div className="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+        <div className="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center text-white bg-dark bg-gradient">
           <div className="col-md-5 p-lg-5 mx-auto my-5">
             <h1 className="display-4 font-weight-normal">KIRIM RESEP</h1>
             <p>
@@ -97,7 +97,7 @@ class Home extends React.Component {
               obat menggunakan smartphone dan upload pada menu kirim resep yang
               tersedia di AMR Pharmacy.
             </p>
-            <a className="btn btn-outline-secondary" href="/prescription-page">
+            <a className="btn btn-outline-light" href="/prescription-page">
               Kirim Resep
             </a>
           </div>

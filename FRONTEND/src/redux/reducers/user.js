@@ -2,6 +2,7 @@ const init_state = {
   nama_depan: "",
   nama_belakang: "",
   jenis_kelamin: "",
+  status: "",
   username: "",
   email: "",
   password: "",

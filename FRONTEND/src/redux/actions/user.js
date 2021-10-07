@@ -10,28 +10,60 @@ export const registerUser = ({
   password,
 }) => {
   return (dispatch) => {
-    Axios.post(`${API_URL}/user/add-user`, {
-      nama_depan,
-      nama_belakang,
-      jenis_kelamin,
-      username,
-      email,
-      password,
-      role: "USER",
-    })
-      .then((result) => {
-        delete result.data.password;
-        dispatch({
-          type: "USER_LOGIN",
-          payload: result.data,
-        });
-        alert("Berhasil Mendaftar");
-      })
-      .catch((err) => {
-        console.log(err);
+    if (
+      nama_depan == "" ||
+      nama_belakang == "" ||
+      jenis_kelamin == "" ||
+      username == "" ||
+      email == "" ||
+      password == ""
+    ) {
+      dispatch({
+        type: "USER_ERROR",
+        payload: "Mohon isi semua form",
       });
+    } else {
+      Axios.post(`${API_URL}/user/add-user`, {
+        nama_depan,
+        nama_belakang,
+        jenis_kelamin,
+        status: "UNVERIFIED",
+        username,
+        email,
+        password,
+        role: "USER",
+      })
+        .then((result) => {
+          delete result.data.password;
+          dispatch({
+            type: "USER_LOGIN",
+            payload: result.data,
+          });
+          alert("Berhasil Mendaftar");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 };
+
+// export const loginUser = (username, password) => {
+//   return (dispatch) => {
+//     Axios.post(`${API_URL}/user/login`, {
+//       username,
+//       password,
+//     })
+//       .then((res) => {
+//         localStorage.setItem("token_amr", res.data.token);
+//         dispatch({
+//           type: "USER_LOGIN",
+//           payload: res.data[0],
+//         });
+//       })
+//       .catch((err) => console.log(err));
+//   };
+// };
 
 export const loginUser = ({ username, password }) => {
   return (dispatch) => {
@@ -43,7 +75,6 @@ export const loginUser = ({ username, password }) => {
       .then((result) => {
         if (result.data.length) {
           if (password === result.data[0].password) {
-            delete result.data[0].password;
             localStorage.setItem("userDataAMR", JSON.stringify(result.data[0]));
             dispatch({
               type: "USER_LOGIN",
@@ -85,7 +116,6 @@ export const userKeepLogin = (userData) => {
       },
     })
       .then((result) => {
-        delete result.data[0].password;
         localStorage.setItem("userDataAMR", JSON.stringify(result.data[0]));
         dispatch({
           type: "USER_LOGIN",

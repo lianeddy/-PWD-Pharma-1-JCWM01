@@ -1,11 +1,9 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
-
 import Home from "./pages/Home";
 import Login from "./pages/Auth/Login";
-import Forgot from "./pages/Auth/forgot";
-
+import Forgot from "./pages/Auth/Forgot";
 import Register from "./pages/Auth/Register";
 import Admin from "./pages/Admin";
 import Cart from "./pages/Cart";
@@ -18,6 +16,7 @@ import ProfilePage from "./pages/ProfilePage";
 import { connect } from "react-redux";
 import { userKeepLogin, checkStorage } from "./redux/actions/user";
 import changePassword from "./pages/changePassword";
+import Verification from "./pages/Auth/Verification";
 
 class App extends React.Component {
   componentDidMount() {
@@ -32,28 +31,26 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.props.userGlobal.storageIsChecked) {
-      return (
-        <BrowserRouter>
-          <TheNavbar />
-          <Switch>
-            <Route component={Login} path="/login" />
-            <Route component={Register} path="/register" />
-            <Route component={Admin} path="/admin" />
-            <Route component={Forgot} path="/forgot" />
-            <Route component={changePassword} path="/change-password" />
-            <Route component={Cart} path="/cart" />
-            <Route component={ProfilePage} path="/profile-page" />
-            <Route component={History} path="/history" />
-            <Route component={ProductDetail} path="/product-detail/:obatid" />
-            <Route component={PrescriptionPage} path="/prescription-page" />
-            <Route component={Home} path="/" />
-          </Switch>
-          <Footer />
-        </BrowserRouter>
-      );
-    }
-    return <div>Loading...</div>;
+    return (
+      <BrowserRouter>
+        <TheNavbar />
+        <Switch>
+          <Route component={Login} path="/login" />
+          <Route component={Register} path="/register" />
+          <Route component={Verification} path="/verification/:token" />
+          <Route component={Admin} path="/admin" />
+          <Route component={Forgot} path="/forgot" />
+          <Route component={changePassword} path="/change-password" />
+          <Route component={Cart} path="/cart" />
+          <Route component={ProfilePage} path="/profile-page" />
+          <Route component={History} path="/history" />
+          <Route component={ProductDetail} path="/product-detail/:obatid" />
+          <Route component={PrescriptionPage} path="/prescription-page" />
+          <Route component={Home} path="/" />
+        </Switch>
+        <Footer />
+      </BrowserRouter>
+    );
   }
 }
 
