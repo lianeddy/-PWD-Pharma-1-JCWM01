@@ -1,13 +1,15 @@
 import React from "react";
 import Axios from "axios";
 import { CustomInput } from 'reactstrap'
+import { useParams } from "react-router";
 
 import "../../assets/styles/admin_upload_product.css";
 import camera from "../../assets/images/admin/camera.png"
 
-import { API_URL } from '../../constants/API'
+import { API_URL, ROOT_PATH } from '../../constants/API'
 
-class AdminUploadProduct extends React.Component {
+
+class AdminEditProduct extends React.Component {
     state = {
         namaObat: "",
         jumlahObat: Number,
@@ -20,12 +22,15 @@ class AdminUploadProduct extends React.Component {
         hargaPokok: Number,
         hargaJual: Number,
         fotoObat: "",
-        dataFile: null,
+        fotoObatLama: "",
+        dataFile: [],
 
         success: false,
         message: "",
 
-        alertClass: ""
+        alertClass: "",
+
+        gantiGambar: false
     }
 
     inputHandler = (e) => {
@@ -35,7 +40,8 @@ class AdminUploadProduct extends React.Component {
 
 
     onBtnAddFile = (e) => {
-
+        let image = document.getElementById("image")
+        console.log('img', image.value)
 
         if (e.target.files[0]) {
             this.setState({ fotoObat: e.target.value, dataFile: e.target.files[0] })
@@ -51,11 +57,20 @@ class AdminUploadProduct extends React.Component {
 
 
     btnSendData = () => {
-        console.log(Boolean)
-        if (this.state.namaObat && this.state.jumlahObat && this.state.deskripsi && this.state.manfaat && this.state.komposisi && this.state.dosis && this.state.golongan && this.state.hargaJual && this.state.hargaPokok && this.state.dataFile) {
-            let formData = new FormData();
+        let kondisi = this.state.namaObat && this.state.jumlahObat && this.state.deskripsi && this.state.manfaat && this.state.komposisi && this.state.dosis && this.state.golongan && this.state.hargaJual && this.state.hargaPokok
 
+        let formData = new FormData();
+
+
+        if (this.state.gantiGambar) {
+            kondisi = this.state.namaObat && this.state.jumlahObat && this.state.deskripsi && this.state.manfaat && this.state.komposisi && this.state.dosis && this.state.golongan && this.state.hargaJual && this.state.hargaPokok && this.state.dataFile
+            formData.append('file', this.state.dataFile)
+        }
+        console.log(this.state.fotoObatLama)
+        if (kondisi) {
+            console.log(this.props.match.params.id)
             let obj = {
+                idObat: this.props.match.params.id,
                 namaObat: this.state.namaObat,
                 jumlahObat: parseFloat(this.state.jumlahObat),
                 satuan: this.state.satuan,
@@ -66,37 +81,41 @@ class AdminUploadProduct extends React.Component {
                 golongan: this.state.golongan,
                 hargaPokok: this.state.hargaPokok,
                 hargaJual: this.state.hargaJual,
+                fotoObat: this.state.fotoObat,
+                fotoObatLama: this.state.fotoObatLama
             }
 
             formData.append('data', JSON.stringify(obj))
-            formData.append('file', this.state.dataFile)
-            Axios.post(`${API_URL}/admin/uploadDataProduct`, formData)
+
+            Axios.post(`${API_URL}/admin/editDataProduct`, formData)
                 .then((res) => {
                     this.setState({
-                        namaObat: "",
-                        jumlahObat: Number,
-                        satuan: "ml",
-                        deskripsi: "",
-                        manfaat: "",
-                        komposisi: "",
-                        dosis: "",
-                        golongan: "",
-                        hargaPokok: Number,
-                        hargaJual: Number,
-                        fotoObat: "",
-                        dataFile: null,
+                        namaObat: res.data.result[0].nama_obat,
+                        jumlahObat: res.data.result[0].jumlah_obat,
+                        satuan: res.data.result[0].satuan,
+                        deskripsi: res.data.result[0].deskripsi,
+                        manfaat: res.data.result[0].manfaat,
+                        komposisi: res.data.result[0].komposisi,
+                        dosis: res.data.result[0].dosis,
+                        golongan: res.data.result[0].golongan,
+                        hargaPokok: res.data.result[0].harga_pokok,
+                        hargaJual: res.data.result[0].harga_jual,
+                        fotoObat: res.data.result[0].foto_obat,
 
                         success: res.data.success,
                         message: res.data.message,
+
+                        gantiGambar: false
                     })
 
                     // mengembalikan default image 
+                    console.log(res.data)
                     let preview = document.getElementById("imgPreview")
-                    preview.src = camera
+
+                    preview.src = `${API_URL}` + res.data.result[0].foto_obat
 
                     // mengembailkan value image
-                    let image = document.getElementById("image")
-                    image.value = ""
+
 
                 })
                 .catch((err) => {
@@ -108,14 +127,50 @@ class AdminUploadProduct extends React.Component {
         }
     }
 
+    getDataProductId = () => {
+        Axios.get(`${API_URL}/admin/getDataProductId/${this.props.match.params.id}`)
+            .then(res => {
+                console.log(res.data[0])
+
+                this.setState({
+                    namaObat: res.data[0].nama_obat,
+                    jumlahObat: res.data[0].jumlah_obat,
+                    satuan: res.data[0].satuan,
+                    deskripsi: res.data[0].deskripsi,
+                    manfaat: res.data[0].manfaat,
+                    komposisi: res.data[0].komposisi,
+                    dosis: res.data[0].dosis,
+                    golongan: res.data[0].golongan,
+                    hargaPokok: res.data[0].harga_pokok,
+                    hargaJual: res.data[0].harga_jual,
+                    fotoObat: res.data[0].foto_obat,
+                    fotoObatLama: res.data[0].foto_obat,
+                })
+                let preview = document.getElementById("imgPreview")
+                preview.src = `${API_URL}` + res.data[0].foto_obat
+
+
+                // mengembailkan value image
+                // let image = document.getElementById("image")
+                // // image.value = 'public/' + res.data[0].foto_obat
+                // console.log(image.value)
+                // console.log('url', typeof (`${API_URL}` + res.data[0].foto_obat))
+            })
+            .catch(err => {
+                alert(`Terjadi kesalahan di server`)
+            })
+    }
+
     componentDidMount() {
+
+        this.getDataProductId()
+
         window.addEventListener('scroll', (e) => {
 
             if (window.scrollY > 70) {
                 this.setState({ alertClass: "alert-fixed" })
             } else {
                 this.setState({ alertClass: "alert-absolute" })
-
             }
         })
     }
@@ -137,7 +192,7 @@ class AdminUploadProduct extends React.Component {
                 }
                 <div className="border border-success h-75 w-50 px-5 py-2">
                     <div className="border-bottom border-success mb-3 text-center">
-                        <h2 className="text-secondary">UPLOAD PRODUCT</h2>
+                        <h2 className="text-secondary">EDIT PRODUCT</h2>
                     </div>
                     <div className="h-75 w-100 d-flex flex-column ">
                         <div className="row mb-5">
@@ -227,13 +282,25 @@ class AdminUploadProduct extends React.Component {
                         </div>
 
                         {/* Gambar */}
-                        <div className="row  h-100 admin-upload-image ">
-                            <div className="col-4 d-flex flex-column justify-content-center">
-                                <label htmlFor="" className="d-block">Pilih Gambar </label>
-                                <input type="file" id="image" onChange={this.onBtnAddFile} className="input-file" />
-                            </div>
 
-                            <div className="col-8 d-flex align-items-center justify-content-center">
+                        <div className="row  h-100 admin-upload-image ">
+                            {
+                                this.state.gantiGambar == false ?
+                                    <div className="col-6">
+
+                                        <button type="button" class="btn btn-info" onClick={() => this.setState({ gantiGambar: true })}>Ganti Gambar</button>
+                                    </div>
+                                    :
+
+                                    <div className="col-6">
+                                        <label htmlFor="" className="d-block">Pilih Gambar </label>
+                                        <input type="file" id="image" onChange={this.onBtnAddFile} className="input-file" />
+                                        <button type="button" class="btn btn-info" onClick={() => this.setState({ gantiGambar: false })}>Batal</button>
+                                    </div>
+
+                            }
+
+                            <div className="col-6 d-flex align-items-center justify-content-center">
                                 <img id="imgPreview" value="" src={camera} height="150" width="" alt="no image select" className={this.state.fotoObat == "" ? "no-img-selected" : null} />
                             </div>
                         </div>
@@ -248,4 +315,4 @@ class AdminUploadProduct extends React.Component {
     }
 }
 
-export default AdminUploadProduct
+export default AdminEditProduct

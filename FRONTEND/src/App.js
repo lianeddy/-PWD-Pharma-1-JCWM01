@@ -15,6 +15,7 @@ import PrescriptionPage from "./pages/PrescriptionPage";
 
 // admin pages
 import AdminUploadProduct from "./pages/Admin/AdminUploadProduct";
+import AdminEditProduct from "./pages/Admin/AdminEditProduct";
 // end of admin pages
 
 class App extends React.Component {
@@ -30,6 +31,7 @@ class App extends React.Component {
 
             {/* admin pages */}
               <Route component={AdminUploadProduct} path="/admin-upload-product" />
+              <Route component={AdminEditProduct} path="/admin-edit-product/:id" />
             {/* end of admin pages */}
 
             <Route component={Cart} path="/cart" />
