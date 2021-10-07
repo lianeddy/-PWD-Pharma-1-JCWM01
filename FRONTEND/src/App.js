@@ -4,6 +4,8 @@ import "bootstrap/dist/css/bootstrap.css";
 
 import Home from "./pages/Home";
 import Login from "./pages/Auth/Login";
+import Forgot from "./pages/Auth/forgot";
+
 import Register from "./pages/Auth/Register";
 import Admin from "./pages/Admin";
 import Cart from "./pages/Cart";
@@ -15,6 +17,7 @@ import PrescriptionPage from "./pages/PrescriptionPage";
 import ProfilePage from "./pages/ProfilePage";
 import { connect } from "react-redux";
 import { userKeepLogin, checkStorage } from "./redux/actions/user";
+import changePassword from "./pages/changePassword";
 
 class App extends React.Component {
   componentDidMount() {
@@ -37,6 +40,8 @@ class App extends React.Component {
             <Route component={Login} path="/login" />
             <Route component={Register} path="/register" />
             <Route component={Admin} path="/admin" />
+            <Route component={Forgot} path="/forgot" />
+            <Route component={changePassword} path="/change-password" />
             <Route component={Cart} path="/cart" />
             <Route component={ProfilePage} path="/profile-page" />
             <Route component={History} path="/history" />
