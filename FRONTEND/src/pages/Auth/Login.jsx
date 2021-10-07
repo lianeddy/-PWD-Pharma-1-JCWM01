@@ -1,7 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { loginUser } from "../../redux/actions/user";
+import { connect } from "react-redux";
+
+
 
 class Login extends React.Component {
+  
+  state = {
+    username: "",
+    password: "",
+  };
+  inputHandler = (event) => {
+    const value = event.target.value;
+    const name = event.target.name;
+
+    this.setState({ [name]: value });
+  };
+
+
+
+
   render() {
     return (
       <div>
@@ -20,19 +39,21 @@ class Login extends React.Component {
                 <div className="card-body">
                   <h5 className="font-weight-bold mb-3">Masuk</h5>
                   <input
+                    onChange={this.inputHandler}
                     name="username"
                     placeholder="Username"
                     type="text"
                     className="form-control my-2"
                   />
                   <input
+                    onChange={this.inputHandler}
                     name="password"
                     placeholder="Password"
                     type="password"
                     className="form-control my-2"
                   />
                   <div className="d-flex flex-row justify-content-between align-items-center">
-                    <button className="btn btn-primary mt-2">Masuk</button>
+                    <button onClick={()=> this.props.loginUser(this.state)} className="btn btn-primary mt-2">Masuk</button>
                     <Link to="/register" className="text-decoration-none">
                       Daftar
                     </Link>
@@ -53,4 +74,13 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+
+const mapStateToProps = () => {
+  return {};
+};
+
+const mapDispatchToProps = {
+  loginUser,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
