@@ -7,22 +7,23 @@ import {
   DropdownItem,
 } from "reactstrap";
 import { connect } from "react-redux";
+import { logoutUser } from "../redux/actions/user";
 
 class TheNavbar extends React.Component {
   render() {
     return (
-      <header className="bg-dark text-white">
+      <header className="sticky-top bg-dark text-white">
         <div className="container">
-          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between">
             <a
               href="/"
               className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-white text-decoration-none"
             >
               <h3>
-                AMR{" "}
                 <span>
                   <i className="fas fa-tablets"></i>
                 </span>
+                AMR{" "}
               </h3>
             </a>
             <form className="form-inline nav">
@@ -78,7 +79,9 @@ class TheNavbar extends React.Component {
                       </Link>
                     </DropdownItem>
                     <DropdownItem divider />
-                    <DropdownItem>LOG OUT</DropdownItem>
+                    <DropdownItem onClick={this.props.logoutUser}>
+                      LOG OUT
+                    </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
               ) : (
@@ -106,4 +109,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(TheNavbar);
+const mapDispatchToPtops = {
+  logoutUser,
+};
+
+export default connect(mapStateToProps, mapDispatchToPtops)(TheNavbar);

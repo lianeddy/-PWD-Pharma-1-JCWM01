@@ -43,6 +43,8 @@ export const loginUser = ({ username, password }) => {
       .then((result) => {
         if (result.data.length) {
           if (password === result.data[0].password) {
+            delete result.data[0].password;
+            localStorage.setItem("userDataAMR", JSON.stringify(result.data[0]));
             dispatch({
               type: "USER_LOGIN",
               payload: result.data[0],
@@ -65,5 +67,39 @@ export const loginUser = ({ username, password }) => {
       .catch((err) => {
         alert("Terjadi kesalahan di server");
       });
+  };
+};
+
+export const logoutUser = () => {
+  localStorage.removeItem("userDataAMR");
+  return {
+    type: "USER_LOGOUT",
+  };
+};
+
+export const userKeepLogin = (userData) => {
+  return (dispatch) => {
+    Axios.get(`${API_URL}/user/get`, {
+      params: {
+        username: userData.username,
+      },
+    })
+      .then((result) => {
+        delete result.data[0].password;
+        localStorage.setItem("userDataAMR", JSON.stringify(result.data[0]));
+        dispatch({
+          type: "USER_LOGIN",
+          payload: result.data[0],
+        });
+      })
+      .catch(() => {
+        alert(`Terjadi kesalahan di server`);
+      });
+  };
+};
+
+export const checkStorage = () => {
+  return {
+    type: "CHECK_STORAGE",
   };
 };
