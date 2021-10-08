@@ -7,6 +7,7 @@ const init_state = {
   email: "",
   password: "",
   role: "",
+  foto_profil: "",
   errMsg: "",
   storageIsChecked: false,
 };

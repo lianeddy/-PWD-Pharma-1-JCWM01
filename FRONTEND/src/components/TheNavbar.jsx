@@ -46,16 +46,16 @@ class TheNavbar extends React.Component {
                     className="text-uppercase btn btn-success"
                     caret
                   >
-                    {this.props.userGlobal.username}
+                    Hello, {this.props.userGlobal.nama_depan}
                   </DropdownToggle>
                   <DropdownMenu>
                     <DropdownItem>
                       <Link
                         style={{ textDecoration: "none" }}
                         className="text-dark"
-                        to="/profile-page"
+                        to={`/profile-page/${this.props.userGlobal.username}`}
                       >
-                        EDIT PROFIL
+                        PROFIL ANDA
                       </Link>
                     </DropdownItem>
                     {this.props.userGlobal.role === "ADMIN" ? (

@@ -1,7 +1,36 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import Axios from "axios";
+import { API_URL } from "../constants/API";
 
 class EditProfile extends React.Component {
+  state = {
+    userData: {},
+    userNotFound: false,
+  };
+  fetchUserData = () => {
+    Axios.get(`${API_URL}/user/get`, {
+      params: {
+        username: this.props.userGlobal.username,
+      },
+    })
+      .then((result) => {
+        if (result.data.length) {
+          this.setState({ userData: result.data[0] });
+        } else {
+          this.setState({ userNotFound: true });
+        }
+      })
+      .catch(() => {
+        alert(`Kesalahan saat mengambil data user`);
+      });
+  };
+
+  componentDidMount() {
+    this.fetchUserData();
+  }
+
   render() {
     return (
       <div className="container rounded bg-light">
@@ -11,7 +40,7 @@ class EditProfile extends React.Component {
               <img
                 className="rounded-circle"
                 width="150px"
-                src="https://pbs.twimg.com/profile_images/874944604423847936/v29ClnPg_400x400.jpg"
+                src={this.state.userData.foto_profil}
               />
               <span>
                 {" "}
@@ -38,7 +67,7 @@ class EditProfile extends React.Component {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Ryan"
+                    placeholder={this.state.userData.nama_depan}
                   />
                 </div>
                 <div className="col-md-6">
@@ -46,7 +75,7 @@ class EditProfile extends React.Component {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Dwiky"
+                    placeholder={this.state.userData.nama_belakang}
                   />
                 </div>
               </div>
@@ -56,7 +85,7 @@ class EditProfile extends React.Component {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="dwikyryan"
+                    placeholder={this.state.userData.username}
                   />
                 </div>
                 <div className="col-md-6">
@@ -64,33 +93,35 @@ class EditProfile extends React.Component {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="dwikyryan@gmail.com"
+                    placeholder={this.state.userData.email}
                   />
                 </div>
 
                 <div className="col-md-6 mt-3">
                   <label className="labels">Jenis Kelamin</label>
-                  <input
-                    type="text"
+                  <select
                     className="form-control"
-                    placeholder="Pria"
-                  />
+                    placeholder={this.state.userData.jenis_kelamin}
+                  >
+                    <option value="">Pria</option>
+                    <option value="">Wanita</option>
+                  </select>
                 </div>
                 <div className="col-md-6 mt-3">
                   <label className="labels">Tanggal Lahir</label>
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="1992-03-13"
+                    placeholder={this.state.userData.tanggal_lahir}
                   />
                 </div>
                 <div className="col-md-12 mt-2">
                   <label className="labels">Alamat Pengiriman</label>
-                  <input
+                  <textarea
                     type="text"
                     className="form-control"
-                    placeholder="Jl. Pancoran Barat 2 No.6, Jakarta Selatan"
-                  />
+                    placeholder={this.state.userData.alamat}
+                  ></textarea>
                 </div>
                 <div className="col-md-3 mt-2">
                   <label className="labels">Kode Pos</label>
@@ -110,7 +141,7 @@ class EditProfile extends React.Component {
                 </button>
                 <button className="btn btn-danger profile-button" type="button">
                   <Link
-                    to="/profile-page"
+                    to={`/profile-page/${this.props.userGlobal.username}`}
                     style={{ textDecoration: "none" }}
                     className="text-white"
                   >
@@ -126,4 +157,10 @@ class EditProfile extends React.Component {
   }
 }
 
-export default EditProfile;
+const mapStateToProps = (state) => {
+  return {
+    userGlobal: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(EditProfile);

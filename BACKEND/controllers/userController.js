@@ -9,20 +9,44 @@ module.exports = {
     if (req.query.username) {
       scriptQuery = `Select * from user where username = ${db.escape(
         req.query.username
-      )} and password = ${db.escape(
-        Crypto.createHmac("sha1", "hash123")
-          .update(req.query.password)
-          .digest("hex")
       )};`;
-      console.log(scriptQuery);
     }
     db.query(scriptQuery, (err, results) => {
-      if (err) return res.status(500).send(err);
-      if (results.length === 0)
-        return res.status(404).send({ message: "User not found" });
-      return res.status(200).send(results);
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
     });
   },
+
+  //{
+  //   req.body.password = Crypto.createHmac("sha1", "hash123")
+  //     .update(req.body.password)
+  //     .digest("hex");
+  //   let scriptQuery = `Select * from user where username = ${db.escape(
+  //     req.query.username
+  //   )} and password = ${db.escape(req.body.password)};`;
+  //   console.log(req.body, scriptQuery);
+  //   db.query(scriptQuery, (err, results) => {
+  //     if (err) return res.status(500).send(err);
+  //     if (results[0]) {
+  //       let { id_user, username, email, password, role, status } = results[0];
+  //       let token = createToken({
+  //         id_user,
+  //         username,
+  //         email,
+  //         password,
+  //         role,
+  //         status,
+  //       });
+  //       if (status != "VERIFIED") {
+  //         res.status(200).send({ message: "Akun anda belum terverifikasi" });
+  //       } else {
+  //         res
+  //           .status(200)
+  //           .send({ dataLogin: results[0], token, message: "Login Success" });
+  //       }
+  //     }
+  //   });
+  // },
 
   addUser: (req, res) => {
     console.log(req.body);

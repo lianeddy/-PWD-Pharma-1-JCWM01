@@ -3,7 +3,7 @@ import React from "react";
 class PrescriptionPage extends React.Component {
   render() {
     return (
-      <div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column text-center">
         <header className="masthead mb-auto">
           <div className="inner">
             <h3 className="masthead-brand">KIRIM RESEP DI SINI</h3>

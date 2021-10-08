@@ -18,11 +18,8 @@ import { userKeepLogin, checkStorage } from "./redux/actions/user";
 import changePassword from "./pages/changePassword";
 import Verification from "./pages/Auth/Verification";
 import EditProfile from "./pages/EditProfile";
-
-// admin pages
 import AdminUploadProduct from "./pages/Admin/AdminUploadProduct";
 import AdminEditProduct from "./pages/Admin/AdminEditProduct";
-// end of admin pages
 
 class App extends React.Component {
   componentDidMount() {
@@ -38,37 +35,27 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <BrowserRouter>
-          <TheNavbar />
-          <Switch>
-            <Route component={Login} path="/login" />
-            <Route component={Register} path="/register" />
-            <Route component={Admin} path="/admin" />
-            <Route component={Verification} path="/verification/:token" />
-            <Route component={Forgot} path="/forgot" />
-            {/* admin pages */}
-            <Route
-              component={AdminUploadProduct}
-              path="/admin-upload-product"
-            />
-            <Route
-              component={AdminEditProduct}
-              path="/admin-edit-product/:id"
-            />
-            {/* end of admin pages */}
-            <Route component={changePassword} path="/change-password" />
-            <Route component={ProfilePage} path="/profile-page" />
-            <Route component={EditProfile} path="/edit-profile" />
-            <Route component={Cart} path="/cart" />
-            <Route component={History} path="/history" />
-            <Route component={ProductDetail} path="/product-detail/:obatid" />
-            <Route component={PrescriptionPage} path="/prescription-page" />
-            <Route component={Home} path="/" />
-          </Switch>
-          <Footer />
-        </BrowserRouter>
-      </div>
+      <BrowserRouter>
+        <TheNavbar />
+        <Switch>
+          <Route component={Login} path="/login" />
+          <Route component={Register} path="/register" />
+          <Route component={Admin} path="/admin" />
+          <Route component={Verification} path="/verification/:token" />
+          <Route component={Forgot} path="/forgot" />
+          <Route component={AdminUploadProduct} path="/admin-upload-product" />
+          <Route component={AdminEditProduct} path="/admin-edit-product/:id" />
+          <Route component={changePassword} path="/change-password" />
+          <Route component={ProfilePage} path="/profile-page/:username" />
+          <Route component={EditProfile} path="/edit-profile/:username" />
+          <Route component={Cart} path="/cart" />
+          <Route component={History} path="/history" />
+          <Route component={ProductDetail} path="/product-detail/:obatid" />
+          <Route component={PrescriptionPage} path="/prescription-page" />
+          <Route component={Home} path="/" />
+        </Switch>
+        <Footer />
+      </BrowserRouter>
     );
   }
 }

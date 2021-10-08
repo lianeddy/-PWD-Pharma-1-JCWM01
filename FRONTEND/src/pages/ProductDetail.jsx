@@ -22,7 +22,7 @@ class ProductDetail extends React.Component {
         }
       })
       .catch(() => {
-        alert("Terjadi kesalahan di server");
+        alert("Kesalahan saat mengambil data obat");
       });
   };
 
