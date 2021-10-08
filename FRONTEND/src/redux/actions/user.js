@@ -42,6 +42,7 @@ export const loginUser = ({ username, password }) => {
     })
       .then((result) => {
         if (result.data.length) {
+          console.log(result.data[0].password)
           if (password === result.data[0].password) {
             dispatch({
               type: "USER_LOGIN",
