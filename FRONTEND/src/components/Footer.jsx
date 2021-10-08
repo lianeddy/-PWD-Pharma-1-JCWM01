@@ -3,7 +3,7 @@ import React from "react";
 class Footer extends React.Component {
   render() {
     return (
-      <div>
+      <div className=" bg-warning bg-gradient">
         <footer className="container py-5">
           <div className="row">
             <div className="col-12 col-md">
