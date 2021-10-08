@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import { userKeepLogin, checkStorage } from "./redux/actions/user";
 import changePassword from "./pages/changePassword";
 import Verification from "./pages/Auth/Verification";
+import EditProfile from "./pages/EditProfile";
 
 // admin pages
 import AdminUploadProduct from "./pages/Admin/AdminUploadProduct";
@@ -58,6 +59,7 @@ class App extends React.Component {
             {/* end of admin pages */}
             <Route component={changePassword} path="/change-password" />
             <Route component={ProfilePage} path="/profile-page" />
+            <Route component={EditProfile} path="/edit-profile" />
             <Route component={Cart} path="/cart" />
             <Route component={History} path="/history" />
             <Route component={ProductDetail} path="/product-detail/:obatid" />

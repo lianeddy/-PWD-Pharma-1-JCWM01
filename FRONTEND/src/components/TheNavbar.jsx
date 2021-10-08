@@ -26,8 +26,8 @@ class TheNavbar extends React.Component {
                 AMR{" "}
               </h3>
             </a>
-            <form className="form-inline nav">
-              <div class="form-group mx-sm-1 mb-2">
+            <form className="nav">
+              <div class="mx-sm-1 mb-2">
                 <input
                   type="text"
                   className="form-control"
