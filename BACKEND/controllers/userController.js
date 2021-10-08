@@ -9,12 +9,18 @@ module.exports = {
     if (req.query.username) {
       scriptQuery = `Select * from user where username = ${db.escape(
         req.query.username
+      )} and password = ${db.escape(
+        Crypto.createHmac("sha1", "hash123")
+          .update(req.query.password)
+          .digest("hex")
       )};`;
       console.log(scriptQuery);
     }
     db.query(scriptQuery, (err, results) => {
-      if (err) res.status(500).send(err);
-      res.status(200).send(results);
+      if (err) return res.status(500).send(err);
+      if (results.length === 0)
+        return res.status(404).send({ message: "User not found" });
+      return res.status(200).send(results);
     });
   },
 

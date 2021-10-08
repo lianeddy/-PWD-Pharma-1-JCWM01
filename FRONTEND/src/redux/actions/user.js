@@ -70,30 +70,31 @@ export const loginUser = ({ username, password }) => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
         username,
+        password,
       },
     })
       .then((result) => {
         if (result.data.length) {
-          if (password === result.data[0].password) {
-            localStorage.setItem("userDataAMR", JSON.stringify(result.data[0]));
-            dispatch({
-              type: "USER_LOGIN",
-              payload: result.data[0],
-            });
-          } else {
-            // handle wrong password
-            dispatch({
-              type: "USER_ERROR",
-              payload: "Password salah!",
-            });
-          }
-        } else {
-          // handle username not found
+          // if (password === result.data[0].password) {
+          localStorage.setItem("userDataAMR", JSON.stringify(result.data[0]));
           dispatch({
-            type: "USER_ERROR",
-            payload: "User tidak ditemukan",
+            type: "USER_LOGIN",
+            payload: result.data[0],
           });
+          // } else {
+          // handle wrong password
+          // dispatch({
+          //   type: "USER_ERROR",
+          //   payload: "Password salah!",
+          // });
         }
+        // } else {
+        // handle username not found
+        // dispatch({
+        //   type: "USER_ERROR",
+        //   payload: "User tidak ditemukan",
+        // });
+        // }
       })
       .catch((err) => {
         alert("Terjadi kesalahan di server");
