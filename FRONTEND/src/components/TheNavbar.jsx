@@ -74,6 +74,15 @@ class TheNavbar extends React.Component {
                         KERANJANG
                       </Link>
                     </DropdownItem>
+                    <DropdownItem>
+                      <Link
+                        style={{ textDecoration: "none" }}
+                        className="text-dark"
+                        to="/change-password"
+                      >
+                        Change Password
+                      </Link>
+                    </DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem onClick={this.props.logoutUser}>
                       LOG OUT

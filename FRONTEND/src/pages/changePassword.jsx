@@ -1,38 +1,39 @@
 import React from "react";
 
+
 class changePassword extends React.Component {
   render() {
     return (
-      <div className="card card-outline-secondary">
-                        <div className="card-header">
-                            <h3 className="mb-0">Change Password</h3>
-                        </div>
-                        <div className="card-body">
-                            <form className="form" role="form" autocomplete="off">
-                                <div className="form-group">
-                                    <label for="inputPasswordOld">Current Password</label>
-                                    <input type="password" className="form-control" id="inputPasswordOld" required=""/>
-                                </div>
-                                <div className="form-group">
-                                    <label for="inputPasswordNew">New Password</label>
-                                    <input type="password" className="form-control" id="inputPasswordNew" required=""/>
-                                    <span className="form-text small text-muted">
-                                            The password must be 8-20 characters, and must <em>not</em> contain spaces.
-                                        </span>
-                                </div>
-                                <div className="form-group">
-                                    <label for="inputPasswordNewVerify">Verify</label>
-                                    <input type="password" className="form-control" id="inputPasswordNewVerify" required=""/>
-                                    <span className="form-text small text-muted">
-                                            To confirm, type the new password again.
-                                        </span>
-                                </div>
-                                <div className="form-group">
-                                    <button type="submit" className="btn btn-success btn-lg float-right">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+        <div>
+        <div className="container mt-3">
+          <div className="row mb-5 mt-5 d-flex justify-content-center">
+              <div className="card">  
+              <div className="card-body">
+                     <h1>Change Password</h1>
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="mb-3">Current password</h5>
+                  <input
+                    name="password"
+                    placeholder="Enter Current password"
+                    type="password"
+                    className="form-control my-2"
+                  />
+                  <h5 className="mb-3">New password</h5>
+                  <input
+                    name="password"
+                    placeholder="Enter New Password"
+                    type="password"
+                    className="form-control my-2"
+                  />
+                  <button className="btn btn-primary mt-1">Save Changes</button>
+                </div>
+                </div>
+              </div>
+              </div>
+            </div>
+        </div>
+      </div>
     );
   }
 }
