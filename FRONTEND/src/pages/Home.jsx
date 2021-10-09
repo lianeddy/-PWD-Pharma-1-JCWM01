@@ -9,7 +9,7 @@ class Home extends React.Component {
     filterDrugList: [],
     page: 1,
     maxPage: 0,
-    itemPerPage: 8,
+    itemPerPage: 6,
     searchProductName:"",
     searchCategory:"",
     sortBy:"",
@@ -33,17 +33,17 @@ class Home extends React.Component {
       if (a.nama_obat < b.nama_obat){
         return -1
     }
-    if (a.nama_obat> b.nama_obat){
+    if (a.nama_obat > b.nama_obat){
         return 1
     }
     return 0
     }
     switch (this.state.sortBy){
       case "lowPrice":
-          rawData.sort((a, b) => a.price - b.price)
+          rawData.sort((a, b) => a.harga_jual - b.harga_jual)
           break
       case "highPrice":
-          rawData.sort((a, b) => b.price - a.price)
+          rawData.sort((a, b) => b.harga_jual - a.harga_jual)
           break
       case "az":
           rawData.sort(compareString)
@@ -87,11 +87,11 @@ class Home extends React.Component {
     this.setState({[name]: value})
   }
   searchButtonHandler=()=>{
-    const filterProductList = this.state.drugList.filter((val)=>{
-      return val.nama_obat.toLowerCase().includes(this.state.searchProductName.toLowerCase())&&
+    const filterDrugList = this.state.drugList.filter((val)=>{
+      return val.nama_obat.toLowerCase().includes(this.state.searchProductName.toLowerCase()) &&
       val.golongan.toLowerCase().includes(this.state.searchCategory.toLowerCase())
     })
-    this.setState({filterProductList, maxPage: Math.ceil(filterProductList.length / this.state.itemPerPage), page:1})
+    this.setState({filterDrugList, maxPage: Math.ceil(filterDrugList.length / this.state.itemPerPage), page:1})
   }
 
   render() {
@@ -118,10 +118,10 @@ class Home extends React.Component {
                     onChange={this.searchInputHandler} 
                     className="form-control">
                     <option value="">ALL</option>
-                    <option value="obatkeras">obat keras</option>
-                    <option value="obatbebas">obat bebas</option>
-                    <option value="obatherbal">obat herbal</option>
-                    <option value="alkes">alkes</option>
+                    <option value="obatkeras">Obat Keras</option>
+                    <option value="obatbebas">Obat Bebas</option>
+                    <option value="obatherbal">Obat Herbal</option>
+                    <option value="alkes">Alkes</option>
                   </select>
                   <button onClick={this.searchButtonHandler} className="btn btn-primary mt-3">
                     Search
@@ -133,12 +133,12 @@ class Home extends React.Component {
                   </div>
                   <div className="card-body">
                     <label htmlFor="sortBy">Sort by</label>
-                    <select onChange={this.inputHandler} name="sortBy" className="form-control">
+                    <select onChange={this.searchInputHandler} name="sortBy" className="form-control">
                       <option value="">Default</option>
                       <option value="lowPrice">Lowest Price</option>
                       <option value="highPrice">Highest Price</option>
-                      <option value="a-z">A-Z</option>
-                      <option value="z-a">Z-A</option>
+                      <option value="az">A-Z</option>
+                      <option value="za">Z-A</option>
                     </select>
                   </div>
                 </div>

@@ -1,6 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
+  Navbar,
+  Nav,
+  NavItem,
+  NavbarBrand,
+  NavbarText,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -29,6 +34,7 @@ class TheNavbar extends React.Component {
                 AMR{" "}
               </h3>
             </a>
+            
             <div className="col-md-3 text-end">
               {this.props.userGlobal.username ?  (
                 <UncontrolledDropdown>
