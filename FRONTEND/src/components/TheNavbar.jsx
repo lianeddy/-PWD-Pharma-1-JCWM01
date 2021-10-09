@@ -10,6 +10,9 @@ import { connect } from "react-redux";
 import { logoutUser } from "../redux/actions/user";
 
 class TheNavbar extends React.Component {
+
+  //<>methode search product<>
+  
   render() {
     return (
       <header className="sticky-top bg-dark text-white">
@@ -33,6 +36,7 @@ class TheNavbar extends React.Component {
                   className="form-control"
                   placeholder="Temukan obat..."
                   aria-label="Search"
+                  
                 />
               </div>
               <button type="submit" className="btn btn-primary mb-2">

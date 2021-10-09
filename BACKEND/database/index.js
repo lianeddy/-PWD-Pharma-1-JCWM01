@@ -1,9 +1,9 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Incorrect100%",
+  password: "Mu$lim100%",
   database: "db_pharma",
   port: 3306,
   multipleStatements: true,
