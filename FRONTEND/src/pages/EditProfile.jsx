@@ -65,6 +65,7 @@ class EditProfile extends React.Component {
                 <div className="col-md-6">
                   <label className="labels">Nama Depan</label>
                   <input
+                    name="edit_nama_depan"
                     type="text"
                     className="form-control"
                     placeholder={this.state.userData.nama_depan}
@@ -73,6 +74,7 @@ class EditProfile extends React.Component {
                 <div className="col-md-6">
                   <label className="labels">Nama Belakang</label>
                   <input
+                    name="edit_nama_belakang"
                     type="text"
                     className="form-control"
                     placeholder={this.state.userData.nama_belakang}
@@ -83,6 +85,7 @@ class EditProfile extends React.Component {
                 <div className="col-md-6">
                   <label className="labels">Username</label>
                   <input
+                    name="edit_username"
                     type="text"
                     className="form-control"
                     placeholder={this.state.userData.username}
@@ -91,6 +94,7 @@ class EditProfile extends React.Component {
                 <div className="col-md-6">
                   <label className="labels">E-mail</label>
                   <input
+                    name="edit_email"
                     type="text"
                     className="form-control"
                     placeholder={this.state.userData.email}
@@ -99,25 +103,24 @@ class EditProfile extends React.Component {
 
                 <div className="col-md-6 mt-3">
                   <label className="labels">Jenis Kelamin</label>
-                  <select
-                    className="form-control"
-                    placeholder={this.state.userData.jenis_kelamin}
-                  >
-                    <option value="">Pria</option>
-                    <option value="">Wanita</option>
+                  <select className="form-select" name="edit_jenis_kelamin">
+                    <option value="Pria">Pria</option>
+                    <option value="Wanita">Wanita</option>
                   </select>
                 </div>
                 <div className="col-md-6 mt-3">
                   <label className="labels">Tanggal Lahir</label>
                   <input
+                    name="edit_tanggal_lahir"
                     type="text"
                     className="form-control"
                     placeholder={this.state.userData.tanggal_lahir}
                   />
                 </div>
-                <div className="col-md-12 mt-2">
+                <div className="col-md-12 mt-3">
                   <label className="labels">Alamat Pengiriman</label>
                   <textarea
+                    name="edit_alamat"
                     type="text"
                     className="form-control"
                     placeholder={this.state.userData.alamat}
@@ -126,6 +129,7 @@ class EditProfile extends React.Component {
                 <div className="col-md-3 mt-2">
                   <label className="labels">Kode Pos</label>
                   <input
+                    name="edit_kode_pos"
                     type="text"
                     className="form-control"
                     placeholder="12780"
