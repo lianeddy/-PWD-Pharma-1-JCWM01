@@ -11,7 +11,7 @@ import { logoutUser } from "../redux/actions/user";
 
 class TheNavbar extends React.Component {
 
-  //<>methode search product<>
+
   
   render() {
     return (
@@ -29,22 +29,8 @@ class TheNavbar extends React.Component {
                 AMR{" "}
               </h3>
             </a>
-            <form className="form-inline nav">
-              <div class="form-group mx-sm-1 mb-2">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Temukan obat..."
-                  aria-label="Search"
-                  
-                />
-              </div>
-              <button type="submit" className="btn btn-primary mb-2">
-                <i className="fa fa-search"></i>
-              </button>
-            </form>
             <div className="col-md-3 text-end">
-              {this.props.userGlobal.username ? (
+              {this.props.userGlobal.username ?  (
                 <UncontrolledDropdown>
                   <DropdownToggle
                     className="text-uppercase btn btn-success"
