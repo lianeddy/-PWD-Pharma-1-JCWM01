@@ -1,4 +1,5 @@
 const init_state = {
+  id_user: 0,
   nama_depan: "",
   nama_belakang: "",
   jenis_kelamin: "",
