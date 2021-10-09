@@ -131,15 +131,13 @@ module.exports = {
       res.status(200).send({ message: "Akun terverifikasi", success: true });
     });
   },
+
   editUser: (req, res) => {
-    console.log(req.query.username);
     let dataUpdate = [];
     for (let prop in req.body) {
       dataUpdate.push(`${prop} = ${db.escape(req.body[prop])}`);
     }
-    let updateQuery = `UPDATE user set ${db.escape(
-      dataUpdate
-    )} where username = ${req.user.username};`;
+    let updateQuery = `UPDATE user set ${dataUpdate} where id_user = ${req.params.id};`;
     console.log(updateQuery);
     db.query(updateQuery, (err, results) => {
       if (err) res.status(500).send(err);
