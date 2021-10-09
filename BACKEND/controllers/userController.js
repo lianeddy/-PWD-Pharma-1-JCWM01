@@ -72,7 +72,7 @@ module.exports = {
           let token = createToken({ id_user, username, email, role });
 
           let mail = {
-            from: `Admin <devdwikyryan@gmail.com>`,
+            from: `Admin <shabrinaartarini46@gmail.com>`,
             to: `${email}`,
             subject: "Verifikasi Akun AMR Pharmacy Anda",
             html: `<a href= 'http://localhost:3000/verification/${token}'> Klik sini untuk verifikasi akun AMR Pharmacy anda</a>`,
@@ -107,4 +107,8 @@ module.exports = {
       res.status(200).send({ message: "Akun terverifikasi", success: true });
     });
   },
-};
+
+ 
+
+
+}
