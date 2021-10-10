@@ -130,6 +130,40 @@ export const userKeepLogin = (userData) => {
   };
 };
 
+
+
+export const btnResetPassword = ({email}) => {
+  return (dispatch) => {
+    if (email == "") {
+      return alert("Fill in All the Form")
+    }
+
+
+    Axios.post(`${API_URL}/user/reset-password`, {
+      email
+    })
+    .then(res => {
+      if (res.data.userData) {
+        console.log("Email Exists")
+        console.log(res.data)
+        alert("Continue to reset password")
+        dispatch({
+          type: "RESET_PASS",
+          payload: res.data.userData
+        })
+      } else {
+        dispatch({
+          type: "RESET_ERROR",
+          payload: "Your Email doesn't Exist"
+        })
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+}
+
 export const checkStorage = () => {
   return {
     type: "CHECK_STORAGE",

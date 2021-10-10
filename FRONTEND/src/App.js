@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import Home from "./pages/Home";
 import Login from "./pages/Auth/Login";
 import resetPassword from "./pages/Auth/resetPassword";
+import resetPasswordPage from "./pages/Auth/resetPasswordPage";
 import Register from "./pages/Auth/Register";
 import Admin from "./pages/Admin";
 import Cart from "./pages/Cart";
@@ -46,6 +47,7 @@ class App extends React.Component {
             <Route component={Admin} path="/admin" />
             <Route component={Verification} path="/verification/:token" />
             <Route component={resetPassword} path="/reset-password" />
+            <Route component={resetPasswordPage} path="/reset-password-page" />
             {/* admin pages */}
             <Route
               component={AdminUploadProduct}

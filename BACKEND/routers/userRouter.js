@@ -7,6 +7,9 @@ routers.get("/get", userController.getUser);
 routers.post("/add-user", userController.addUser);
 routers.patch("/verified", auth, userController.verification);
 routers.post("/change-password", userController.changePassword);
+routers.post("/reset-password", userController.resetPassword);
+routers.patch('/reset-password-page/:id', userController.resetPasswordPage)
+
 
 
 module.exports = routers;

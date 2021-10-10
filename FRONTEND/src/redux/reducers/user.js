@@ -19,7 +19,11 @@ export default (state = init_state, action) => {
     case "USER_ERROR":
       return { ...state, errMsg: action.payload };
     case "USER_LOGOUT":
-      return { ...init_state, storageIsChecked: true };
+      return { ...state, storageIsChecked: true };
+    case "RESET_PASS":
+      return { ...state, ...action.payload, storageIsChecked: true };
+    case " RESET_ERROR":
+      return { ...state, errMsg: action.payload, storageIsChecked: false };
     case "CHECK_STORAGE":
       return { ...state, storageIsChecked: true };
     default:
