@@ -1,7 +1,45 @@
 import React from "react";
+import Axios from "axios";
+import { API_URL } from "../constants/API";
+import { connect } from "react-redux";
 
 
 class changePassword extends React.Component {
+  state={
+    currentPassword:"",
+    newPassword:"",
+    
+  }
+
+changePasswordBtn=()=>{
+  console.log(this.props.userGlobal.username);
+  const {
+    currentPassword,
+    newPassword,
+  } = this.state;
+  Axios.post(`${API_URL}/user/change-password`,{
+    currentPassword,
+    newPassword,
+    username: this.props.userGlobal.username
+  }).then(()=>{
+    alert("berhasil ganti password")
+  })
+  .catch((err)=>{
+    console.log(err);
+  })
+}
+
+
+
+
+inputHandler = (event) => {
+  const value = event.target.value;
+  const name = event.target.name;
+
+  this.setState({ [name]: value });
+};
+
+
   render() {
     return (
         <div>
@@ -14,19 +52,21 @@ class changePassword extends React.Component {
                 <div className="card-body">
                   <h5 className="mb-3">Current password</h5>
                   <input
-                    name="password"
+                    onChange={this.inputHandler}
+                    name="currentPassword"
                     placeholder="Enter Current password"
                     type="password"
                     className="form-control my-2"
                   />
                   <h5 className="mb-3">New password</h5>
                   <input
-                    name="password"
+                  onChange={this.inputHandler}
+                    name="newPassword"
                     placeholder="Enter New Password"
                     type="password"
                     className="form-control my-2"
                   />
-                  <button className="btn btn-primary mt-1">Save Changes</button>
+                  <button onClick={this.changePasswordBtn} className="btn btn-primary mt-1">Save Changes</button>
                 </div>
                 </div>
               </div>
@@ -38,4 +78,8 @@ class changePassword extends React.Component {
   }
 }
 
-export default changePassword;
+const mapStateToProps = (state) => {
+  return { userGlobal: state.user };
+};
+
+export default connect(mapStateToProps)(changePassword);

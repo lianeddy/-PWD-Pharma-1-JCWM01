@@ -66,7 +66,7 @@ class Login extends React.Component {
                     </Link>
                   </div>
                   <div className="my-3">
-                    <Link to="/forgot" className="text-decoration-none">
+                    <Link to="/reset-password" className="text-decoration-none">
                       <p>Lupa password ?</p>
                     </Link>
                   </div>
