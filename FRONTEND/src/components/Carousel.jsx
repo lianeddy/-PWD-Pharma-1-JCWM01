@@ -3,14 +3,14 @@ import { UncontrolledCarousel } from "reactstrap";
 
 const items = [
   {
-    src: "http://jogjapercetakan.com/wp-content/uploads/2018/07/86aa75a0-3253-4605-8d84-f8b688eb2820.jpg",
+    src: "https://lirp.cdn-website.com/0ead930f/dms3rep/multi/opt/CETIRIZINE-10MG-TABLET+SALUT+SELAPUT-1920w.jpg",
     altText: "",
     caption: "",
     header: "",
     key: "1",
   },
   {
-    src: "https://cdnuploads.aa.com.tr/uploads/Contents/2021/05/07/thumbs_b_c_de6e62f21001508e3cfb3bb2d1b365f1.jpg?v=023857",
+    src: "https://www.kalbemed.com/storage/products/ec5f39e7f0c80b20c0bf1e614e968acf.jpg",
     altText: "",
     caption: "",
     header: "",
