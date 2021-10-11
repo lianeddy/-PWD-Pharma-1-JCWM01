@@ -102,7 +102,7 @@ module.exports = {
           });
         }
       });
-    }
+    })
   },
 
   verification: (req, res) => {
