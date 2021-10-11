@@ -77,6 +77,21 @@ export const loginUser = ({ username, password }) => {
         if (result.data.length) {
           // if (password === result.data[0].password) {
           localStorage.setItem("userDataAMR", JSON.stringify(result.data[0]));
+          console.log(result.data[0].password)
+          if (password === result.data[0].password) {
+            dispatch({
+              type: "USER_LOGIN",
+              payload: result.data[0],
+            });
+          } else {
+            // handle wrong password
+            dispatch({
+              type: "USER_ERROR",
+              payload: "Password salah!",
+            });
+          }
+        } else {
+          // handle username not found
           dispatch({
             type: "USER_LOGIN",
             payload: result.data[0],
