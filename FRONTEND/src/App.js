@@ -20,6 +20,7 @@ import Verification from "./pages/Auth/Verification";
 import EditProfile from "./pages/EditProfile";
 import AdminUploadProduct from "./pages/Admin/AdminUploadProduct";
 import AdminEditProduct from "./pages/Admin/AdminEditProduct";
+import { getCartData } from "./redux/actions/cart";
 
 class App extends React.Component {
   componentDidMount() {
@@ -28,6 +29,7 @@ class App extends React.Component {
     if (userLocalStorage) {
       const userData = JSON.parse(userLocalStorage);
       this.props.userKeepLogin(userData);
+      this.props.getCartData(userData.id_user);
     } else {
       this.props.checkStorage();
     }
@@ -69,6 +71,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   userKeepLogin,
   checkStorage,
+  getCartData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

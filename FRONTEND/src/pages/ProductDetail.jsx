@@ -2,6 +2,7 @@ import React from "react";
 import Axios from "axios";
 import { API_URL } from "../constants/API";
 import { connect } from "react-redux";
+import { getCartData } from "../redux/actions/cart";
 
 class ProductDetail extends React.Component {
   state = {
@@ -53,7 +54,7 @@ class ProductDetail extends React.Component {
         )
           .then(() => {
             alert("Berhasil menambahkan qty ke cart");
-            console.log(result.data[0].id_user);
+            this.props.getCartData(this.props.userGlobal.id_user);
           })
           .catch((err) => {
             alert("Gagal saat patch data");
@@ -70,6 +71,7 @@ class ProductDetail extends React.Component {
         })
           .then(() => {
             alert("Berhasil menambahkan obat ke cart");
+            this.props.getCartData(this.props.userGlobal.id_user);
           })
           .catch((err) => {
             alert(`Gagal menambahkan obat ke cart`);
@@ -204,4 +206,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ProductDetail);
+const mapDispatchToProps = {
+  getCartData,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail);

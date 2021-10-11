@@ -2,8 +2,16 @@ const { db } = require("../database");
 
 module.exports = {
   getCart: (req, res) => {
-    let scriptQuery = `Select * from cart;`;
-    if (req.query) {
+    let scriptQuery = `Select * from cart where id_user = ${db.escape(
+      req.query.id_user
+    )};`;
+    // if (req.query.id_user) {
+    //   scriptQuery = `Select * from cart where id_user = ${db.escape(
+    //     req.query.id_user
+    //   )}`;
+    // } else
+
+    if (req.query.id_user && req.query.idobat) {
       scriptQuery = `Select * from cart where id_user = ${db.escape(
         req.query.id_user
       )} and idobat = ${db.escape(req.query.idobat)};`;
@@ -50,6 +58,21 @@ module.exports = {
     db.query(updateQuery, (err, results) => {
       if (err) res.status(500).send(err);
       return res.status(200).send(results);
+    });
+  },
+
+  renderCart: (req, res) => {
+    let scriptQuery = "Select * from obat;";
+    if (req.query.id_user) {
+      scriptQuery = `select obat.foto_obat, obat.nama_obat, cart.qty_obat, cart.harga from cart
+      left join user on
+      user.id_user = cart.id_user
+      left join obat on obat.idobat = cart.idobat
+      where cart.id_user = ${db.escape(req.query.id_user)};`;
+    }
+    db.query(scriptQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
     });
   },
 };
