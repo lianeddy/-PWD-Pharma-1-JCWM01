@@ -13,7 +13,7 @@ class ProfilePage extends React.Component {
   fetchUserData = () => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        id_user: this.props.userGlobal.id_user,
+        email: this.props.userGlobal.email,
       },
     })
       .then((result) => {
@@ -57,7 +57,7 @@ class ProfilePage extends React.Component {
                 <span>
                   <button className="btn btn-sm btn-warning mt-2" type="button">
                     <Link
-                      to={`/edit-profile/${this.state.userData.id_user}`}
+                      to={`/edit-profile/${this.state.userData.email}`}
                       style={{ textDecoration: "none" }}
                       className="text-dark"
                     >

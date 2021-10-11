@@ -14,7 +14,6 @@ module.exports = {
     });
   },
   addData: (req, res) => {
-    console.log(req.body);
     let {
       nama_obat,
       deskripsi,
@@ -27,6 +26,7 @@ module.exports = {
       harga_jual,
       foto_obat,
     } = req.body;
+    console.log(req.body);
     let insertQuery = `Insert into obat values (null, ${db.escape(
       nama_obat
     )}, ${db.escape(deskripsi)}, ${db.escape(manfaat)}, ${db.escape(

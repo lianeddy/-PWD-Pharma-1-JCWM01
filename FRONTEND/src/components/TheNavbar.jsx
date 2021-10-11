@@ -54,7 +54,7 @@ class TheNavbar extends React.Component {
                       <Link
                         style={{ textDecoration: "none" }}
                         className="text-dark"
-                        to={`/profile-page/${this.props.userGlobal.id_user}`}
+                        to={`/profile-page/${this.props.userGlobal.email}`}
                       >
                         PROFIL ANDA
                       </Link>

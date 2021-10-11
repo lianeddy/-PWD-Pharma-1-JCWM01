@@ -6,9 +6,9 @@ const transporter = require("../helper/nodemailer");
 module.exports = {
   getUser: (req, res) => {
     let scriptQuery = "Select * from user;";
-    if (req.query.id_user) {
-      scriptQuery = `Select * from user where id_user = ${db.escape(
-        req.query.id_user
+    if (req.query.email) {
+      scriptQuery = `Select * from user where email = ${db.escape(
+        req.query.email
       )};`;
     }
     db.query(scriptQuery, (err, results) => {
@@ -18,20 +18,21 @@ module.exports = {
   },
 
   //{
-  //   req.body.password = Crypto.createHmac("sha1", "hash123")
-  //     .update(req.body.password)
+
+  // },
+
+  // req.body.password = Crypto.createHmac("sha1", "hash123")
+  //     .update(JSON.stringify(req.body.password))
   //     .digest("hex");
-  //   let scriptQuery = `Select * from user where username = ${db.escape(
-  //     req.query.username
+  //   let scriptQuery = `Select * from user where email = ${db.escape(
+  //     req.body.email
   //   )} and password = ${db.escape(req.body.password)};`;
-  //   console.log(req.body, scriptQuery);
   //   db.query(scriptQuery, (err, results) => {
   //     if (err) return res.status(500).send(err);
   //     if (results[0]) {
-  //       let { id_user, username, email, password, role, status } = results[0];
+  //       let { id_user, email, password, role, status } = results[0];
   //       let token = createToken({
   //         id_user,
-  //         username,
   //         email,
   //         password,
   //         role,
@@ -46,7 +47,6 @@ module.exports = {
   //       }
   //     }
   //   });
-  // },
 
   addUser: (req, res) => {
     console.log(req.body);
@@ -54,23 +54,25 @@ module.exports = {
       nama_depan,
       nama_belakang,
       email,
-      password,
       jenis_kelamin,
-      status,
       tanggal_lahir,
+      password,
+      status,
       role,
     } = req.body;
-    password = Crypto.createHmac("sha1", "hash123")
-      .update(password)
-      .digest("hex");
-    console.log(password);
-    let insertQuery = `Insert into user (nama_depan, nama_belakang, email, password, jenis_kelamin, status, tanggal_lahir, role) values (${db.escape(
+    // password = Crypto.createHmac("sha1", "hash123")
+    //   .update(password)
+    //   .digest("hex");
+    // console.log(password);
+    let insertQuery = `Insert into user (nama_depan, nama_belakang, email, jenis_kelamin, tanggal_lahir, password,  status, foto_profil, role) values (${db.escape(
       nama_depan
     )}, ${db.escape(nama_belakang)}, ${db.escape(email)}, ${db.escape(
-      password
-    )}, ${db.escape(jenis_kelamin)}, ${db.escape(status)}, ${db.escape(
-      tanggal_lahir
-    )}, ${db.escape(role)});`;
+      jenis_kelamin
+    )}, ${db.escape(tanggal_lahir)}, ${db.escape(password)}, ${db.escape(
+      status
+    )}, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png', ${db.escape(
+      role
+    )});`;
     console.log(insertQuery);
     db.query(insertQuery, (err, result) => {
       if (err) {

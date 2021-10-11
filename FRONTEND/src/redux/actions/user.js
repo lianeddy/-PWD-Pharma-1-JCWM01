@@ -120,7 +120,7 @@ export const userKeepLogin = (userData) => {
   return (dispatch) => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        id_user: userData.id_user,
+        email: userData.email,
       },
     })
       .then((result) => {

@@ -16,12 +16,12 @@ class EditProfile extends React.Component {
     edit_tanggal_lahir: "",
     edit_alamat: "",
     edit_foto_profil: "",
-    edit_kode_pos: "",
+    edit_success: false,
   };
   fetchUserData = () => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        id_user: this.props.userGlobal.id_user,
+        email: this.props.userGlobal.email,
       },
     })
       .then((result) => {
@@ -34,7 +34,6 @@ class EditProfile extends React.Component {
             edit_email: result.data[0].email,
             edit_jenis_kelamin: result.data[0].jenis_kelamin,
             edit_tanggal_lahir: result.data[0].tanggal_lahir,
-            edit_kode_pos: result.data[0].kode_pos,
             edit_alamat: result.data[0].alamat,
             edit_foto_profil: result.data[0].foto_profil,
           });
@@ -55,11 +54,11 @@ class EditProfile extends React.Component {
       jenis_kelamin: this.state.edit_jenis_kelamin,
       tanggal_lahir: this.state.edit_tanggal_lahir,
       alamat: this.state.edit_alamat,
-      kode_pos: this.state.edit_kode_pos,
       foto_profil: this.state.edit_foto_profil,
     })
       .then(() => {
         alert("Pembaharuan data berhasil");
+        this.setState({ edit_success: true });
       })
       .catch((err) => {
         console.log(err);
@@ -114,6 +113,9 @@ class EditProfile extends React.Component {
   }
 
   render() {
+    if (this.state.edit_success === true) {
+      return <Redirect to={`/profile-page/${this.state.edit_email}`} />;
+    }
     return (
       <div className="container rounded bg-light">
         <div className="row">
@@ -206,16 +208,6 @@ class EditProfile extends React.Component {
                     className="form-control"
                     value={this.state.edit_alamat}
                   ></textarea>
-                </div>
-                <div className="col-md-3 mt-2">
-                  <label className="labels">Kode Pos</label>
-                  <input
-                    onChange={this.inputHandler}
-                    name="edit_kode_pos"
-                    type="text"
-                    className="form-control"
-                    value={this.state.edit_kode_pos}
-                  />
                 </div>
               </div>
               <div className="mt-4 text-center">

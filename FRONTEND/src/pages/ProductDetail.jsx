@@ -39,21 +39,21 @@ class ProductDetail extends React.Component {
   addToCartHandler = () => {
     Axios.get(`${API_URL}/cart/get-cart`, {
       params: {
-        email: this.props.userGlobal.email,
+        id_user: this.props.userGlobal.id_user,
         idobat: this.state.productData.idobat,
       },
     }).then((result) => {
       if (result.data.length) {
         // jika barang sudah ada di cart user
-        Axios.patch(
-          `${API_URL}/cart/edit-cart/${this.props.userGlobal.email}`,
+        return Axios.patch(
+          `${API_URL}/cart/edit-cart/${result.data[0].id_cart}`,
           {
             qty_obat: result.data[0].qty_obat + this.state.quantity,
           }
         )
           .then(() => {
-            alert("Berhasil menambahkan obat ke cart");
-            console.log(result.data[0].email);
+            alert("Berhasil menambahkan qty ke cart");
+            console.log(result.data[0].id_user);
           })
           .catch((err) => {
             alert("Gagal saat patch data");
@@ -61,11 +61,12 @@ class ProductDetail extends React.Component {
           });
       } else {
         // jika barang belum ada di cart user
-        Axios.post(`${API_URL}/cart/add-to-cart`, {
-          email: this.props.userGlobal.email,
+        return Axios.post(`${API_URL}/cart/add-to-cart`, {
+          id_user: this.props.userGlobal.id_user,
           idobat: this.state.productData.idobat,
           qty_obat: this.state.quantity,
           harga: this.state.productData.harga,
+          status: "PENDING",
         })
           .then(() => {
             alert("Berhasil menambahkan obat ke cart");
