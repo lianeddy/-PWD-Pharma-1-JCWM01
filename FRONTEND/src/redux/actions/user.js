@@ -20,17 +20,17 @@ export const registerUser = ({
       password === "" ||
       konfirmasi_password === ""
     ) {
-      dispatch({
+      return dispatch({
         type: "USER_ERROR",
         payload: "Mohon isi semua form",
       });
     } else if (password !== konfirmasi_password) {
-      dispatch({
+      return dispatch({
         type: "USER_ERROR",
         payload: "Mohon sesuaikan password dan konfirmasi password",
       });
     } else {
-      Axios.post(`${API_URL}/user/add-user`, {
+      return Axios.post(`${API_URL}/user/add-user`, {
         nama_depan,
         nama_belakang,
         email,
@@ -120,7 +120,7 @@ export const userKeepLogin = (userData) => {
   return (dispatch) => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        email: userData.email,
+        id_user: userData.id_user,
       },
     })
       .then((result) => {

@@ -46,8 +46,8 @@ class App extends React.Component {
           <Route component={AdminUploadProduct} path="/admin-upload-product" />
           <Route component={AdminEditProduct} path="/admin-edit-product/:id" />
           <Route component={changePassword} path="/change-password" />
-          <Route component={ProfilePage} path="/profile-page/:username" />
-          <Route component={EditProfile} path="/edit-profile/:username" />
+          <Route component={ProfilePage} path="/profile-page/:id" />
+          <Route component={EditProfile} path="/edit-profile/:id" />
           <Route component={Cart} path="/cart" />
           <Route component={History} path="/history" />
           <Route component={ProductDetail} path="/product-detail/:obatid" />

@@ -21,7 +21,7 @@ class EditProfile extends React.Component {
   fetchUserData = () => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        email: this.props.userGlobal.email,
+        id_user: this.props.userGlobal.id_user,
       },
     })
       .then((result) => {

@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Axios from "axios";
-import { API_URL } from "../../constants/API";
 import { registerUser } from "../../redux/actions/user";
 import { connect } from "react-redux";
 
@@ -21,31 +19,6 @@ class Register extends React.Component {
     const name = event.target.name;
 
     this.setState({ [name]: value });
-  };
-
-  registerHandler = () => {
-    const {
-      nama_depan,
-      nama_belakang,
-      jenis_kelamin,
-      username,
-      email,
-      password,
-    } = this.state;
-    Axios.post(`${API_URL}/user/add-user`, {
-      nama_depan,
-      nama_belakang,
-      jenis_kelamin,
-      username,
-      email,
-      password,
-    })
-      .then(() => {
-        alert("Berhasil Mendaftar");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   render() {

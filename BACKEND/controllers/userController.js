@@ -6,9 +6,9 @@ const transporter = require("../helper/nodemailer");
 module.exports = {
   getUser: (req, res) => {
     let scriptQuery = "Select * from user;";
-    if (req.query.email) {
-      scriptQuery = `Select * from user where email = ${db.escape(
-        req.query.email
+    if (req.query.id_user) {
+      scriptQuery = `Select * from user where id_user = ${db.escape(
+        req.query.id_user
       )};`;
     }
     db.query(scriptQuery, (err, results) => {
@@ -57,26 +57,20 @@ module.exports = {
       password,
       jenis_kelamin,
       status,
-      alamat,
-      kode_pos,
       tanggal_lahir,
-      usia,
-      foto_profil,
       role,
     } = req.body;
     password = Crypto.createHmac("sha1", "hash123")
       .update(password)
       .digest("hex");
     console.log(password);
-    let insertQuery = `Insert into user values (null, ${db.escape(
+    let insertQuery = `Insert into user (nama_depan, nama_belakang, email, password, jenis_kelamin, status, tanggal_lahir, role) values (${db.escape(
       nama_depan
     )}, ${db.escape(nama_belakang)}, ${db.escape(email)}, ${db.escape(
       password
     )}, ${db.escape(jenis_kelamin)}, ${db.escape(status)}, ${db.escape(
-      alamat
-    )}, ${db.escape(kode_pos)}, ${db.escape(tanggal_lahir)}, ${db.escape(
-      usia
-    )}, ${db.escape(foto_profil)}, ${db.escape(role)});`;
+      tanggal_lahir
+    )}, ${db.escape(role)});`;
     console.log(insertQuery);
     db.query(insertQuery, (err, result) => {
       if (err) {

@@ -1,13 +1,13 @@
 const init_state = {
+  id_user: 0,
   nama_depan: "",
   nama_belakang: "",
   jenis_kelamin: "",
-  status: "",
+  tanggal_lahir: "",
   email: "",
   password: "",
-  tanggal_lahir: "",
+  status: "",
   role: "",
-  foto_profil: "",
   errMsg: "",
   storageIsChecked: false,
 };
