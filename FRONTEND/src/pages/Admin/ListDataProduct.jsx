@@ -14,6 +14,8 @@ class ListDataProduct extends React.Component {
         page: 1,
         itemPerPage: 10,
         maxPage: 0,
+
+        alertDelete: true
     }
 
     fetchDataProduct = (page = 1) => {
@@ -29,6 +31,28 @@ class ListDataProduct extends React.Component {
             .catch(err => {
                 alert(`Terjadi keslahan di server`)
             })
+    }
+
+    // alertDelete = () => {
+    //     return (
+    //         this.alertDelete :
+
+    //     )
+    // }
+
+    deleteProduct = (id) => {
+        let hapus = window.confirm(`Yakin menghapus data ?`)
+        if (hapus) {
+            Axios.delete(`${API_URL}/admin/deleteProduct/${id}`)
+                .then(res => {
+                    alert(`Data berhasil di hapus`)
+                    this.fetchDataProduct()
+                })
+                .catch(err => {
+                    alert(`Terjadi kesalahan di server`)
+                })
+        }
+
     }
 
     renderDataProduct = () => {
@@ -47,6 +71,7 @@ class ListDataProduct extends React.Component {
                     </td>
                     <td>
                         <Link to={`/admin-edit-product/${val.id_obat}`}>Edit</Link>
+                        <a onClick={() => this.deleteProduct(val.id_obat)} className="text-danger ms-2" role="button">Delete</a>
                     </td>
                 </tr>
             )

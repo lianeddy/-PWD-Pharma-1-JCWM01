@@ -213,4 +213,15 @@ module.exports = {
       }
     });
   },
+
+  deleteDataProduct: (req,res) => {
+    let deleteQuery = `DELETE FROM obat WHERE id_obat = ${db.escape(req.params.id)}`
+
+    db.query(deleteQuery, (err, result) => {
+      if(err) return res.status(500).send(err)
+
+      res.status(200).send({message: "Data berhasil dihapus"})
+    })
+  }
+
 };
