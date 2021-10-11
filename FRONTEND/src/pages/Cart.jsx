@@ -28,67 +28,7 @@ class Cart extends React.Component {
                     Vitamin C IPI
                   </td>
                   <td className="align-middle">Rp. 10.000,-</td>
-                  <td className="align-middle">
-                    <div
-                      className="input-group quantity mx-auto"
-                      style={{ width: "100px" }}
-                    >
-                      <div className="input-group-btn">
-                        <button className="btn btn-sm btn-primary btn-minus">
-                          <i className="fa fa-minus"></i>
-                        </button>
-                      </div>
-                      <input
-                        type="text"
-                        className="form-control form-control-sm bg-light border-0 text-center"
-                        value="1"
-                      />
-                      <div className="input-group-btn">
-                        <button className="btn btn-sm btn-primary btn-plus">
-                          <i className="fa fa-plus"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="align-middle">$150</td>
-                  <td className="align-middle">
-                    <button className="btn btn-sm btn-danger">
-                      <i className="fa fa-times"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="align-middle">
-                    <img
-                      src="https://images.tokopedia.net/img/cache/500-square/product-1/2019/9/25/6849811/6849811_cffcfc0e-4303-4349-b687-71769e5f5c8a.jpg"
-                      alt=""
-                      style={{ width: "50px" }}
-                    />{" "}
-                    Magnesium l-threonate
-                  </td>
-                  <td className="align-middle">Rp 130.000,-</td>
-                  <td className="align-middle">
-                    <div
-                      className="input-group quantity mx-auto"
-                      style={{ width: "100px" }}
-                    >
-                      <div className="input-group-btn">
-                        <button className="btn btn-sm btn-primary btn-minus">
-                          <i className="fa fa-minus"></i>
-                        </button>
-                      </div>
-                      <input
-                        type="text"
-                        className="form-control form-control-sm bg-light border-0 text-center"
-                        value="1"
-                      />
-                      <div className="input-group-btn">
-                        <button className="btn btn-sm btn-primary btn-plus">
-                          <i className="fa fa-plus"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </td>
+                  <td className="align-middle"> 1</td>
                   <td className="align-middle">$150</td>
                   <td className="align-middle">
                     <button className="btn btn-sm btn-danger">

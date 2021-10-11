@@ -13,7 +13,7 @@ class ProfilePage extends React.Component {
   fetchUserData = () => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        username: this.props.userGlobal.username,
+        email: this.props.userGlobal.email,
       },
     })
       .then((result) => {
@@ -45,7 +45,7 @@ class ProfilePage extends React.Component {
                   className="rounded-circle"
                   width="150px"
                   src={this.state.userData.foto_profil}
-                  alt={this.state.userData.username}
+                  alt={this.state.userData.email}
                 />
                 <span className="font-weight-bold">
                   {this.state.userData.nama_depan}{" "}
@@ -57,7 +57,7 @@ class ProfilePage extends React.Component {
                 <span>
                   <button className="btn btn-sm btn-warning mt-2" type="button">
                     <Link
-                      to={`/edit-profile/${this.state.userData.username}`}
+                      to={`/edit-profile/${this.state.userData.email}`}
                       style={{ textDecoration: "none" }}
                       className="text-dark"
                     >
@@ -83,10 +83,6 @@ class ProfilePage extends React.Component {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-md-6">
-                    <h6 className="labels">Username</h6>
-                    <p>{this.state.userData.username}</p>
-                  </div>
                   <div className="col-md-6">
                     <h6 className="labels">E-mail</h6>
                     <p>{this.state.userData.email}</p>

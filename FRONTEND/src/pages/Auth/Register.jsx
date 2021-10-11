@@ -10,9 +10,10 @@ class Register extends React.Component {
     nama_depan: "",
     nama_belakang: "",
     jenis_kelamin: "",
-    username: "",
+    tanggal_lahir: "",
     email: "",
     password: "",
+    konfirmasi_password: "",
   };
 
   inputHandler = (event) => {
@@ -68,36 +69,51 @@ class Register extends React.Component {
             ) : null}
             <div className="card">
               <div className="card-body">
-                <h5 className="font-weight-bold mb-3">Register</h5>
-                <input
-                  name="nama_depan"
-                  onChange={this.inputHandler}
-                  placeholder="Nama Depan"
-                  type="text"
-                  className="form-control my-2"
-                />
-                <input
-                  name="nama_belakang"
-                  onChange={this.inputHandler}
-                  placeholder="Nama Belakang"
-                  type="text"
-                  className="form-control my-2"
-                />
-                <input
-                  name="jenis_kelamin"
-                  onChange={this.inputHandler}
-                  placeholder="Jenis Kelamin"
-                  type="text"
-                  className="form-control my-2"
-                />
-
-                <input
-                  name="username"
-                  onChange={this.inputHandler}
-                  placeholder="Username"
-                  type="text"
-                  className="form-control my-2"
-                />
+                <h5 className="font-weight-bold mb-2">Register</h5>
+                <div className="row">
+                  <div className="col-md-6">
+                    <input
+                      name="nama_depan"
+                      onChange={this.inputHandler}
+                      placeholder="Nama Depan"
+                      type="text"
+                      className="form-control my-2"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <input
+                      name="nama_belakang"
+                      onChange={this.inputHandler}
+                      placeholder="Nama Belakang"
+                      type="text"
+                      className="form-control my-2"
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6 mt-2">
+                    <select
+                      onChange={this.inputHandler}
+                      className="form-select"
+                      name="jenis_kelamin"
+                    >
+                      <option value="" selected disabled>
+                        Jenis Kelamin
+                      </option>
+                      <option value="Pria">Pria</option>
+                      <option value="Wanita">Wanita</option>
+                    </select>
+                  </div>
+                  <div className="col-md-6">
+                    <input
+                      name="tanggal_lahir"
+                      onChange={this.inputHandler}
+                      placeholder="Tanggal Lahir"
+                      type="text"
+                      className="form-control my-2"
+                    />
+                  </div>
+                </div>
                 <input
                   name="email"
                   onChange={this.inputHandler}
@@ -105,10 +121,18 @@ class Register extends React.Component {
                   type="text"
                   className="form-control my-2"
                 />
+
                 <input
                   name="password"
                   onChange={this.inputHandler}
                   placeholder="Password"
+                  type="password"
+                  className="form-control my-2"
+                />
+                <input
+                  name="konfirmasi_password"
+                  onChange={this.inputHandler}
+                  placeholder="Konfirmasi Password"
                   type="password"
                   className="form-control my-2"
                 />

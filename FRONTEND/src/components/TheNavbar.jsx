@@ -39,8 +39,9 @@ class TheNavbar extends React.Component {
                 <i className="fa fa-search"></i>
               </button>
             </form>
+
             <div className="col-md-3 text-end">
-              {this.props.userGlobal.username ? (
+              {this.props.userGlobal.id_user ? (
                 <UncontrolledDropdown>
                   <DropdownToggle
                     className="text-uppercase btn btn-success"
@@ -53,7 +54,7 @@ class TheNavbar extends React.Component {
                       <Link
                         style={{ textDecoration: "none" }}
                         className="text-dark"
-                        to={`/profile-page/${this.props.userGlobal.username}`}
+                        to={`/profile-page/${this.props.userGlobal.id_user}`}
                       >
                         PROFIL ANDA
                       </Link>

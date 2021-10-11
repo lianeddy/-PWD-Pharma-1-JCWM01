@@ -18,7 +18,10 @@ class ProductCard extends React.Component {
               {this.props.productData.nama_obat}
             </h6>
             <div className="d-flex justify-content-center">
-              <h6>Rp. {this.props.productData.harga_jual}</h6>
+              <h6>
+                Rp. {this.props.productData.harga} /{" "}
+                {this.props.productData.satuan_jual}
+              </h6>
             </div>
           </div>
           <div className="card-footer d-flex justify-content-between bg-light border">

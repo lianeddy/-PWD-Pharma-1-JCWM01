@@ -1,37 +1,43 @@
 import Axios from "axios";
-import { Redirect } from "react-router-dom";
 import { API_URL } from "../../constants/API";
 
 export const registerUser = ({
   nama_depan,
   nama_belakang,
   jenis_kelamin,
-  username,
+  tanggal_lahir,
   email,
   password,
+  konfirmasi_password,
 }) => {
   return (dispatch) => {
     if (
       nama_depan === "" ||
       nama_belakang === "" ||
       jenis_kelamin === "" ||
-      username === "" ||
+      tanggal_lahir === "" ||
       email === "" ||
-      password === ""
+      password === "" ||
+      konfirmasi_password === ""
     ) {
       dispatch({
         type: "USER_ERROR",
         payload: "Mohon isi semua form",
       });
+    } else if (password !== konfirmasi_password) {
+      dispatch({
+        type: "USER_ERROR",
+        payload: "Mohon sesuaikan password dan konfirmasi password",
+      });
     } else {
       Axios.post(`${API_URL}/user/add-user`, {
         nama_depan,
         nama_belakang,
-        jenis_kelamin,
-        status: "UNVERIFIED",
-        username,
         email,
         password,
+        jenis_kelamin,
+        status: "UNVERIFIED",
+        tanggal_lahir,
         role: "USER",
       })
         .then((result) => {
@@ -66,11 +72,11 @@ export const registerUser = ({
 //   };
 // };
 
-export const loginUser = ({ username, password }) => {
+export const loginUser = ({ email, password }) => {
   return (dispatch) => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        username,
+        email,
         password,
       },
     })
@@ -93,7 +99,7 @@ export const loginUser = ({ username, password }) => {
           // handle username not found
           dispatch({
             type: "USER_ERROR",
-            payload: "User tidak ditemukan",
+            payload: "Akun tidak ditemukan",
           });
         }
       })
@@ -114,7 +120,7 @@ export const userKeepLogin = (userData) => {
   return (dispatch) => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        username: userData.username,
+        email: userData.email,
       },
     })
       .then((result) => {

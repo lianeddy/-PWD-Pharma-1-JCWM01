@@ -6,9 +6,9 @@ const transporter = require("../helper/nodemailer");
 module.exports = {
   getUser: (req, res) => {
     let scriptQuery = "Select * from user;";
-    if (req.query.username) {
-      scriptQuery = `Select * from user where username = ${db.escape(
-        req.query.username
+    if (req.query.email) {
+      scriptQuery = `Select * from user where email = ${db.escape(
+        req.query.email
       )};`;
     }
     db.query(scriptQuery, (err, results) => {
@@ -53,12 +53,12 @@ module.exports = {
     let {
       nama_depan,
       nama_belakang,
-      username,
       email,
       password,
       jenis_kelamin,
       status,
       alamat,
+      kode_pos,
       tanggal_lahir,
       usia,
       foto_profil,
@@ -70,11 +70,11 @@ module.exports = {
     console.log(password);
     let insertQuery = `Insert into user values (null, ${db.escape(
       nama_depan
-    )}, ${db.escape(nama_belakang)}, ${db.escape(username)}, ${db.escape(
-      email
-    )}, ${db.escape(password)}, ${db.escape(jenis_kelamin)}, ${db.escape(
-      status
-    )}, ${db.escape(alamat)}, ${db.escape(tanggal_lahir)}, ${db.escape(
+    )}, ${db.escape(nama_belakang)}, ${db.escape(email)}, ${db.escape(
+      password
+    )}, ${db.escape(jenis_kelamin)}, ${db.escape(status)}, ${db.escape(
+      alamat
+    )}, ${db.escape(kode_pos)}, ${db.escape(tanggal_lahir)}, ${db.escape(
       usia
     )}, ${db.escape(foto_profil)}, ${db.escape(role)});`;
     console.log(insertQuery);
@@ -91,9 +91,9 @@ module.exports = {
             res.status(500).send(err2);
           }
           // bahan buat token
-          let { id_user, username, email, role } = results2[0];
+          let { id_user, email, role } = results2[0];
           // membuat token
-          let token = createToken({ id_user, username, email, role });
+          let token = createToken({ id_user, email, role });
 
           let mail = {
             from: `Admin <devdwikyryan@gmail.com>`,

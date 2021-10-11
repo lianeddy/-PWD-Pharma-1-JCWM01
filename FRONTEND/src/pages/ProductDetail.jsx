@@ -1,5 +1,7 @@
 import React from "react";
 import Axios from "axios";
+import { API_URL } from "../constants/API";
+import { connect } from "react-redux";
 
 class ProductDetail extends React.Component {
   state = {
@@ -24,6 +26,56 @@ class ProductDetail extends React.Component {
       .catch(() => {
         alert("Kesalahan saat mengambil data obat");
       });
+  };
+
+  qtyBtnHandler = (action) => {
+    if (action === "increment") {
+      this.setState({ quantity: this.state.quantity + 1 });
+    } else if (action === "decrement" && this.state.quantity > 1) {
+      this.setState({ quantity: this.state.quantity - 1 });
+    }
+  };
+
+  addToCartHandler = () => {
+    Axios.get(`${API_URL}/cart/get-cart`, {
+      params: {
+        email: this.props.userGlobal.email,
+        idobat: this.state.productData.idobat,
+      },
+    }).then((result) => {
+      if (result.data.length) {
+        // jika barang sudah ada di cart user
+        Axios.patch(
+          `${API_URL}/cart/edit-cart/${this.props.userGlobal.email}`,
+          {
+            qty_obat: result.data[0].qty_obat + this.state.quantity,
+          }
+        )
+          .then(() => {
+            alert("Berhasil menambahkan obat ke cart");
+            console.log(result.data[0].email);
+          })
+          .catch((err) => {
+            alert("Gagal saat patch data");
+            console.log(err);
+          });
+      } else {
+        // jika barang belum ada di cart user
+        Axios.post(`${API_URL}/cart/add-to-cart`, {
+          email: this.props.userGlobal.email,
+          idobat: this.state.productData.idobat,
+          qty_obat: this.state.quantity,
+          harga: this.state.productData.harga,
+        })
+          .then(() => {
+            alert("Berhasil menambahkan obat ke cart");
+          })
+          .catch((err) => {
+            alert(`Gagal menambahkan obat ke cart`);
+            console.log(err);
+          });
+      }
+    });
   };
 
   componentDidMount() {
@@ -79,59 +131,64 @@ class ProductDetail extends React.Component {
                 {this.state.productData.nama_obat}
               </h3>
               <h3 className="font-weight-semi-bold mb-4">
-                Rp. {this.state.productData.harga_jual},-
+                Rp. {this.state.productData.harga},- /
+                {this.state.productData.satuan_jual}
               </h3>
               <div>
                 <p>
                   <strong className="text-uppercase">Deskripsi</strong>
                 </p>
+                <p className="mt-1">{this.state.productData.deskripsi}</p>
               </div>
-              <p className="mb-4">{this.state.productData.deskripsi}</p>
               <div>
                 <p>
-                  <strong className="text-uppercase">
-                    Indikasi / Kegunaan / Manfaat
-                  </strong>
+                  <strong className="text-uppercase">Golongan</strong>
                 </p>
               </div>
-              <p>{this.state.productData.manfaat}</p>
+              <p className="mt-2">{this.state.productData.golongan}</p>
               <div>
                 <p>
-                  <strong className="text-uppercase">Dosis</strong>
+                  <strong className="text-uppercase">Stock</strong>
                 </p>
               </div>
-              <p>{this.state.productData.dosis}</p>
-              <div>
-                <p>
-                  <strong className="text-uppercase">Kemasan</strong>
-                </p>
-              </div>
-              <p>{this.state.productData.kemasan}</p>
-              <div className="d-flex mb-4 pt-2 mx-sm-1">
+              {this.state.productData.stock > 50 ? (
+                <p> Lebih dari 50 </p>
+              ) : (
+                <p> Kurang dari 50 </p>
+              )}
+
+              <div className="d-flex align-items-center mt-5">
                 <div
-                  className="input-group quantity mr-3"
+                  className="input-group quantity"
                   style={{ width: "130px" }}
                 >
                   <div className="input-group-btn">
-                    <button className="btn btn-primary btn-minus">
+                    <button
+                      onClick={() => this.qtyBtnHandler("decrement")}
+                      className="btn btn-primary btn-minus"
+                    >
                       <i className="fa fa-minus"></i>
                     </button>
                   </div>
-                  <input
-                    type="text"
-                    className="form-control bg-secondary text-center mx-2"
-                    value="1"
-                  />
+                  <p className="text-center mx-auto pt-1 font-weight-bold">
+                    {this.state.quantity}
+                  </p>
                   <div className="input-group-btn">
-                    <button className="btn btn-primary btn-plus mr-3">
+                    <button
+                      onClick={() => this.qtyBtnHandler("increment")}
+                      className="btn btn-primary btn-plus mr-3"
+                    >
                       <i className="fa fa-plus"></i>
                     </button>
                   </div>
                 </div>
-                <button className="btn btn-success px-10">
-                  <i className="fa fa-shopping-cart mr-1"></i> Add To Cart
-                </button>
               </div>
+              <button
+                onClick={this.addToCartHandler}
+                className="btn btn-success mt-3"
+              >
+                <i className="fa fa-shopping-cart"></i> Add To Cart
+              </button>
             </div>
           </div>
         </div>
@@ -140,4 +197,10 @@ class ProductDetail extends React.Component {
   }
 }
 
-export default ProductDetail;
+const mapStateToProps = (state) => {
+  return {
+    userGlobal: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(ProductDetail);

@@ -8,21 +8,20 @@ class EditProfile extends React.Component {
   state = {
     userData: {},
     userNotFound: false,
-
     editUser: 0,
-
     edit_nama_depan: "",
     edit_nama_belakang: "",
-    edit_username: "",
     edit_email: "",
     edit_jenis_kelamin: "",
     edit_tanggal_lahir: "",
     edit_alamat: "",
+    edit_foto_profil: "",
+    edit_kode_pos: "",
   };
   fetchUserData = () => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        username: this.props.userGlobal.username,
+        email: this.props.userGlobal.email,
       },
     })
       .then((result) => {
@@ -32,11 +31,12 @@ class EditProfile extends React.Component {
             editUser: result.data[0].id_user,
             edit_nama_depan: result.data[0].nama_depan,
             edit_nama_belakang: result.data[0].nama_belakang,
-            edit_username: result.data[0].username,
             edit_email: result.data[0].email,
             edit_jenis_kelamin: result.data[0].jenis_kelamin,
             edit_tanggal_lahir: result.data[0].tanggal_lahir,
+            edit_kode_pos: result.data[0].kode_pos,
             edit_alamat: result.data[0].alamat,
+            edit_foto_profil: result.data[0].foto_profil,
           });
         } else {
           this.setState({ userNotFound: true });
@@ -51,10 +51,12 @@ class EditProfile extends React.Component {
     Axios.patch(`${API_URL}/user/edit-profile/${this.state.editUser}`, {
       nama_depan: this.state.edit_nama_depan,
       nama_belakang: this.state.edit_nama_belakang,
-      username: this.state.edit_username,
       email: this.state.edit_email,
       jenis_kelamin: this.state.edit_jenis_kelamin,
+      tanggal_lahir: this.state.edit_tanggal_lahir,
       alamat: this.state.edit_alamat,
+      kode_pos: this.state.edit_kode_pos,
+      foto_profil: this.state.edit_foto_profil,
     })
       .then(() => {
         alert("Pembaharuan data berhasil");
@@ -70,6 +72,43 @@ class EditProfile extends React.Component {
     this.setState({ [name]: value });
   };
 
+  onBtAddFile = (e) => {
+    if (e.target.files[0]) {
+      this.setState({
+        addFileName: e.target.files[0].name,
+        addFile: e.target.files[0],
+      });
+      let preview = document.getElementById("imgpreview");
+      preview.src = URL.createObjectURL(e.target.files[0]);
+    }
+  };
+
+  // saveBtn = () => {
+  //   if (this.state.addFile) {
+  //     let formData = new FormData();
+
+  //     let obj = {
+  //       nama_depan: this.state.edit_nama_depan,
+  //       nama_belakang: this.state.edit_nama_belakang,
+  //       username: this.state.edit_username,
+  //       email: this.state.edit_email,
+  //       jenis_kelamin: this.state.edit_jenis_kelamin,
+  //       tanggal_lahir: this.state.edit_tanggal_lahir,
+  //       alamat: this.state.edit_alamat,
+  //     };
+  //     formData.append("data", JSON.stringify(obj));
+  //     formData.append("file", this.state.addFile);
+  //     Axios.patch(`${API_URL}/picture/upload/${this.state.editUser}`, formData)
+  //       .then((res) => {
+  //         alert(res.data.message);
+  //       })
+  //       .catch((err) => {
+  //         alert("Gagal upload foto");
+  //         console.log(err);
+  //       });
+  //   }
+  // };
+
   componentDidMount() {
     this.fetchUserData();
   }
@@ -81,22 +120,20 @@ class EditProfile extends React.Component {
           <div className="col-md-3 border-right">
             <div className="d-flex flex-column align-items-center text-center p-3 py-5">
               <img
-                className="rounded-circle"
+                id="imgpreview"
+                className="rounded-circle img-fluid"
                 width="150px"
-                src={this.state.userData.foto_profil}
+                src={this.state.edit_foto_profil}
               />
-              <span>
-                {" "}
-                <button className="btn btn-sm btn-secondary mt-2" type="button">
-                  <Link
-                    to="/edit-profile"
-                    style={{ textDecoration: "none" }}
-                    className="text-light"
-                  >
-                    Ganti Foto
-                  </Link>
-                </button>
-              </span>
+              <div class="form-group mx-auto text-center align-items-center">
+                <label>Ganti foto profil?</label>
+                <input
+                  type="file"
+                  className="form-control"
+                  id="img"
+                  onChange={this.onBtAddFile}
+                />
+              </div>
             </div>
           </div>
           <div className="col-md-6 border-right">
@@ -128,16 +165,6 @@ class EditProfile extends React.Component {
               </div>
               <div className="row mt-3">
                 <div className="col-md-6">
-                  <label className="labels">Username</label>
-                  <input
-                    onChange={this.inputHandler}
-                    name="edit_username"
-                    type="text"
-                    className="form-control"
-                    value={this.state.edit_username}
-                  />
-                </div>
-                <div className="col-md-6">
                   <label className="labels">E-mail</label>
                   <input
                     onChange={this.inputHandler}
@@ -148,7 +175,7 @@ class EditProfile extends React.Component {
                   />
                 </div>
 
-                <div className="col-md-6 mt-3">
+                <div className="col-md-6">
                   <label className="labels">Jenis Kelamin</label>
                   <select
                     onChange={this.inputHandler}
@@ -183,10 +210,11 @@ class EditProfile extends React.Component {
                 <div className="col-md-3 mt-2">
                   <label className="labels">Kode Pos</label>
                   <input
+                    onChange={this.inputHandler}
                     name="edit_kode_pos"
                     type="text"
                     className="form-control"
-                    placeholder="12780"
+                    value={this.state.edit_kode_pos}
                   />
                 </div>
               </div>
