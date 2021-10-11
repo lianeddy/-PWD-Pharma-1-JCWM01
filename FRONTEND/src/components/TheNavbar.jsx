@@ -1,6 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
+  Navbar,
+  Nav,
+  NavItem,
+  NavbarBrand,
+  NavbarText,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -10,6 +15,9 @@ import { connect } from "react-redux";
 import { logoutUser } from "../redux/actions/user";
 
 class TheNavbar extends React.Component {
+
+
+  
   render() {
     return (
       <header className="sticky-top bg-dark text-white">
@@ -26,21 +34,9 @@ class TheNavbar extends React.Component {
                 AMR{" "}
               </h3>
             </a>
-            <form className="form-inline nav">
-              <div class="form-group mx-sm-1 mb-2">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Temukan obat..."
-                  aria-label="Search"
-                />
-              </div>
-              <button type="submit" className="btn btn-primary mb-2">
-                <i className="fa fa-search"></i>
-              </button>
-            </form>
+            
             <div className="col-md-3 text-end">
-              {this.props.userGlobal.username ? (
+              {this.props.userGlobal.username ?  (
                 <UncontrolledDropdown>
                   <DropdownToggle
                     className="text-uppercase btn btn-success"
@@ -76,6 +72,15 @@ class TheNavbar extends React.Component {
                         to="/cart"
                       >
                         KERANJANG
+                      </Link>
+                    </DropdownItem>
+                    <DropdownItem>
+                      <Link
+                        style={{ textDecoration: "none" }}
+                        className="text-dark"
+                        to="/change-password"
+                      >
+                        Change Password
                       </Link>
                     </DropdownItem>
                     <DropdownItem divider />

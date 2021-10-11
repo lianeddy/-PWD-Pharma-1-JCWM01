@@ -107,10 +107,10 @@ class ProductDetail extends React.Component {
                 </p>
               </div>
               <p>{this.state.productData.kemasan}</p>
-              <div className="d-flex mb-4 pt-2 mx-sm-1">
+              <div className="d-flex mb-4 pt-2 mx-sm-1 ">
                 <div
                   className="input-group quantity mr-3"
-                  style={{ width: "130px" }}
+                  style={{ width: "150px" }}
                 >
                   <div className="input-group-btn">
                     <button className="btn btn-primary btn-minus">
@@ -122,13 +122,13 @@ class ProductDetail extends React.Component {
                     className="form-control bg-secondary text-center mx-2"
                     value="1"
                   />
-                  <div className="input-group-btn">
+                  <div className="input-group-btn ">
                     <button className="btn btn-primary btn-plus mr-3">
                       <i className="fa fa-plus"></i>
                     </button>
                   </div>
                 </div>
-                <button className="btn btn-success px-10">
+                <button className="btn btn-success btn-sm">
                   <i className="fa fa-shopping-cart mr-1"></i> Add To Cart
                 </button>
               </div>

@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import Home from "./pages/Home";
 import Login from "./pages/Auth/Login";
-import Forgot from "./pages/Auth/forgot";
+import resetPassword from "./pages/Auth/resetPassword";
 import Register from "./pages/Auth/Register";
 import Admin from "./pages/Admin";
 import Cart from "./pages/Cart";
@@ -45,7 +45,7 @@ class App extends React.Component {
             <Route component={Register} path="/register" />
             <Route component={Admin} path="/admin" />
             <Route component={Verification} path="/verification/:token" />
-            <Route component={Forgot} path="/forgot" />
+            <Route component={resetPassword} path="/reset-password" />
             {/* admin pages */}
             <Route
               component={AdminUploadProduct}

@@ -25,7 +25,7 @@ module.exports = {
   },
 
   addUser: (req, res) => {
-    console.log(req.body);
+    
     let {
       nama_depan,
       nama_belakang,
@@ -43,57 +43,66 @@ module.exports = {
     password = Crypto.createHmac("sha1", "hash123")
       .update(password)
       .digest("hex");
-    console.log(password);
-    let insertQuery = `Insert into user values (null, ${db.escape(
-      nama_depan
-    )}, ${db.escape(nama_belakang)}, ${db.escape(username)}, ${db.escape(
-      email
-    )}, ${db.escape(password)}, ${db.escape(jenis_kelamin)}, ${db.escape(
-      status
-    )}, ${db.escape(alamat)}, ${db.escape(tanggal_lahir)}, ${db.escape(
-      usia
-    )}, ${db.escape(foto_profil)}, ${db.escape(role)});`;
-    console.log(insertQuery);
-    db.query(insertQuery, (err, result) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send(err);
+      let getQuery = `SELECT * FROM user WHERE username = ${db.escape(username)} OR email = ${db.escape(email)} `
+    db.query(getQuery, (err, result) => {
+      if(err){
+        return res.status(500).send(err)
       }
-      if (result.insertId) {
-        let sqlGet = `select * from user where id_user = ${result.insertId};`;
-        db.query(sqlGet, (err2, results2) => {
-          if (err2) {
-            console.log(err2);
-            res.status(500).send(err2);
-          }
-          // bahan buat token
-          let { id_user, username, email, role } = results2[0];
-          // membuat token
-          let token = createToken({ id_user, username, email, role });
-
-          let mail = {
-            from: `Admin <devdwikyryan@gmail.com>`,
-            to: `${email}`,
-            subject: "Verifikasi Akun AMR Pharmacy Anda",
-            html: `<a href= 'http://localhost:3000/verification/${token}'> Klik sini untuk verifikasi akun AMR Pharmacy anda</a>`,
-          };
-          transporter.sendMail(mail, (errMail, resMail) => {
-            if (errMail) {
-              console.log(errMail);
-              res.status(500).send({
-                message: "Registrasi gagal",
-                success: false,
-                err: errMail,
-              });
+      if(result.length > 0){
+        return res.status(200).send({messages : "Username atau email telah terdaftar !", registered: true, redirect:false, alert: "alert-warning"})
+      }
+      console.log(password);
+      let insertQuery = `Insert into user values (null, ${db.escape(
+        nama_depan
+      )}, ${db.escape(nama_belakang)}, ${db.escape(username)}, ${db.escape(
+        email
+      )}, ${db.escape(password)}, ${db.escape(jenis_kelamin)}, ${db.escape(
+        status
+      )}, ${db.escape(alamat)}, ${db.escape(tanggal_lahir)}, ${db.escape(
+        usia
+      )}, ${db.escape(foto_profil)}, ${db.escape(role)});`;
+      console.log(insertQuery);
+      db.query(insertQuery, (err, result) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).send(err);
+        }
+        if (result.insertId) {
+          let sqlGet = `select * from user where id_user = ${result.insertId};`;
+          db.query(sqlGet, (err2, results2) => {
+            if (err2) {
+              console.log(err2);
+              return res.status(500).send(err2);
             }
-            res.status(200).send({
-              message: "Registration success, check your mail inbox",
-              success: true,
+            // bahan buat token
+            let { id_user, username, email, role } = results2[0];
+            // membuat token
+            let token = createToken({ id_user, username, email, role });
+  
+            let mail = {
+              from: `Admin <shabrinaartarini46@gmail.com>`,
+              to: `${email}`,
+              subject: "Verifikasi Akun AMR Pharmacy Anda",
+              html: `<a href= 'http://localhost:3000/verification/${token}'> Klik sini untuk verifikasi akun AMR Pharmacy anda</a>`,
+            };
+            transporter.sendMail(mail, (errMail, resMail) => {
+              if (errMail) {
+                console.log(errMail);
+                return res.status(500).send({
+                  message: "Registrasi gagal",
+                  success: false,
+                  err: errMail,
+                });
+              }
+              return res.status(200).send({
+                message: "Registration success, check your mail inbox",
+                success: true,
+              });
             });
           });
-        });
-      }
-    });
+        }
+      });
+    }
   },
 
   verification: (req, res) => {
@@ -107,4 +116,32 @@ module.exports = {
       res.status(200).send({ message: "Akun terverifikasi", success: true });
     });
   },
-};
+
+  changePassword: (req, res) => {
+    req.body.currentPassword = Crypto.createHmac("sha1", "hash123").update(req.body.currentPassword).digest("hex")
+
+    let selectQuery = `SELECT password FROM user WHERE username = ${db.escape(req.body.username)}`
+    console.log(selectQuery)
+    req.body.newPassword = Crypto.createHmac("sha1", "hash123").update(req.body.newPassword).digest("hex")
+    let updateQuery = `UPDATE user SET password = ${db.escape(req.body.newPassword)} WHERE username = ${db.escape(req.body.username)}`
+    console.log(updateQuery)
+
+    db.query(selectQuery, (err, results) => {
+      if (err) {
+        console.log(err)
+        return res.status(500).send(err)
+      }
+
+      if (results[0].password == req.body.currentPassword) {
+        db.query(updateQuery, (err2, results2) => {
+          if (err2) return res.status(500).send(err2)
+          return res.status(200).send(results2)
+        })
+      } else {
+        return res.status(500).json({ message: "Current Password is Wrong" })
+      }
+    })
+  },
+
+
+}
