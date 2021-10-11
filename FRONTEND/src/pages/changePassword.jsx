@@ -1,40 +1,85 @@
 import React from "react";
+import Axios from "axios";
+import { API_URL } from "../constants/API";
+import { connect } from "react-redux";
+
 
 class changePassword extends React.Component {
+  state={
+    currentPassword:"",
+    newPassword:"",
+    
+  }
+
+changePasswordBtn=()=>{
+  console.log(this.props.userGlobal.username);
+  const {
+    currentPassword,
+    newPassword,
+  } = this.state;
+  Axios.post(`${API_URL}/user/change-password`,{
+    currentPassword,
+    newPassword,
+    username: this.props.userGlobal.username
+  }).then(()=>{
+    alert("berhasil ganti password")
+  })
+  .catch((err)=>{
+    console.log(err);
+  })
+}
+
+
+
+
+inputHandler = (event) => {
+  const value = event.target.value;
+  const name = event.target.name;
+
+  this.setState({ [name]: value });
+};
+
+
   render() {
     return (
-      <div className="card card-outline-secondary">
-                        <div className="card-header">
-                            <h3 className="mb-0">Change Password</h3>
-                        </div>
-                        <div className="card-body">
-                            <form className="form" role="form" autocomplete="off">
-                                <div className="form-group">
-                                    <label for="inputPasswordOld">Current Password</label>
-                                    <input type="password" className="form-control" id="inputPasswordOld" required=""/>
-                                </div>
-                                <div className="form-group">
-                                    <label for="inputPasswordNew">New Password</label>
-                                    <input type="password" className="form-control" id="inputPasswordNew" required=""/>
-                                    <span className="form-text small text-muted">
-                                            The password must be 8-20 characters, and must <em>not</em> contain spaces.
-                                        </span>
-                                </div>
-                                <div className="form-group">
-                                    <label for="inputPasswordNewVerify">Verify</label>
-                                    <input type="password" className="form-control" id="inputPasswordNewVerify" required=""/>
-                                    <span className="form-text small text-muted">
-                                            To confirm, type the new password again.
-                                        </span>
-                                </div>
-                                <div className="form-group">
-                                    <button type="submit" className="btn btn-success btn-lg float-right">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+        <div>
+        <div className="container mt-3">
+          <div className="row mb-5 mt-5 d-flex justify-content-center">
+              <div className="card">  
+              <div className="card-body">
+                     <h1>Change Password</h1>
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="mb-3">Current password</h5>
+                  <input
+                    onChange={this.inputHandler}
+                    name="currentPassword"
+                    placeholder="Enter Current password"
+                    type="password"
+                    className="form-control my-2"
+                  />
+                  <h5 className="mb-3">New password</h5>
+                  <input
+                  onChange={this.inputHandler}
+                    name="newPassword"
+                    placeholder="Enter New Password"
+                    type="password"
+                    className="form-control my-2"
+                  />
+                  <button onClick={this.changePasswordBtn} className="btn btn-primary mt-1">Save Changes</button>
+                </div>
+                </div>
+              </div>
+              </div>
+            </div>
+        </div>
+      </div>
     );
   }
 }
 
-export default changePassword;
+const mapStateToProps = (state) => {
+  return { userGlobal: state.user };
+};
+
+export default connect(mapStateToProps)(changePassword);

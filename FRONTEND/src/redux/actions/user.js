@@ -113,10 +113,11 @@ export const userKeepLogin = (userData) => {
   return (dispatch) => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        username: userData.username,
-      },
+        id: userData.id_user
+      }
     })
       .then((result) => {
+        delete result.data[0].password
         localStorage.setItem("userDataAMR", JSON.stringify(result.data[0]));
         dispatch({
           type: "USER_LOGIN",

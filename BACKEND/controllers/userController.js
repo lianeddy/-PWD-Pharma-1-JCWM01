@@ -72,7 +72,7 @@ module.exports = {
           let token = createToken({ id_user, username, email, role });
 
           let mail = {
-            from: `Admin <devdwikyryan@gmail.com>`,
+            from: `Admin <shabrinaartarini46@gmail.com>`,
             to: `${email}`,
             subject: "Verifikasi Akun AMR Pharmacy Anda",
             html: `<a href= 'http://localhost:3000/verification/${token}'> Klik sini untuk verifikasi akun AMR Pharmacy anda</a>`,
@@ -107,4 +107,32 @@ module.exports = {
       res.status(200).send({ message: "Akun terverifikasi", success: true });
     });
   },
-};
+
+  changePassword: (req, res) => {
+    req.body.currentPassword = Crypto.createHmac("sha1", "hash123").update(req.body.currentPassword).digest("hex")
+
+    let selectQuery = `SELECT password FROM user WHERE username = ${db.escape(req.body.username)}`
+    console.log(selectQuery)
+    req.body.newPassword = Crypto.createHmac("sha1", "hash123").update(req.body.newPassword).digest("hex")
+    let updateQuery = `UPDATE user SET password = ${db.escape(req.body.newPassword)} WHERE username = ${db.escape(req.body.username)}`
+    console.log(updateQuery)
+
+    db.query(selectQuery, (err, results) => {
+      if (err) {
+        console.log(err)
+        return res.status(500).send(err)
+      }
+
+      if (results[0].password == req.body.currentPassword) {
+        db.query(updateQuery, (err2, results2) => {
+          if (err2) return res.status(500).send(err2)
+          return res.status(200).send(results2)
+        })
+      } else {
+        return res.status(500).json({ message: "Current Password is Wrong" })
+      }
+    })
+  },
+
+
+}

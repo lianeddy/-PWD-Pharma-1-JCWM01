@@ -16,13 +16,13 @@ class Forgot extends React.Component {
                 <div className="card-body">
                   <h5 className="font-weight-bold mb-3">Enter your email</h5>
                   <input
-                    name="Email"
+                    name="email"
                     placeholder="E-mail"
                     type="text"
                     className="form-control my-2"
                   />
                   <div className="d-flex flex-row justify-content-between align-items-center">
-                    <button className="btn btn-primary mt-2">Search</button>
+                    <button className="btn btn-primary mt-2">Submit</button>
                   </div>
                 </div>
               </div>
