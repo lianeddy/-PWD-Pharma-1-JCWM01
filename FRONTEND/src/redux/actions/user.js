@@ -137,8 +137,6 @@ export const btnResetPassword = ({email}) => {
     if (email == "") {
       return alert("Fill in All the Form")
     }
-
-
     Axios.post(`${API_URL}/user/reset-password`, {
       email
     })

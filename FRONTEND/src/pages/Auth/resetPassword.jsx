@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import  {btnResetPassword} from "../../redux/actions/user"
 
 
@@ -13,21 +14,7 @@ class resetPassword extends React.Component {
 
 
 
-  // resetdBtn=()=>{
-  //   console.log(this.props.userGlobal.email);
-  //   const {
-  //     email,
-  //   } = this.state;
-  //   Axios.post(`${API_URL}/user/reset-password`,{
-  //     email,
-  //     email: this.props.userGlobal.email
-  //   }).then(()=>{
-  //     alert("berhasil reset password")
-  //   })
-  //   .catch((err)=>{
-  //     console.log(err);
-  //   })
-  // }
+  
   
 
   inputHandler=(event)=>{
@@ -48,7 +35,7 @@ class resetPassword extends React.Component {
           </div>
           <div className="row mt-5 mb-5">
             <div className="col-4 offset-4">
-              <div className="card">
+            <div className="card" style={{ backgroundColor: "#ADD8E6" }} >
                 <div className="card-body">
                   <h5 className="font-weight-bold mb-3">Enter your email</h5>
                   <input
@@ -60,6 +47,7 @@ class resetPassword extends React.Component {
                   />
                   <div className="d-flex flex-row justify-content-between align-items-center">
                     <button onClick={()=>this.props.btnResetPassword(this.state)} className="btn btn-primary mt-2">Submit</button>
+                    <Link to="/login" style={{ color: "black" }}>Cancel</Link>
                   </div>
                 </div>
               </div>

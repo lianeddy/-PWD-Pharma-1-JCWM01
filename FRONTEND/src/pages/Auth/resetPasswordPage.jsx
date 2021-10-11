@@ -60,8 +60,8 @@ class ResetPassPage extends React.Component {
           </div>
         </div>
         <div className="row mt-5">
-          <div className="col-4 offset-4">
-            <div className="card" style={{ backgroundColor: "#6495ED" }} >
+          <div className="col-4 offset-4 mb-5">
+            <div className="card" style={{ backgroundColor: "#5F9EA0" }} >
               <div className="card-body">
                 <h5 className="font-weight-bold mb-3" style={{ color: "white" }}>Reset Password</h5>
                 <input onChange={this.inputHandler} name="newPassword" placeholder="New password" type="password" className="form-control my-2" />
