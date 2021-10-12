@@ -1,5 +1,6 @@
 import Axios from "axios";
 import { API_URL } from "../../constants/API";
+import { getCartData } from "./cart";
 
 export const registerUser = ({
   nama_depan,
@@ -88,6 +89,7 @@ export const loginUser = ({ email, password }) => {
               type: "USER_LOGIN",
               payload: result.data[0],
             });
+            dispatch(getCartData(result.data[0].id_user));
           } else {
             // handle wrong password
             dispatch({
@@ -129,6 +131,7 @@ export const userKeepLogin = (userData) => {
           type: "USER_LOGIN",
           payload: result.data[0],
         });
+        dispatch(getCartData(result.data[0].id_user));
       })
       .catch(() => {
         alert(`Terjadi kesalahan di server`);

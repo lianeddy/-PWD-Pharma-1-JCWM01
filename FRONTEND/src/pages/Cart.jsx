@@ -2,6 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 
 class Cart extends React.Component {
+  renderTotal = () => {
+    let total = 0;
+    this.props.cartGlobal.cartList.forEach((val) => {
+      total += val.harga * val.qty_obat;
+    });
+    return total;
+  };
+
   renderCart = () => {
     return this.props.cartGlobal.cartList.map((val) => {
       return (
@@ -22,6 +30,8 @@ class Cart extends React.Component {
       );
     });
   };
+
+  componentDidMount() {}
 
   render() {
     return (
@@ -49,8 +59,8 @@ class Cart extends React.Component {
             <div className="p-30 mb-5">
               <div className="border-bottom pb-2">
                 <div className="d-flex justify-content-between mb-3">
-                  <h6>Subtotal</h6>
-                  <h6>Rp ,-</h6>
+                  <h6></h6>
+                  <h6>Rp {this.renderTotal()},-</h6>
                 </div>
                 <div className="d-flex justify-content-between">
                   <h6 className="font-weight-medium">Biaya Pengiriman</h6>
@@ -60,7 +70,7 @@ class Cart extends React.Component {
               <div className="pt-2 text-center">
                 <div className="d-flex justify-content-between mt-2">
                   <h5>Total</h5>
-                  <h5>Rp ,-</h5>
+                  <h5>Rp {this.renderTotal()},-</h5>
                 </div>
                 <button className="btn btn-block btn-primary font-weight-bold my-3 py-3">
                   KE PEMBAYARAN
