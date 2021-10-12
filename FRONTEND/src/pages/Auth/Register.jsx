@@ -77,12 +77,11 @@ class Register extends React.Component {
         username,
         email,
         password,
-        verifikasi: "UNVERIFIED",
+        status: "UNVERIFIED",
         role: "USER"
       })
         .then((res) => {
           this.setState({ messages: res.data.messages, registered: res.data.registered, alert: res.data.alert })
-
           setTimeout(() => {
             // menjalankan redirect ke page login jika user berhasil terdaftar
             this.setState({ redirect: res.data.redirect, })

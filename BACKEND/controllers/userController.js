@@ -103,8 +103,10 @@ module.exports = {
                 });
               }
               return res.status(200).send({
-                message: "Registration success, check your mail inbox",
-                success: true,
+                messages: "Anda berhasil di daftarkan !",
+                registered: true,
+                redirect: true,
+                alert: "alert-success",
               });
             });
           });
