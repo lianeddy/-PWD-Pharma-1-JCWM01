@@ -1,15 +1,24 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Link, StaticRouter } from 'react-router-dom'
-
+import { Redirect } from "react-router";
 import ListDataProduct from "./Admin/ListDataProduct";
+import { connect } from "react-redux";
+
 
 class Admin extends React.Component {
 
   state = {
 
   }
-
+  componentDidMount() {
+    console.log('role', this.props.userGlobal.role)
+  }
   render() {
+
+    if (this.props.userGlobal.role !== "ADMIN") {
+      return <Redirect to="/" />
+
+    }
     return (
 
       <div className=" row h-auto w-100 border-bottom">
@@ -33,11 +42,12 @@ class Admin extends React.Component {
 
 
       </div >
-
-
-
     );
   }
 }
+const mapStateToProps = (state) => {
+  return { userGlobal: state.user };
+};
 
-export default Admin;
+export default connect(mapStateToProps)(Admin);
+
