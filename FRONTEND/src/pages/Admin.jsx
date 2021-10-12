@@ -22,7 +22,7 @@ class Admin extends React.Component {
     return (
 
       <div className=" row h-auto w-100 border-bottom">
-        <div className="col-2 border-right ">
+        <div className="col-2 border-right">
           <h4 className="mb-5">ADMIN PAGE</h4>
 
           <div className="d-flex flex-column">

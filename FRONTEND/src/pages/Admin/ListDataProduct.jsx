@@ -1,35 +1,50 @@
 import React from "react";
 import Axios from 'axios'
 import { Link } from "react-router-dom";
+import { Table } from "reactstrap";
 import { API_URL } from "../../constants/API"
+
+// style
+import "../../assets/styles/admin_list_data_product.css"
 
 
 class ListDataProduct extends React.Component {
     state = {
-        productList: []
+        productList: [],
+        page: 1,
+        itemPerPage: 10,
+        maxPage: 0,
     }
 
-    fetchDataProduct = () => {
-        Axios.get(`${API_URL}/admin/getDataProduct`)
+    fetchDataProduct = (page = 1) => {
+        Axios.get(`${API_URL}/admin/getDataProduct`, {
+            params: {
+                page,
+                itemPerPage: this.state.itemPerPage
+            }
+        })
             .then(result => {
-                this.setState({ productList: result.data })
-                console.log(this.state.productList)
+                this.setState({ productList: result.data.result, maxPage: Math.ceil(result.data.count[0].max / this.state.itemPerPage) })
             })
             .catch(err => {
-                console.log(err)
                 alert(`Terjadi keslahan di server`)
             })
     }
 
     renderDataProduct = () => {
-        let no = 1
+        let no = (this.state.itemPerPage * (this.state.page - 1)) + 1
         return this.state.productList.map(val => {
             return (
-                <tr>
-                    <th scope="row">{no++}</th>
-                    <td>{val.nama_obat}</td>
+                <tr className="text-center">
+                    <th className="text-center no-table">{no++}</th>
+                    <td >{val.nama_obat}</td>
                     <td>{val.jumlah_obat}</td>
                     <td>{val.satuan}</td>
+                    <td>{val.harga_pokok}</td>
+                    <td>{val.harga_jual}</td>
+                    <td>
+                        <img src={`${API_URL}${val.foto_obat}`} width="100" alt="" />
+                    </td>
                     <td>
                         <Link to={`/admin-edit-product/${val.id_obat}`}>Edit</Link>
                     </td>
@@ -37,6 +52,22 @@ class ListDataProduct extends React.Component {
             )
         })
     }
+
+    nextPageHandler = () => {
+        if (this.state.page < this.state.maxPage) {
+            this.setState({ page: this.state.page + 1 });
+            let page = this.state.page + 1
+            this.fetchDataProduct(page)
+        }
+    };
+
+    prevPageHandler = () => {
+        if (this.state.page > 1) {
+            this.setState({ page: this.state.page - 1 });
+            let page = this.state.page - 1
+            this.fetchDataProduct(page)
+        }
+    };
 
     componentDidMount() {
         this.fetchDataProduct()
@@ -47,21 +78,43 @@ class ListDataProduct extends React.Component {
 
             <div>
 
-                <table class="table table-striped">
+                {/* <table class="table table-striped"> */}
+                <Table striped >
                     <thead>
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Nama Obat</th>
-                            <th scope="col">Jumlah Tersedia</th>
-                            <th scope="col">Satuan</th>
-                            <th scope="col">Aksi</th>
+                        <tr className="text-center">
+                            <th className="no-table">No</th>
+                            <th>Nama Obat</th>
+                            <th>Jumlah Tersedia</th>
+                            <th>Satuan</th>
+                            <th>Harga Pokok</th>
+                            <th>Harga Jual</th>
+                            <th>Gambar</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         {this.renderDataProduct()}
                     </tbody >
 
-                </table >
+
+
+                    {/* </table > */}
+                </Table>
+                <div className="d-flex my-5 flex-row justify-content-start align-items-center pagination">
+                    <button
+                        disabled={this.state.page === 1}
+                        onClick={this.prevPageHandler}
+                        className="btn btn-info"
+                    >
+                        {"<"}
+                    </button>
+                    <div className="text-center px-5">
+                        Page {this.state.page} of {this.state.maxPage}{" "}
+                    </div>
+                    <button onClick={this.nextPageHandler} className="btn btn-info">
+                        {">"}
+                    </button>
+                </div>
             </div>
         )
     }
