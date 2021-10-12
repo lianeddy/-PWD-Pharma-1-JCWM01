@@ -6,6 +6,7 @@ routers.get("/get", drugsController.getData);
 routers.post("/add-obat", drugsController.addData);
 routers.patch("/edit-obat/:id", drugsController.editData);
 routers.delete("/delete-obat/:idobat", drugsController.deleteData);
+routers.get("/sortby/:nama_obat", drugsController.sortBy);
 
 module.exports = routers;
 

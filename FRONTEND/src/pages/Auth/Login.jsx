@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 class Login extends React.Component {
   state = {
-    username: "",
+    email: "",
     password: "",
   };
   inputHandler = (event) => {
@@ -16,9 +16,9 @@ class Login extends React.Component {
   };
 
   render() {
-    if (this.props.userGlobal.username) {
-      return <Redirect to="/" />;
-    }
+    // if (this.props.userGlobal.email) {
+    //   return <Redirect to="/" />;
+    // }
     return (
       <div>
         <div className="container mt-3">
@@ -37,13 +37,13 @@ class Login extends React.Component {
                   {this.props.userGlobal.errMsg}
                 </div>
               ) : null}
-              <div className="card">
-                <div className="card-body">
+              <div className="card mb-5">
+                <div className="card-body ">
                   <h5 className="font-weight-bold mb-3">Masuk</h5>
                   <input
                     onChange={this.inputHandler}
-                    name="username"
-                    placeholder="Username"
+                    name="email"
+                    placeholder="email"
                     type="text"
                     className="form-control my-2"
                   />

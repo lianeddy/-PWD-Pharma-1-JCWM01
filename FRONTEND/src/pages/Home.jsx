@@ -87,6 +87,8 @@ class Home extends React.Component {
     this.setState({[name]: value})
   }
   searchButtonHandler=()=>{
+    // Axios.get("http://localhost:3300/obat/sortBy")
+    // .then()
     const filterDrugList = this.state.drugList.filter((val)=>{
       return val.nama_obat.toLowerCase().includes(this.state.searchProductName.toLowerCase()) &&
       val.golongan.toLowerCase().includes(this.state.searchCategory.toLowerCase())

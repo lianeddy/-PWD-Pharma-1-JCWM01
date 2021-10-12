@@ -5,7 +5,6 @@ export const registerUser = ({
   nama_depan,
   nama_belakang,
   jenis_kelamin,
-  username,
   email,
   password,
 }) => {
@@ -14,7 +13,6 @@ export const registerUser = ({
       nama_depan == "" ||
       nama_belakang == "" ||
       jenis_kelamin == "" ||
-      username == "" ||
       email == "" ||
       password == ""
     ) {
@@ -28,7 +26,6 @@ export const registerUser = ({
         nama_belakang,
         jenis_kelamin,
         status: "UNVERIFIED",
-        username,
         email,
         password,
         role: "USER",
@@ -65,11 +62,11 @@ export const registerUser = ({
 //   };
 // };
 
-export const loginUser = ({ username, password }) => {
+export const loginUser = ({ email, password }) => {
   return (dispatch) => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        username,
+        email,
         password,
       },
     })

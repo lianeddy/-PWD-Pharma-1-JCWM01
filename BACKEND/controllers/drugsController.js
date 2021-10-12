@@ -73,4 +73,17 @@ module.exports = {
       res.status(200).send(results);
     });
   },
+
+
+
+  sortBy: (req, res)=>{
+    let sortingQuery = `SELECT FROM obat ORDER BY nama_obat DESC = ${db.escape(
+      req.params.nama_obat
+    )};`
+
+    db.query(sortingQuery, (err, results)=>{
+      if (err) res.status(500).send(err)
+      res.status(200).send(results)
+    })
+  },
 };

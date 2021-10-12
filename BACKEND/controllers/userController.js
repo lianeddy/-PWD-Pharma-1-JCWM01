@@ -6,9 +6,9 @@ const transporter = require("../helper/nodemailer");
 module.exports = {
   getUser: (req, res) => {
     let scriptQuery = "Select * from user;";
-    if (req.query.username) {
-      scriptQuery = `Select * from user where username = ${db.escape(
-        req.query.username
+    if (req.query.email) {
+      scriptQuery = `Select * from user where email= ${db.escape(
+        req.query.email
       )} and password = ${db.escape(
         Crypto.createHmac("sha1", "hash123")
           .update(req.query.password)
@@ -29,7 +29,6 @@ module.exports = {
     let {
       nama_depan,
       nama_belakang,
-      username,
       email,
       password,
       jenis_kelamin,
@@ -43,18 +42,18 @@ module.exports = {
     password = Crypto.createHmac("sha1", "hash123")
       .update(password)
       .digest("hex");
-      let getQuery = `SELECT * FROM user WHERE username = ${db.escape(username)} OR email = ${db.escape(email)} `
+      let getQuery = `SELECT * FROM user WHERE email = ${db.escape(email)} OR email = ${db.escape(email)} `
     db.query(getQuery, (err, result) => {
       if(err){
         return res.status(500).send(err)
       }
       if(result.length > 0){
-        return res.status(200).send({messages : "Username atau email telah terdaftar !", registered: true, redirect:false, alert: "alert-warning"})
+        return res.status(200).send({messages : "Email telah terdaftar !", registered: true, redirect:false, alert: "alert-warning"})
       }
       console.log(password);
       let insertQuery = `Insert into user values (null, ${db.escape(
         nama_depan
-      )}, ${db.escape(nama_belakang)}, ${db.escape(username)}, ${db.escape(
+      )}, ${db.escape(nama_belakang)},${db.escape(
         email
       )}, ${db.escape(password)}, ${db.escape(jenis_kelamin)}, ${db.escape(
         status
@@ -75,9 +74,9 @@ module.exports = {
               return res.status(500).send(err2);
             }
             // bahan buat token
-            let { id_user, username, email, role } = results2[0];
+            let { id_user, email, role } = results2[0];
             // membuat token
-            let token = createToken({ id_user, username, email, role });
+            let token = createToken({ id_user, email, role });
   
             let mail = {
               from: `Admin <shabrinaartarini46@gmail.com>`,
@@ -120,10 +119,10 @@ module.exports = {
   changePassword: (req, res) => {
     req.body.currentPassword = Crypto.createHmac("sha1", "hash123").update(req.body.currentPassword).digest("hex")
 
-    let selectQuery = `SELECT password FROM user WHERE username = ${db.escape(req.body.username)}`
+    let selectQuery = `SELECT password FROM user WHERE email = ${db.escape(req.body.email)}`
     console.log(selectQuery)
     req.body.newPassword = Crypto.createHmac("sha1", "hash123").update(req.body.newPassword).digest("hex")
-    let updateQuery = `UPDATE user SET password = ${db.escape(req.body.newPassword)} WHERE username = ${db.escape(req.body.username)}`
+    let updateQuery = `UPDATE user SET password = ${db.escape(req.body.newPassword)} WHERE email = ${db.escape(req.body.email)}`
     console.log(updateQuery)
 
     db.query(selectQuery, (err, results) => {

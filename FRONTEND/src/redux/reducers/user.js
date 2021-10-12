@@ -3,7 +3,6 @@ const init_state = {
   nama_belakang: "",
   jenis_kelamin: "",
   status: "",
-  username: "",
   email: "",
   password: "",
   role: "",
