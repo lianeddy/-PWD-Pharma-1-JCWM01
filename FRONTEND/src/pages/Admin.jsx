@@ -1,43 +1,110 @@
 import React from "react";
-import { BrowserRouter, Switch, Route, Link, StaticRouter } from 'react-router-dom'
-
+import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
+import classnames from "classnames";
+import AdminUploadProduct from "./Admin/AdminUploadProduct";
 import ListDataProduct from "./Admin/ListDataProduct";
 
 class Admin extends React.Component {
+  constructor(props) {
+    super(props);
 
-  state = {
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      activeTab: "1",
+    };
+  }
 
+  toggle(tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({ activeTab: tab });
+    }
   }
 
   render() {
     return (
-
-      <div className=" row h-auto w-100 border-bottom">
-        <div className="col-2 border-right ">
-          <h4 className="mb-5">ADMIN PAGE</h4>
-
-          <div className="d-flex flex-column">
-
-
-            <Link to={'/admin-upload-product'}><button type="button" class="btn btn-success mb-2 w-100"> <i class="fa fa-upload" aria-hidden="true"></i> Upload data</button></Link>
-            <Link to={'/admin/list-data-product'}> <button type="button" class="btn btn-success w-100"><i class="fa fa-database" aria-hidden="true"></i> List</button></Link>
-
-          </div>
-        </div>
-
-        <div className="col-10 ">
-          <Switch>
-            <Route path='/admin/list-data-product' component={ListDataProduct} />
-          </Switch>
-        </div>
-
-
-      </div >
-
-
-
+      <div>
+        <Nav tabs className="justify-content-center">
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === "1" })}
+              onClick={() => {
+                this.toggle("1");
+              }}
+            >
+              Admin Products Upload
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === "2" })}
+              onClick={() => {
+                this.toggle("2");
+              }}
+            >
+              Product List
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === "3" })}
+              onClick={() => {
+                this.toggle("3");
+              }}
+            >
+              Prescription Request
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === "4" })}
+              onClick={() => {
+                this.toggle("4");
+              }}
+            >
+              Raw Drug List
+            </NavLink>
+          </NavItem>
+        </Nav>
+        <TabContent activeTab={this.state.activeTab}>
+          <TabPane tabId="1">
+            {this.state.activeTab == 1 ? <AdminUploadProduct /> : null}
+          </TabPane>
+          <TabPane tabId="2">
+            {this.state.activeTab == 2 ? <ListDataProduct /> : null}
+          </TabPane>
+          <TabPane tabId="3">
+            {this.state.activeTab == 3 ? (
+              <h3 className="text-center">PRESCRIPTION REQUEST PAGE</h3>
+            ) : null}
+          </TabPane>
+          <TabPane tabId="4">
+            {this.state.activeTab == 4 ? (
+              <h3 className="text-center">RAW DRUG LIST</h3>
+            ) : null}
+          </TabPane>
+        </TabContent>
+      </div>
     );
   }
 }
 
 export default Admin;
+// <div className=" row h-auto w-100 border-bottom">
+//   <div className="col-2 border-right ">
+//     <h4 className="mb-5">ADMIN PAGE</h4>
+
+//     <div className="d-flex flex-column">
+
+//       <Link to={'/admin-upload-product'}><button type="button" class="btn btn-success mb-2 w-100"> <i class="fa fa-upload" aria-hidden="true"></i> Upload data</button></Link>
+//       <Link to={'/admin/list-data-product'}> <button type="button" class="btn btn-success w-100"><i class="fa fa-database" aria-hidden="true"></i> List</button></Link>
+
+//     </div>
+//   </div>
+
+//   <div className="col-10 ">
+//     <Switch>
+//       <Route path='/admin/list-data-product' component={ListDataProduct} />
+//     </Switch>
+//   </div>
+
+// </div >

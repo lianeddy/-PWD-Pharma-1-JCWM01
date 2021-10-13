@@ -59,7 +59,7 @@ class Cart extends React.Component {
             <div className="p-30 mb-5">
               <div className="border-bottom pb-2">
                 <div className="d-flex justify-content-between mb-3">
-                  <h6></h6>
+                  <h6>Subtotal</h6>
                   <h6>Rp {this.renderTotal()},-</h6>
                 </div>
                 <div className="d-flex justify-content-between">
