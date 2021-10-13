@@ -2,6 +2,8 @@ const { db } = require("../database");
 const { createToken } = require("../helper/createToken");
 const Crypto = require("crypto");
 const transporter = require("../helper/nodemailer");
+const { uploader } = require("../helpers/uploader");
+const fs = require("fs");
 
 module.exports = {
   getUser: (req, res) => {
@@ -160,4 +162,40 @@ module.exports = {
       }
     });
   },
+
+  uploadPrescription: (req,res) => {
+    console.log(req.params)
+    let path = "/prescriptions";
+    const upload = uploader(path, "IMG").fields([{ name: "file" }]);
+    let id = parseInt(req.params.id)
+
+    upload(req, res, (error) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send(error);
+      }
+
+      // membuat nama file untuk image
+      const { file } = req.files;
+      const filePath = file ? path + "/" + file[0].filename : null;
+      console.log('file',filePath)
+      let insertQuery = `INSERT INTO prescriptions VALUES (null,${id},${db.escape(filePath)},default);`
+
+      db.query(insertQuery, (err, result) => {
+        if (err) {
+          console.log(err);
+          console.log(err.message);
+          fs.unlinkSync("./public" + filePath);
+          return res.status(500).send(err);
+        }
+        res
+          .status(200)
+          .send({
+            message: "Data product berhasil ditambahkan",
+            success: true,
+          });
+      });
+    });
+  
+  }
 };

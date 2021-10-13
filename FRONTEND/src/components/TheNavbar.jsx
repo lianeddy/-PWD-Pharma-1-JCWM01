@@ -17,7 +17,7 @@ import { logoutUser } from "../redux/actions/user";
 class TheNavbar extends React.Component {
 
 
-  
+
   render() {
     return (
       <header className="sticky-top bg-dark text-white">
@@ -34,9 +34,9 @@ class TheNavbar extends React.Component {
                 AMR{" "}
               </h3>
             </a>
-            
+
             <div className="col-md-3 text-end">
-              {this.props.userGlobal.username ?  (
+              {this.props.userGlobal.username ? (
                 <UncontrolledDropdown>
                   <DropdownToggle
                     className="text-uppercase btn btn-success"
@@ -65,6 +65,19 @@ class TheNavbar extends React.Component {
                         </Link>
                       </DropdownItem>
                     ) : null}
+                    {
+                      this.props.userGlobal.role === "USER" ?
+                        <DropdownItem>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            className="text-dark"
+                            to="/prescription-page"
+                          >
+                            KIRIM RESEP
+                          </Link>
+                        </DropdownItem>
+                        : null
+                    }
                     <DropdownItem>
                       <Link
                         style={{ textDecoration: "none" }}
