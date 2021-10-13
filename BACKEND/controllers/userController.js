@@ -28,7 +28,6 @@ module.exports = {
     let {
       nama_depan,
       nama_belakang,
-      username,
       email,
       password,
       jenis_kelamin,
@@ -42,9 +41,7 @@ module.exports = {
     password = Crypto.createHmac("sha1", "hash123")
       .update(password)
       .digest("hex");
-    let getQuery = `SELECT * FROM user WHERE username = ${db.escape(
-      username
-    )} OR email = ${db.escape(email)} `;
+    let getQuery = `SELECT * FROM user WHERE email = ${db.escape(email)} `;
     db.query(getQuery, (err, result) => {
       if (err) {
         return res.status(500).send(err);
@@ -62,7 +59,7 @@ module.exports = {
       console.log(password);
       let insertQuery = `Insert into user values (null, ${db.escape(
         nama_depan
-      )}, ${db.escape(nama_belakang)}, ${db.escape(username)}, ${db.escape(
+      )}, ${db.escape(nama_belakang)}, ${db.escape(
         email
       )}, ${db.escape(password)}, ${db.escape(jenis_kelamin)}, ${db.escape(
         status

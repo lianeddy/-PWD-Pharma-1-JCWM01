@@ -10,7 +10,6 @@ class Register extends React.Component {
     nama_depan: "",
     nama_belakang: "",
     jenis_kelamin: "laki-laki",
-    username: "",
     email: "",
     password: "",
 
@@ -29,7 +28,7 @@ class Register extends React.Component {
     const name = event.target.name;
 
     // kondisi untuk disabled tombol kirim
-    if (this.state.nama_depan && this.state.nama_belakang && this.state.username && this.state.email && this.state.password) {
+    if (this.state.nama_depan && this.state.nama_belakang && this.state.email && this.state.password) {
       console.log("Masuk1")
       if (value.length > 0) {
         console.log("Masuk2")
@@ -61,12 +60,11 @@ class Register extends React.Component {
   };
 
   registerHandler = () => {
-    if (this.state.nama_depan && this.state.nama_belakang && this.state.username && this.state.email && this.state.password) {
+    if (this.state.nama_depan && this.state.nama_belakang && this.state.email && this.state.password) {
       const {
         nama_depan,
         nama_belakang,
         jenis_kelamin,
-        username,
         email,
         password,
       } = this.state;
@@ -74,7 +72,6 @@ class Register extends React.Component {
         nama_depan,
         nama_belakang,
         jenis_kelamin,
-        username,
         email,
         password,
         status: "UNVERIFIED",
@@ -153,7 +150,7 @@ class Register extends React.Component {
                 <div>
                   <label htmlFor="">Jenis Kelamin</label>
                   <div className="d-flex">
-                    <div class="form-check me-5">
+                    <div class="form-check mr-5">
                       <input class="form-check-input" type="radio" name="jenis_kelamin" id="laki-laki" value="laki-laki" onClick={this.inputHandler} checked={this.state.jenis_kelamin == "laki-laki"} />
                       <label class="form-check-label" for="laki-laki">
                         Laki-laki
@@ -167,14 +164,6 @@ class Register extends React.Component {
                     </div>
                   </div>
                 </div>
-
-                <input
-                  name="username"
-                  onChange={this.inputHandler}
-                  placeholder="Username"
-                  type="text"
-                  className="form-control my-2"
-                />
                 <div className="position-relative">
                   <input
                     name="email"
