@@ -23,7 +23,7 @@ class Admin extends React.Component {
   render() {
     return (
       <div>
-        <Nav tabs className="justify-content-center">
+        <Nav tabs className="justify-content-center bg-secondary">
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.activeTab === "1" })}
@@ -31,7 +31,7 @@ class Admin extends React.Component {
                 this.toggle("1");
               }}
             >
-              Admin Products Upload
+              <h5 className="text-dark">Admin Products Upload</h5>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -41,7 +41,7 @@ class Admin extends React.Component {
                 this.toggle("2");
               }}
             >
-              Product List
+              <h5 className="text-dark">Product List</h5>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -51,7 +51,7 @@ class Admin extends React.Component {
                 this.toggle("3");
               }}
             >
-              Prescription Request
+              <h5 className="text-dark">Prescription Request</h5>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -61,7 +61,7 @@ class Admin extends React.Component {
                 this.toggle("4");
               }}
             >
-              Raw Drug List
+              <h5 className="text-dark">Raw Drug List</h5>
             </NavLink>
           </NavItem>
         </Nav>
