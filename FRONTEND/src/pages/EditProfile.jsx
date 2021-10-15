@@ -176,7 +176,6 @@ class EditProfile extends React.Component {
                     value={this.state.edit_email}
                   />
                 </div>
-
                 <div className="col-md-6">
                   <label className="labels">Jenis Kelamin</label>
                   <select

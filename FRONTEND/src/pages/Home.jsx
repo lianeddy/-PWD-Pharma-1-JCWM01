@@ -111,6 +111,7 @@ class Home extends React.Component {
     return (
       <div>
         <CategoriesCarousel />
+        <h2 className="text-center">DAFTAR OBAT</h2>
         <div className="row">
           <div className="col-3">
             <div className="card">

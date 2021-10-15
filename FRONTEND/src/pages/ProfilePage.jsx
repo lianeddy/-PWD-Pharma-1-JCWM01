@@ -103,11 +103,11 @@ class ProfilePage extends React.Component {
                     <h6 className="labels">Kode Pos</h6>
                     <p>12780</p>
                   </div>
-                  <div className="mt-4 text-center">
+                  <div className="mt-4">
                     <h6>
                       <a
                         href="/"
-                        className="text-dark"
+                        className="text-dark text-center"
                         style={{ textDecoration: "none" }}
                       >
                         Kembali ke Home
