@@ -73,4 +73,16 @@ module.exports = {
       res.status(200).send(results);
     });
   },
+  getRawDrug: (req, res) => {
+    let scriptQuery = "Select * from obat_bahan;";
+    if (req.query.idobat) {
+      scriptQuery = `Select * from obat where id_bahan_obat = ${db.escape(
+        req.query.idobat
+      )};`;
+    }
+    db.query(scriptQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
+    });
+  },
 };

@@ -3,6 +3,8 @@ import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import classnames from "classnames";
 import AdminUploadProduct from "./Admin/AdminUploadProduct";
 import ListDataProduct from "./Admin/ListDataProduct";
+import RawDrugList from "../components/RawDrugList";
+import PrescriptionRequestPage from "../components/PrescriptionRequestPage";
 
 class Admin extends React.Component {
   constructor(props) {
@@ -41,7 +43,7 @@ class Admin extends React.Component {
                 this.toggle("2");
               }}
             >
-              <h5 className="text-dark">Product List</h5>
+              <h5 className="text-dark">Drug List</h5>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -73,14 +75,10 @@ class Admin extends React.Component {
             {this.state.activeTab == 2 ? <ListDataProduct /> : null}
           </TabPane>
           <TabPane tabId="3">
-            {this.state.activeTab == 3 ? (
-              <h3 className="text-center">PRESCRIPTION REQUEST PAGE</h3>
-            ) : null}
+            {this.state.activeTab == 3 ? <PrescriptionRequestPage /> : null}
           </TabPane>
           <TabPane tabId="4">
-            {this.state.activeTab == 4 ? (
-              <h3 className="text-center">RAW DRUG LIST</h3>
-            ) : null}
+            {this.state.activeTab == 4 ? <RawDrugList /> : null}
           </TabPane>
         </TabContent>
       </div>

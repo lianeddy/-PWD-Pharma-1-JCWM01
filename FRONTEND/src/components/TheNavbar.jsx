@@ -38,7 +38,6 @@ class TheNavbar extends React.Component {
               <i className="fa fa-search"></i>
             </button>
           </form>
-
           <div className="col-md-3 text-end">
             {this.props.userGlobal.id_user ? (
               <UncontrolledDropdown>

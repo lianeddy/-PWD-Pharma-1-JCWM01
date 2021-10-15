@@ -21,6 +21,7 @@ import EditProfile from "./pages/EditProfile";
 import AdminUploadProduct from "./pages/Admin/AdminUploadProduct";
 import AdminEditProduct from "./pages/Admin/AdminEditProduct";
 import { getCartData } from "./redux/actions/cart";
+import RequestDetail from "./pages/Admin/RequestDetail";
 
 class App extends React.Component {
   componentDidMount() {
@@ -54,6 +55,7 @@ class App extends React.Component {
           <Route component={History} path="/history" />
           <Route component={ProductDetail} path="/product-detail/:obatid" />
           <Route component={PrescriptionPage} path="/prescription-page" />
+          <Route component={RequestDetail} path="/request-detail" />
           <Route component={Home} path="/" />
         </Switch>
         <Footer />
