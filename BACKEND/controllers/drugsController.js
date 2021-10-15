@@ -14,7 +14,6 @@ module.exports = {
     });
   },
   addData: (req, res) => {
-    console.log(req.body);
     let {
       nama_obat,
       deskripsi,
@@ -27,6 +26,7 @@ module.exports = {
       harga_jual,
       foto_obat,
     } = req.body;
+    console.log(req.body);
     let insertQuery = `Insert into obat values (null, ${db.escape(
       nama_obat
     )}, ${db.escape(deskripsi)}, ${db.escape(manfaat)}, ${db.escape(
@@ -69,6 +69,18 @@ module.exports = {
     )};`;
 
     db.query(deleteQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
+    });
+  },
+  getRawDrug: (req, res) => {
+    let scriptQuery = "Select * from obat_bahan;";
+    if (req.query.idobat) {
+      scriptQuery = `Select * from obat where id_bahan_obat = ${db.escape(
+        req.query.idobat
+      )};`;
+    }
+    db.query(scriptQuery, (err, results) => {
       if (err) res.status(500).send(err);
       res.status(200).send(results);
     });

@@ -1,36 +1,44 @@
 import Axios from "axios";
 import { API_URL } from "../../constants/API";
+import { getCartData } from "./cart";
 
 export const registerUser = ({
   nama_depan,
   nama_belakang,
   jenis_kelamin,
-  username,
+  tanggal_lahir,
   email,
   password,
+  konfirmasi_password,
 }) => {
   return (dispatch) => {
     if (
-      nama_depan == "" ||
-      nama_belakang == "" ||
-      jenis_kelamin == "" ||
-      username == "" ||
-      email == "" ||
-      password == ""
+      nama_depan === "" ||
+      nama_belakang === "" ||
+      jenis_kelamin === "" ||
+      tanggal_lahir === "" ||
+      email === "" ||
+      password === "" ||
+      konfirmasi_password === ""
     ) {
-      dispatch({
+      return dispatch({
         type: "USER_ERROR",
         payload: "Mohon isi semua form",
       });
+    } else if (password !== konfirmasi_password) {
+      return dispatch({
+        type: "USER_ERROR",
+        payload: "Mohon sesuaikan password dan konfirmasi password",
+      });
     } else {
-      Axios.post(`${API_URL}/user/add-user`, {
+      return Axios.post(`${API_URL}/user/add-user`, {
         nama_depan,
         nama_belakang,
-        jenis_kelamin,
-        status: "UNVERIFIED",
-        username,
         email,
         password,
+        jenis_kelamin,
+        status: "UNVERIFIED",
+        tanggal_lahir,
         role: "USER",
       })
         .then((result) => {
@@ -55,7 +63,7 @@ export const registerUser = ({
 //       password,
 //     })
 //       .then((res) => {
-//         localStorage.setItem("token_amr", res.data.token);
+//         localStorage.setItem("userDataAMR", res.data.token);
 //         dispatch({
 //           type: "USER_LOGIN",
 //           payload: res.data[0],
@@ -65,11 +73,11 @@ export const registerUser = ({
 //   };
 // };
 
-export const loginUser = ({ username, password }) => {
+export const loginUser = ({ email, password }) => {
   return (dispatch) => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        username,
+        email,
         password,
       },
     })
@@ -77,12 +85,13 @@ export const loginUser = ({ username, password }) => {
         if (result.data.length) {
           // if (password === result.data[0].password) {
           localStorage.setItem("userDataAMR", JSON.stringify(result.data[0]));
-          console.log(result.data[0].password)
+          console.log(result.data[0].password);
           if (password === result.data[0].password) {
             dispatch({
               type: "USER_LOGIN",
               payload: result.data[0],
             });
+            dispatch(getCartData(result.data[0].id_user));
           } else {
             // handle wrong password
             dispatch({
@@ -93,23 +102,10 @@ export const loginUser = ({ username, password }) => {
         } else {
           // handle username not found
           dispatch({
-            type: "USER_LOGIN",
-            payload: result.data[0],
+            type: "USER_ERROR",
+            payload: "Akun tidak ditemukan",
           });
-          // } else {
-          // handle wrong password
-          // dispatch({
-          //   type: "USER_ERROR",
-          //   payload: "Password salah!",
-          // });
         }
-        // } else {
-        // handle username not found
-        // dispatch({
-        //   type: "USER_ERROR",
-        //   payload: "User tidak ditemukan",
-        // });
-        // }
       })
       .catch((err) => {
         alert("Terjadi kesalahan di server");
@@ -128,16 +124,19 @@ export const userKeepLogin = (userData) => {
   return (dispatch) => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        id: userData.id_user
-      }
+        id: userData.id_user,
+      },
+      //   email: userData.email,
+      // },
     })
       .then((result) => {
-        delete result.data[0].password
+        delete result.data[0].password;
         localStorage.setItem("userDataAMR", JSON.stringify(result.data[0]));
         dispatch({
           type: "USER_LOGIN",
           payload: result.data[0],
         });
+        dispatch(getCartData(result.data[0].id_user));
       })
       .catch(() => {
         alert(`Terjadi kesalahan di server`);

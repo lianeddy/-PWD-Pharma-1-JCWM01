@@ -10,8 +10,6 @@ class Register extends React.Component {
     nama_depan: "",
     nama_belakang: "",
     jenis_kelamin: "laki-laki",
-    email: "",
-    password: "",
 
     alertPassword: false,
     alertEmail: false,
@@ -20,7 +18,11 @@ class Register extends React.Component {
     messages: "",
     alert: "",
     registered: true,
-    redirect: false
+    redirect: false,
+    tanggal_lahir: "",
+    email: "",
+    password: "",
+    konfirmasi_password: "",
   };
 
   inputHandler = (event) => {

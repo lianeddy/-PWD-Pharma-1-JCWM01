@@ -1,5 +1,5 @@
 import React from "react";
-import Axios from 'axios'
+import Axios from "axios";
 import { Link } from "react-router-dom";
 import { Table } from "reactstrap";
 import { API_URL } from "../../constants/API"
@@ -98,10 +98,36 @@ class ListDataProduct extends React.Component {
         this.fetchDataProduct()
     }
 
-    render() {
-        return (
+  fetchDataProduct = () => {
+    Axios.get(`${API_URL}/admin/getDataProduct`)
+      .then((result) => {
+        this.setState({ productList: result.data });
+        console.log(this.state.productList);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(`Terjadi keslahan di server`);
+      });
+  };
 
-            <div>
+  renderDataProduct = () => {
+    let no = 1;
+    return this.state.productList.map((val) => {
+      return (
+        <tr>
+          <th scope="row">{no++}</th>
+          <td>{val.nama_obat}</td>
+          <td>{val.satuan_jual}</td>
+          <td>{val.golongan}</td>
+          <td>{val.stock}</td>
+          <td>{val.harga}</td>
+          <td>
+            <Link to={`/admin-edit-product/${val.id_obat}`}>Edit</Link>
+          </td>
+        </tr>
+      );
+    });
+  };
 
                 {/* <table class="table table-striped"> */}
                 <Table striped >

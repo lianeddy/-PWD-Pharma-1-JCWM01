@@ -8,36 +8,57 @@ const fs = require("fs");
 module.exports = {
   getUser: (req, res) => {
     let scriptQuery = "Select * from user;";
-    if (req.query.username) {
-      scriptQuery = `Select * from user where username = ${db.escape(
-        req.query.username
-      )} and password = ${db.escape(
-        Crypto.createHmac("sha1", "hash123")
-          .update(req.query.password)
-          .digest("hex")
+    if (req.query.email) {
+      scriptQuery = `Select * from user where email = ${db.escape(
+        req.query.email
       )};`;
-      console.log(scriptQuery);
     }
     db.query(scriptQuery, (err, results) => {
-      if (err) return res.status(500).send(err);
-      if (results.length === 0)
-        return res.status(404).send({ message: "User not found" });
-      return res.status(200).send(results);
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
     });
   },
+
+  //{
+
+  // },
+
+  // req.body.password = Crypto.createHmac("sha1", "hash123")
+  //     .update(JSON.stringify(req.body.password))
+  //     .digest("hex");
+  //   let scriptQuery = `Select * from user where email = ${db.escape(
+  //     req.body.email
+  //   )} and password = ${db.escape(req.body.password)};`;
+  //   db.query(scriptQuery, (err, results) => {
+  //     if (err) return res.status(500).send(err);
+  //     if (results[0]) {
+  //       let { id_user, email, password, role, status } = results[0];
+  //       let token = createToken({
+  //         id_user,
+  //         email,
+  //         password,
+  //         role,
+  //         status,
+  //       });
+  //       if (status != "VERIFIED") {
+  //         res.status(200).send({ message: "Akun anda belum terverifikasi" });
+  //       } else {
+  //         res
+  //           .status(200)
+  //           .send({ dataLogin: results[0], token, message: "Login Success" });
+  //       }
+  //     }
+  //   });
 
   addUser: (req, res) => {
     let {
       nama_depan,
       nama_belakang,
       email,
-      password,
       jenis_kelamin,
-      status,
-      alamat,
       tanggal_lahir,
-      usia,
-      foto_profil,
+      password,
+      status,
       role,
     } = req.body;
     password = Crypto.createHmac("sha1", "hash123")
@@ -195,4 +216,16 @@ module.exports = {
     });
   
   }
+  editUser: (req, res) => {
+    let dataUpdate = [];
+    for (let prop in req.body) {
+      dataUpdate.push(`${prop} = ${db.escape(req.body[prop])}`);
+    }
+    let updateQuery = `UPDATE user set ${dataUpdate} where id_user = ${req.params.id};`;
+    console.log(updateQuery);
+    db.query(updateQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
+    });
+  },
 };
