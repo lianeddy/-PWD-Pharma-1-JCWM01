@@ -70,25 +70,23 @@ module.exports = {
         return res.status(500).send(err);
       }
       if (result.length > 0) {
-        return res
-          .status(200)
-          .send({
-            messages: "Username atau email telah terdaftar !",
-            registered: true,
-            redirect: false,
-            alert: "alert-warning",
-          });
+        return res.status(200).send({
+          messages: "Username atau email telah terdaftar !",
+          registered: true,
+          redirect: false,
+          alert: "alert-warning",
+        });
       }
       console.log(password);
       let insertQuery = `Insert into user values (null, ${db.escape(
         nama_depan
-      )}, ${db.escape(nama_belakang)}, ${db.escape(
-        email
-      )}, ${db.escape(password)}, ${db.escape(jenis_kelamin)}, ${db.escape(
-        status
-      )}, ${db.escape(alamat)}, ${db.escape(tanggal_lahir)}, ${db.escape(
-        usia
-      )}, ${db.escape(foto_profil)}, ${db.escape(role)});`;
+      )}, ${db.escape(nama_belakang)}, ${db.escape(email)}, ${db.escape(
+        password
+      )}, ${db.escape(jenis_kelamin)}, ${db.escape(status)}, ${db.escape(
+        alamat
+      )}, ${db.escape(tanggal_lahir)}, ${db.escape(usia)}, ${db.escape(
+        foto_profil
+      )}, ${db.escape(role)});`;
       console.log(insertQuery);
       db.query(insertQuery, (err, result) => {
         if (err) {
@@ -181,11 +179,11 @@ module.exports = {
     });
   },
 
-  uploadPrescription: (req,res) => {
-    console.log(req.params)
+  uploadPrescription: (req, res) => {
+    console.log(req.params);
     let path = "/prescriptions";
     const upload = uploader(path, "IMG").fields([{ name: "file" }]);
-    let id = parseInt(req.params.id)
+    let id = parseInt(req.params.id);
 
     upload(req, res, (error) => {
       if (error) {
@@ -196,8 +194,10 @@ module.exports = {
       // membuat nama file untuk image
       const { file } = req.files;
       const filePath = file ? path + "/" + file[0].filename : null;
-      console.log('file',filePath)
-      let insertQuery = `INSERT INTO prescriptions VALUES (null,${id},${db.escape(filePath)},default);`
+      console.log("file", filePath);
+      let insertQuery = `INSERT INTO prescriptions VALUES (null,${id},${db.escape(
+        filePath
+      )},default);`;
 
       db.query(insertQuery, (err, result) => {
         if (err) {
@@ -206,16 +206,14 @@ module.exports = {
           fs.unlinkSync("./public" + filePath);
           return res.status(500).send(err);
         }
-        res
-          .status(200)
-          .send({
-            message: "Data product berhasil ditambahkan",
-            success: true,
-          });
+        res.status(200).send({
+          message: "Data product berhasil ditambahkan",
+          success: true,
+        });
       });
     });
-  
-  }
+  },
+
   editUser: (req, res) => {
     let dataUpdate = [];
     for (let prop in req.body) {

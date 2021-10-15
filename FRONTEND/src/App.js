@@ -46,7 +46,7 @@ class App extends React.Component {
           <Route component={Admin} path="/admin" />
           <Route component={Verification} path="/verification/:token" />
           <Route component={resetPassword} path="/reset-password" />
-          <Route component={Forgot} path="/forgot" />
+
           <Route component={AdminUploadProduct} path="/admin-upload-product" />
           <Route component={AdminEditProduct} path="/admin-edit-product/:id" />
           <Route component={changePassword} path="/change-password" />
