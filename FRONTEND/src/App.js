@@ -17,11 +17,11 @@ import { connect } from "react-redux";
 import { userKeepLogin, checkStorage } from "./redux/actions/user";
 import changePassword from "./pages/changePassword";
 import Verification from "./pages/Auth/Verification";
-
-// admin pages
+import EditProfile from "./pages/EditProfile";
 import AdminUploadProduct from "./pages/Admin/AdminUploadProduct";
 import AdminEditProduct from "./pages/Admin/AdminEditProduct";
-// end of admin pages
+import { getCartData } from "./redux/actions/cart";
+import RequestDetail from "./pages/Admin/RequestDetail";
 
 class App extends React.Component {
   componentDidMount() {
@@ -30,6 +30,7 @@ class App extends React.Component {
     if (userLocalStorage) {
       const userData = JSON.parse(userLocalStorage);
       this.props.userKeepLogin(userData);
+      this.props.getCartData(userData.id_user);
     } else {
       this.props.checkStorage();
     }
@@ -37,36 +38,29 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <BrowserRouter>
-          <TheNavbar />
-          <Switch>
-            <Route component={Login} path="/login" />
-            <Route component={Register} path="/register" />
-            <Route component={Admin} path="/admin" />
-            <Route component={Verification} path="/verification/:token" />
-            <Route component={resetPassword} path="/reset-password" />
-            {/* admin pages */}
-            <Route
-              component={AdminUploadProduct}
-              path="/admin-upload-product"
-            />
-            <Route
-              component={AdminEditProduct}
-              path="/admin-edit-product/:id"
-            />
-            {/* end of admin pages */}
-            <Route component={changePassword} path="/change-password" />
-            <Route component={ProfilePage} path="/profile-page" />
-            <Route component={Cart} path="/cart" />
-            <Route component={History} path="/history" />
-            <Route component={ProductDetail} path="/product-detail/:obatid" />
-            <Route component={PrescriptionPage} path="/prescription-page" />
-            <Route component={Home} path="/" />
-          </Switch>
-          <Footer />
-        </BrowserRouter>
-      </div>
+      <BrowserRouter>
+        <TheNavbar />
+        <Switch>
+          <Route component={Login} path="/login" />
+          <Route component={Register} path="/register" />
+          <Route component={Admin} path="/admin" />
+          <Route component={Verification} path="/verification/:token" />
+          <Route component={resetPassword} path="/reset-password" />
+
+          <Route component={AdminUploadProduct} path="/admin-upload-product" />
+          <Route component={AdminEditProduct} path="/admin-edit-product/:id" />
+          <Route component={changePassword} path="/change-password" />
+          <Route component={ProfilePage} path="/profile-page/:email" />
+          <Route component={EditProfile} path="/edit-profile/:email" />
+          <Route component={Cart} path="/cart" />
+          <Route component={History} path="/history" />
+          <Route component={ProductDetail} path="/product-detail/:obatid" />
+          <Route component={PrescriptionPage} path="/prescription-page" />
+          <Route component={RequestDetail} path="/request-detail" />
+          <Route component={Home} path="/" />
+        </Switch>
+        <Footer />
+      </BrowserRouter>
     );
   }
 }
@@ -80,6 +74,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   userKeepLogin,
   checkStorage,
+  getCartData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

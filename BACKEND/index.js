@@ -14,10 +14,18 @@ app.get("/", (req, res) => {
   res.status(200).send("<h4>Integrated MySQL with express</h4>");
 });
 
-const { adminRoute, drugsRouters, userRouter } = require("./routers");
+const {
+  adminRoute,
+  drugsRouters,
+  userRouter,
+  userUploadRouter,
+  cartRouter,
+} = require("./routers");
 
 app.use("/obat", drugsRouters);
 app.use("/user", userRouter);
+app.use("/picture", userUploadRouter);
 app.use("/admin", adminRoute);
+app.use("/cart", cartRouter);
 
 app.listen(PORT, () => console.log("API Running: ", PORT));

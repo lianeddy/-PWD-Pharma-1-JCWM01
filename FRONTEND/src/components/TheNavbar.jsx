@@ -17,7 +17,7 @@ import { logoutUser } from "../redux/actions/user";
 class TheNavbar extends React.Component {
 
 
-  
+
   render() {
     return (
       <header className="sticky-top bg-dark text-white">
@@ -34,24 +34,37 @@ class TheNavbar extends React.Component {
                 AMR{" "}
               </h3>
             </a>
-            
+            <form className="nav">
+            <div class="mx-sm-1 mb-2">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Temukan obat..."
+                aria-label="Search"
+              />
+            </div>
+            <button type="submit" className="btn btn-primary mb-2">
+              <i className="fa fa-search"></i>
+            </button>
+          </form>
+
             <div className="col-md-3 text-end">
-              {this.props.userGlobal.username ?  (
+              {this.props.userGlobal.id_user ? (
                 <UncontrolledDropdown>
                   <DropdownToggle
                     className="text-uppercase btn btn-success"
                     caret
                   >
-                    {this.props.userGlobal.username}
+                    Hello, {this.props.userGlobal.nama_depan}
                   </DropdownToggle>
                   <DropdownMenu>
                     <DropdownItem>
                       <Link
                         style={{ textDecoration: "none" }}
                         className="text-dark"
-                        to="/profile-page"
+                        to={`/profile-page/${this.props.userGlobal.email}`}
                       >
-                        EDIT PROFIL
+                        PROFIL ANDA
                       </Link>
                     </DropdownItem>
                     {this.props.userGlobal.role === "ADMIN" ? (
@@ -65,13 +78,26 @@ class TheNavbar extends React.Component {
                         </Link>
                       </DropdownItem>
                     ) : null}
+                    {
+                      this.props.userGlobal.role === "USER" ?
+                        <DropdownItem>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            className="text-dark"
+                            to="/prescription-page"
+                          >
+                            KIRIM RESEP
+                          </Link>
+                        </DropdownItem>
+                        : null
+                    }
                     <DropdownItem>
                       <Link
                         style={{ textDecoration: "none" }}
                         className="text-dark"
-                        to="/cart"
+                        to="/admin"
                       >
-                        KERANJANG
+                        ADMIN
                       </Link>
                     </DropdownItem>
                     <DropdownItem>
@@ -83,6 +109,15 @@ class TheNavbar extends React.Component {
                         Change Password
                       </Link>
                     </DropdownItem>
+                    <DropdownItem>
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      className="text-dark"
+                      to="/cart"
+                    >
+                      KERANJANG ({this.props.cartGlobal.cartList.length})
+                    </Link>
+                  </DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem onClick={this.props.logoutUser}>
                       LOG OUT
@@ -111,6 +146,7 @@ class TheNavbar extends React.Component {
 const mapStateToProps = (state) => {
   return {
     userGlobal: state.user,
+    cartGlobal: state.cart,
   };
 };
 

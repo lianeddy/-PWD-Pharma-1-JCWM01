@@ -62,12 +62,22 @@ module.exports = {
   },
   getDataProduct: (req, res) => {
     console.log("data product");
-    let getQuery = `SELECT * FROM obat;`;
+    console.log(req.query)
 
-    db.query(getQuery, (err, result) => {
-      if (err) res.status(500).send(err);
+    let {page, itemPerPage} = req.query
+    let offset = (page - 1) * itemPerPage
 
-      res.status(200).send(result);
+    let getQueryLimit = `SELECT * FROM obat ORDER BY id_obat LIMIT ${itemPerPage} OFFSET ${offset};`
+    let getQuery = `SELECT COUNT(*) as max FROM obat;`; 
+
+    db.query(getQueryLimit, (err, result) => {
+      if (err)  res.status(500).send(err);
+      
+      db.query(getQuery, (err, count) => {
+        if(err) res.status(500).send(err)
+        res.status(200).send({result, count});
+      })
+
     });
   },
   getDataProductId: (req, res) => {
@@ -203,4 +213,15 @@ module.exports = {
       }
     });
   },
+
+  deleteDataProduct: (req,res) => {
+    let deleteQuery = `DELETE FROM obat WHERE id_obat = ${db.escape(req.params.id)}`
+
+    db.query(deleteQuery, (err, result) => {
+      if(err) return res.status(500).send(err)
+
+      res.status(200).send({message: "Data berhasil dihapus"})
+    })
+  }
+
 };

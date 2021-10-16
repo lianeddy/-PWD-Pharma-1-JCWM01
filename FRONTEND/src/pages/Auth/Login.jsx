@@ -16,9 +16,15 @@ class Login extends React.Component {
   };
 
   render() {
+<<<<<<< HEAD
     // if (this.props.userGlobal.email) {
     //   return <Redirect to="/" />;
     // }
+=======
+    if (this.props.userGlobal.id_user) {
+      return <Redirect to="/" />;
+    }
+>>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
     return (
       <div>
         <div className="container mt-3">
@@ -43,7 +49,11 @@ class Login extends React.Component {
                   <input
                     onChange={this.inputHandler}
                     name="email"
+<<<<<<< HEAD
                     placeholder="email"
+=======
+                    placeholder="E-mail"
+>>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
                     type="text"
                     className="form-control my-2"
                   />
