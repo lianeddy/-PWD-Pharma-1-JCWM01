@@ -37,12 +37,12 @@ class Login extends React.Component {
                   {this.props.userGlobal.errMsg}
                 </div>
               ) : null}
-              <div className="card">
+              <div className="card mb-5">
                 <div className="card-body">
                   <h5 className="font-weight-bold mb-3">Masuk</h5>
                   <input
                     onChange={this.inputHandler}
-                    name="email"
+                    name="email" 
                     placeholder="E-mail"
                     type="text"
                     className="form-control my-2"

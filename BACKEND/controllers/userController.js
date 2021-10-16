@@ -55,6 +55,9 @@ module.exports = {
       nama_depan,
       nama_belakang,
       email,
+      alamat,
+      usia,
+      foto_profil,
       jenis_kelamin,
       tanggal_lahir,
       password,
@@ -150,8 +153,8 @@ module.exports = {
       .update(req.body.currentPassword)
       .digest("hex");
 
-    let selectQuery = `SELECT password FROM user WHERE username = ${db.escape(
-      req.body.username
+    let selectQuery = `SELECT password FROM user WHERE email = ${db.escape(
+      req.body.email
     )}`;
     console.log(selectQuery);
     req.body.newPassword = Crypto.createHmac("sha1", "hash123")
@@ -159,7 +162,7 @@ module.exports = {
       .digest("hex");
     let updateQuery = `UPDATE user SET password = ${db.escape(
       req.body.newPassword
-    )} WHERE username = ${db.escape(req.body.username)}`;
+    )} WHERE email = ${db.escape(req.body.email)}`;
     console.log(updateQuery);
 
     db.query(selectQuery, (err, results) => {
