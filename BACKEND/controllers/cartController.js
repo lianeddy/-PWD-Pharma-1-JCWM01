@@ -75,4 +75,18 @@ module.exports = {
       res.status(200).send(results);
     });
   },
+
+  getPrescriptionCart: (req, res) => {
+    let scriptQuery = `Select * from prescription_cart;`;
+    if (req.query.id_user) {
+      scriptQuery = `select obat_bahan.nama_bahan_obat, prescription_cart.kandungan, obat_bahan.harga_per_mg from prescription_cart
+      left join user on user.id_user = prescription_cart.id_user
+      left join obat_bahan on obat_bahan.id_bahan_obat = prescription_cart.id_bahan_obat
+      where prescription_cart.id_user = ${db.escape(req.query.id_user)};`;
+    }
+    db.query(scriptQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
+    });
+  },
 };
