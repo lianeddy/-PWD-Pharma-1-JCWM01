@@ -31,6 +31,7 @@ class Home extends React.Component {
   fetchCategoryList=()=>{
     Axios.get(`http://localhost:3300/obat/get-drug-category`)
     .then((result)=>{
+      // console.log("hasil",result.data);
       this.setState({categoryDrugList:result.data})
     })
     .catch((err)=>{
@@ -38,12 +39,21 @@ class Home extends React.Component {
     })
   }
 
+  categoryHandler = (golongan) => {
+    this.setState({searchCategory : golongan})
+    this.setState({page : 1})
+  }
+
 
   fetchMaxPage = ()=>{
-    Axios.get(`http://localhost:3300/obat/get-drug-max-page?golongan=${this.state.searchCategory}&nama_obat=${this.props.userGlobal.searchProduct}`)
+    console.log(this.state.searchCategory);
+    Axios.get(`http://localhost:3300/obat/get-drug-max-page?golongan=${this.state.searchCategory}`)
     .then((result)=>{
-      this.setState({maxPage: Math.ceil((result.data[0])/this.state.itemPerPage)})
+      console.log(result.data[0]);
+      this.setState({maxPage: Math.ceil((result.data[0].sumProduct)/this.state.itemPerPage)})
       console.log("checkMaxPage", this.state.maxPage);
+    }).catch((err)=>{
+      alert(err)
     })
   }
 
@@ -54,6 +64,20 @@ class Home extends React.Component {
     });
   };
 
+    renderCategory = () => {
+      return this.state.categoryDrugList.map((val)=> {
+        const capital = val.golongan.charAt(0).toUpperCase() + val.golongan.slice(1);
+        if(this.state.searchCategory===""){
+          return <li><button onClick={()=>this.categoryHandler(val.golongan)} className="button-second btn btn-primary"><p>{capital}</p></button></li>
+        }else{
+          if(val.golongan===this.state.searchCategory){
+            return <li><button onClick={()=>this.categoryHandler(val.golongan)} className="button-second selected btn btn-info"><p>{capital}</p></button></li>
+          }else{
+            return <li><button onClick={()=>this.categoryHandler(val.golongan)} className="button-second" style={{color:'lightgrey'}}><p>{capital}</p></button></li>
+          }
+        }
+      })
+    }
 
   clearFilter=()=>{
     this.setState({searchCategory:""})
@@ -116,6 +140,9 @@ class Home extends React.Component {
         
         <div className="row">
           <div className="col-2 filter-bar">
+          <ul>
+                {this.renderCategory()}
+              </ul>
             <div>
               <button className="btn btn-dark btn-sm filter" onClick={this.fetchFilterDrug}><p>Filter</p></button>
               <button className="btn btn-light btn-sm ms-2 filter" onClick={this.clearFilter}><p>Reset Filter</p></button>

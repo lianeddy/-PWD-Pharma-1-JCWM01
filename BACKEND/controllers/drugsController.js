@@ -36,7 +36,7 @@ module.exports = {
 
     if(request.query.golongan){
       scriptQuery = `select * from db_pharma.obat 
-                      where golongan = ${db.escape(golongan)} and nama_obat like '%${request.query.nama_obat}%'
+                      where golongan = ${db.escape(request.query.golongan)} and nama_obat like '%${request.query.nama_obat}%'
                       ${sort}
                       limit ${limit} offset ${request.query.page*limit};`
     }
@@ -50,26 +50,37 @@ module.exports = {
 
   },
 
+  
 
 
   getMaxPage:(request, response)=>{
-    let scriptQuery=`select count(idobat) from db_pharma.obat
-    where nama_obat like '%${request.query.nama_obat}%'; `
-
-
+    let scriptQuery=`select count(idobat) as sumProduct from db_pharma.obat;`
+    
     if(request.query.golongan){
-      scriptQuery= `select count(idobat) from db_pharma.obat
-      where golongan = ${db.escape(request.query.golongan)} and nama_obat like '%${request.query.nama_obat}%';`
+      scriptQuery= `select count(idobat) as sumProduct from db_pharma.obat
+      where golongan = ${db.escape(request.query.golongan)};`
     }
-
-    db.query(scriptQuery, (err, result)=>{
+    
+    db.query(scriptQuery,(err, result)=>{
       if(err){
         return response.status(500).send(err)
       }else{
+        console.log(result);
         return response.status(200).send(result)
       }
     })
   },
+//   getProductsCategory: (request,response) => {
+//     let scriptQuery = `select category from fp_pwd_5.products p group by category;`
+
+//     db.query(scriptQuery, (err, result)=> {
+//         if (err) {
+//             return response.status(500).send(err)
+//         } else {
+//             return response.status(200).send(result)
+//         }
+//     })
+// },
 
   getDrugCategory:(request, response)=>{
     let scriptQuery=`select golongan from db_pharma.obat o group by golongan;`
