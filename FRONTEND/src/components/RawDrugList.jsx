@@ -21,7 +21,6 @@ class RawDrugList extends React.Component {
   };
 
   renderDataProduct = () => {
-    let no = 1;
     return this.state.productList.map((val) => {
       return (
         <tr>

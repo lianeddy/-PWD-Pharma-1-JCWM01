@@ -56,7 +56,7 @@ class App extends React.Component {
           <Route component={History} path="/history" />
           <Route component={ProductDetail} path="/product-detail/:obatid" />
           <Route component={PrescriptionPage} path="/prescription-page" />
-          <Route component={RequestDetail} path="/request-detail" />
+          <Route component={RequestDetail} path="/request-detail/:id" />
           <Route component={Home} path="/" />
         </Switch>
         <Footer />

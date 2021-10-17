@@ -180,7 +180,7 @@ class EditProfile extends React.Component {
                   <label className="labels">Jenis Kelamin</label>
                   <select
                     onChange={this.inputHandler}
-                    className="form-select"
+                    className="custom-select"
                     name="edit_jenis_kelamin"
                     value={this.state.edit_jenis_kelamin}
                   >
