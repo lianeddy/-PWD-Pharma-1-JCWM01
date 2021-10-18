@@ -9,7 +9,7 @@ class Home extends React.Component {
     filterDrugList: [],
     page: 1,
     maxPage: 0,
-    itemPerPage: 8,
+    itemPerPage: 10,
     searchProductName: "",
     searchCategory: "",
     sortBy: "",

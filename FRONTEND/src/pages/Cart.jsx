@@ -1,3 +1,4 @@
+import axios from "axios";
 import Axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
@@ -65,28 +66,28 @@ class Cart extends React.Component {
     });
   };
 
-  qtyBtnHandler = (action) => {
-    Axios.get(`${API_URL}/cart/get-cart`, {
-      params: {
-        id_user: this.props.userGlobal.id_user,
-      },
-    }).then((result) => {
-      if (action === "increment") {
-        return Axios.patch(
-          `${API_URL}/cart/edit-cart/${result.data[0].id_cart}`,
-          {
-            qty_obat: result.data.qty_obat + 1,
-          }
-        );
-      } else if (action === "decrement") {
-        return Axios.patch(
-          `${API_URL}/cart/edit-cart/${result.data[0].id_cart}`,
-          {
-            qty_obat: result.data[0].qty_obat - 1,
-          }
-        );
-      }
-    });
+  qtyBtnHandler = (action, id_cart, qty_obat) => {
+    console.log(action);
+    console.log(qty_obat);
+    Axios.patch(`${API_URL}/cart/edit-cart/${id_cart}`, {
+      qty_obat,
+    })
+      .then((res) => {
+        this.props.getCartData(this.props.userGlobal.id_user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // if (action === "increment") {
+    //   await Axios.patch(`${API_URL}/cart/edit-cart/${id_cart}`, {
+    //     qty_obat,
+    //   });
+    // } else if (action === "decrement") {
+    //   await Axios.patch(`${API_URL}/cart/edit-cart/${id_cart}`, {
+    //     qty_obat,
+    //   });
+    // }
+    // console.log(qty_obat);
   };
 
   deleteItem = (id_cart) => {
@@ -126,7 +127,11 @@ class Cart extends React.Component {
               <div className="input-group-btn">
                 <button
                   onClick={() => {
-                    this.qtyBtnHandler("decrement");
+                    this.qtyBtnHandler(
+                      "decrement",
+                      val.id_cart,
+                      val.qty_obat - 1
+                    );
                   }}
                   className="btn btn-sm btn-primary btn-minus"
                 >
@@ -141,7 +146,11 @@ class Cart extends React.Component {
               <div className="input-group-btn">
                 <button
                   onClick={() => {
-                    this.incrementQty(val.id_cart);
+                    this.qtyBtnHandler(
+                      "increment",
+                      val.id_cart,
+                      val.qty_obat + 1
+                    );
                   }}
                   className="btn btn-sm btn-primary btn-plus"
                 >

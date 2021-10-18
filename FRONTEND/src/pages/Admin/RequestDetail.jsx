@@ -59,6 +59,7 @@ class RequestDetail extends React.Component {
         kandungan,
       })
         .then(() => {
+          Axios.patch(`${API_URL}`);
           alert("Berhasil memasukkan request resep");
         })
         .catch((err) => {

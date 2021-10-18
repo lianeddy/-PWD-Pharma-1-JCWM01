@@ -51,9 +51,7 @@ module.exports = {
     for (let prop in req.body) {
       dataUpdate.push(`${prop} = ${db.escape(req.body[prop])}`);
     }
-    let updateQuery = `UPDATE cart set ${dataUpdate} where id_cart = ${db.escape(
-      req.params.id
-    )};`;
+    let updateQuery = `UPDATE cart set ${dataUpdate} where id_cart = ${req.params.id};`;
     console.log(updateQuery);
     db.query(updateQuery, (err, results) => {
       if (err) res.status(500).send(err);
