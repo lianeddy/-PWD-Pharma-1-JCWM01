@@ -3,11 +3,7 @@ const init_state = {
   nama_depan: "",
   nama_belakang: "",
   jenis_kelamin: "",
-<<<<<<< HEAD
-  status: "",
-=======
   tanggal_lahir: "",
->>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
   email: "",
   password: "",
   status: "",

@@ -73,20 +73,18 @@ module.exports = {
       res.status(200).send(results);
     });
   },
-<<<<<<< HEAD
 
-
-
-  sortBy: (req, res)=>{
+  sortBy: (req, res) => {
     let sortingQuery = `SELECT FROM obat ORDER BY nama_obat DESC = ${db.escape(
       req.params.nama_obat
-    )};`
+    )};`;
 
-    db.query(sortingQuery, (err, results)=>{
-      if (err) res.status(500).send(err)
-      res.status(200).send(results)
-    })
-=======
+    db.query(sortingQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
+    });
+  },
+
   getRawDrug: (req, res) => {
     let scriptQuery = "Select * from obat_bahan;";
     if (req.query.idobat) {
@@ -98,6 +96,5 @@ module.exports = {
       if (err) res.status(500).send(err);
       res.status(200).send(results);
     });
->>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
   },
 };

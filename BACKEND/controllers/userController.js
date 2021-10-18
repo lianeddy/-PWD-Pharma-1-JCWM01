@@ -9,17 +9,12 @@ module.exports = {
   getUser: (req, res) => {
     let scriptQuery = "Select * from user;";
     if (req.query.email) {
-<<<<<<< HEAD
       scriptQuery = `Select * from user where email= ${db.escape(
         req.query.email
       )} and password = ${db.escape(
         Crypto.createHmac("sha1", "hash123")
           .update(req.query.password)
           .digest("hex")
-=======
-      scriptQuery = `Select * from user where email = ${db.escape(
-        req.query.email
->>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
       )};`;
     }
     db.query(scriptQuery, (err, results) => {
@@ -73,40 +68,24 @@ module.exports = {
     password = Crypto.createHmac("sha1", "hash123")
       .update(password)
       .digest("hex");
-<<<<<<< HEAD
-      let getQuery = `SELECT * FROM user WHERE email = ${db.escape(email)} OR email = ${db.escape(email)} `
-=======
     let getQuery = `SELECT * FROM user WHERE email = ${db.escape(email)} `;
->>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
     db.query(getQuery, (err, result) => {
       if (err) {
         return res.status(500).send(err);
       }
-<<<<<<< HEAD
-      if(result.length > 0){
-        return res.status(200).send({messages : "Email telah terdaftar !", registered: true, redirect:false, alert: "alert-warning"})
-=======
       if (result.length > 0) {
-        return res.status(200).send({
-          messages: "Username atau email telah terdaftar !",
-          registered: true,
-          redirect: false,
-          alert: "alert-warning",
-        });
->>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
+        return res
+          .status(200)
+          .send({
+            messages: "Email telah terdaftar !",
+            registered: true,
+            redirect: false,
+            alert: "alert-warning",
+          });
       }
       console.log(password);
       let insertQuery = `Insert into user values (null, ${db.escape(
         nama_depan
-<<<<<<< HEAD
-      )}, ${db.escape(nama_belakang)},${db.escape(
-        email
-      )}, ${db.escape(password)}, ${db.escape(jenis_kelamin)}, ${db.escape(
-        status
-      )}, ${db.escape(alamat)}, ${db.escape(tanggal_lahir)}, ${db.escape(
-        usia
-      )}, ${db.escape(foto_profil)}, ${db.escape(role)});`;
-=======
       )}, ${db.escape(nama_belakang)}, ${db.escape(email)}, ${db.escape(
         password
       )}, ${db.escape(jenis_kelamin)}, ${db.escape(status)}, ${db.escape(
@@ -114,7 +93,6 @@ module.exports = {
       )}, ${db.escape(tanggal_lahir)}, ${db.escape(usia)}, ${db.escape(
         foto_profil
       )}, ${db.escape(role)});`;
->>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
       console.log(insertQuery);
       db.query(insertQuery, (err, result) => {
         if (err) {
@@ -131,13 +109,8 @@ module.exports = {
             // bahan buat token
             let { id_user, email, role } = results2[0];
             // membuat token
-<<<<<<< HEAD
             let token = createToken({ id_user, email, role });
-  
-=======
-            let token = createToken({ id_user, username, email, role });
 
->>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
             let mail = {
               from: `Admin <shabrinaartarini46@gmail.com>`,
               to: `${email}`,
@@ -163,11 +136,7 @@ module.exports = {
           });
         }
       });
-<<<<<<< HEAD
-    })
-=======
     });
->>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
   },
 
   verification: (req, res) => {
@@ -187,15 +156,8 @@ module.exports = {
       .update(req.body.currentPassword)
       .digest("hex");
 
-<<<<<<< HEAD
-    let selectQuery = `SELECT password FROM user WHERE email = ${db.escape(req.body.email)}`
-    console.log(selectQuery)
-    req.body.newPassword = Crypto.createHmac("sha1", "hash123").update(req.body.newPassword).digest("hex")
-    let updateQuery = `UPDATE user SET password = ${db.escape(req.body.newPassword)} WHERE email = ${db.escape(req.body.email)}`
-    console.log(updateQuery)
-=======
-    let selectQuery = `SELECT password FROM user WHERE username = ${db.escape(
-      req.body.username
+    let selectQuery = `SELECT password FROM user WHERE email = ${db.escape(
+      req.body.email
     )}`;
     console.log(selectQuery);
     req.body.newPassword = Crypto.createHmac("sha1", "hash123")
@@ -203,9 +165,8 @@ module.exports = {
       .digest("hex");
     let updateQuery = `UPDATE user SET password = ${db.escape(
       req.body.newPassword
-    )} WHERE username = ${db.escape(req.body.username)}`;
+    )} WHERE email = ${db.escape(req.body.email)}`;
     console.log(updateQuery);
->>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
 
     db.query(selectQuery, (err, results) => {
       if (err) {

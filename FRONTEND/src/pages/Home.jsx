@@ -84,22 +84,6 @@ class Home extends React.Component {
     }
   };
 
-<<<<<<< HEAD
-  searchInputHandler=(event)=>{
-    const name = event.target.name
-    const value = event.target.value
-    this.setState({[name]: value})
-  }
-  searchButtonHandler=()=>{
-    // Axios.get("http://localhost:3300/obat/sortBy")
-    // .then()
-    const filterDrugList = this.state.drugList.filter((val)=>{
-      return val.nama_obat.toLowerCase().includes(this.state.searchProductName.toLowerCase()) &&
-      val.golongan.toLowerCase().includes(this.state.searchCategory.toLowerCase())
-    })
-    this.setState({filterDrugList, maxPage: Math.ceil(filterDrugList.length / this.state.itemPerPage), page:1})
-  }
-=======
   searchInputHandler = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -122,7 +106,6 @@ class Home extends React.Component {
       page: 1,
     });
   };
->>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
 
   render() {
     return (

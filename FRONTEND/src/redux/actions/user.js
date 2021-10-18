@@ -6,23 +6,13 @@ export const registerUser = ({
   nama_depan,
   nama_belakang,
   jenis_kelamin,
-<<<<<<< HEAD
-=======
   tanggal_lahir,
->>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
   email,
   password,
   konfirmasi_password,
 }) => {
   return (dispatch) => {
     if (
-<<<<<<< HEAD
-      nama_depan == "" ||
-      nama_belakang == "" ||
-      jenis_kelamin == "" ||
-      email == "" ||
-      password == ""
-=======
       nama_depan === "" ||
       nama_belakang === "" ||
       jenis_kelamin === "" ||
@@ -30,7 +20,6 @@ export const registerUser = ({
       email === "" ||
       password === "" ||
       konfirmasi_password === ""
->>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
     ) {
       return dispatch({
         type: "USER_ERROR",
@@ -45,11 +34,6 @@ export const registerUser = ({
       return Axios.post(`${API_URL}/user/add-user`, {
         nama_depan,
         nama_belakang,
-<<<<<<< HEAD
-        jenis_kelamin,
-        status: "UNVERIFIED",
-=======
->>>>>>> a34c9109ce4df6f73badc68744654356107b11cb
         email,
         password,
         jenis_kelamin,
