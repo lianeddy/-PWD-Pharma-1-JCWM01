@@ -14,6 +14,7 @@ const init_state = {
   role: "",
   foto_profile: "",
   errMsg: "",
+  searchProduct: "",
   storageIsChecked: false,
 };
 
@@ -21,6 +22,8 @@ export default (state = init_state, action) => {
   switch (action.type) {
     case "USER_LOGIN":
       return { ...state, ...action.payload, storageIsChecked: true };
+    case "SEARCH_PRODUCT":
+      return { ...state, ...action.payload };
     case "USER_ERROR":
       return { ...state, errMsg: action.payload };
     case "USER_LOGOUT":

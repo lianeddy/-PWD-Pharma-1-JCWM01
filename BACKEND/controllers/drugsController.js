@@ -1,18 +1,123 @@
+const { response } = require("express");
 const { db } = require("../database");
 
 module.exports = {
-  getData: (req, res) => {
-    let scriptQuery = "Select * from obat;";
-    if (req.query.idobat) {
-      scriptQuery = `Select * from obat where idobat = ${db.escape(
-        req.query.idobat
-      )};`;
+  getData: (request, response) => {
+    const limit = 6
+    console.log(request.query.nama_obat)
+
+    let scriptQuery = `select * from db_pharma.obat
+    where nama_obat like '%${request.query.nama_obat}%'
+    limit ${limit} offset ${request.query.page*limit};`
+
+    let sort = ""
+
+    switch(request.query.sortby){
+      case "name_asc":
+          sort = "order by nama_obat asc"
+          break;
+      case "name_desc":
+          sort = "order by nama_obat desc"
+          break;
+      case "price_asc":
+          sort = "order by harga asc"
+          break;
+      case "price_desc":
+          sort = "order by harga desc"
+          break;
+      default:
+          sort = ""
+  }
+
+  scriptQuery = `select * from db_pharma.obat 
+                  where nama_obat like '%${request.query.nama_obat}%'
+                  ${sort}
+                  limit ${limit} offset ${request.query.page*limit};`
+
+    if(request.query.golongan){
+      scriptQuery = `select * from db_pharma.obat 
+                      where golongan = ${db.escape(request.query.golongan)} and nama_obat like '%${request.query.nama_obat}%'
+                      ${sort}
+                      limit ${limit} offset ${request.query.page*limit};`
     }
-    db.query(scriptQuery, (err, results) => {
-      if (err) res.status(500).send(err);
-      res.status(200).send(results);
-    });
+    db.query(scriptQuery, (err, result)=>{
+      if (err){
+        return response.status(500).send(err)
+      }else{
+        return response.status(200).send(result)
+      }
+    })
+
   },
+
+  
+
+
+  getMaxPage:(request, response)=>{
+    let scriptQuery=`select count(idobat) as sumProduct from db_pharma.obat;`
+    
+    if(request.query.golongan){
+      scriptQuery= `select count(idobat) as sumProduct from db_pharma.obat
+      where golongan = ${db.escape(request.query.golongan)};`
+    }
+    
+    db.query(scriptQuery,(err, result)=>{
+      if(err){
+        return response.status(500).send(err)
+      }else{
+        console.log(result);
+        return response.status(200).send(result)
+      }
+    })
+  },
+//   getProductsCategory: (request,response) => {
+//     let scriptQuery = `select category from fp_pwd_5.products p group by category;`
+
+//     db.query(scriptQuery, (err, result)=> {
+//         if (err) {
+//             return response.status(500).send(err)
+//         } else {
+//             return response.status(200).send(result)
+//         }
+//     })
+// },
+
+  getDrugCategory:(request, response)=>{
+    let scriptQuery=`select golongan from db_pharma.obat o group by golongan;`
+    if(request.query.nama_obat){
+      scriptQuery= `select golongan from db_pharma.obat
+      where nama_obat = ${db.escape(request.query.nama_obat)}`
+    }
+
+    db.query(scriptQuery, (err, result)=>{
+      if(err){
+        return response.status(500).send(err)
+      }else{
+        return response.status(200).send(result)
+      }
+    })
+  },
+
+  
+  getDrugDetail:(request, response)=>{
+    let scriptQuery = `select * from db_pharma.obat o
+    where o.idobat = ${request.query.idobat};`
+
+
+    db.query(scriptQuery, (err,result)=>{
+      if(err){
+        return response.status(500).send(err)
+      }else{
+        return response.status(200).send(result)
+      }
+    })
+  },
+
+
+
+
+
+
   addData: (req, res) => {
     let {
       nama_obat,
@@ -50,6 +155,8 @@ module.exports = {
       );
     });
   },
+
+
   editData: (req, res) => {
     let dataUpdate = [];
     for (let prop in req.body) {
