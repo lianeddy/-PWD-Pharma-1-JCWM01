@@ -38,7 +38,7 @@ class Login extends React.Component {
                 </div>
               ) : null}
               <div className="card mb-5">
-                <div className="card-body ">
+                <div className="card-body">
                   <h5 className="font-weight-bold mb-3">Masuk</h5>
                   <input
                     onChange={this.inputHandler}

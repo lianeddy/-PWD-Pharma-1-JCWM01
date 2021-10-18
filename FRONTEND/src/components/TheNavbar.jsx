@@ -1,11 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
-  Navbar,
-  Nav,
-  NavItem,
-  NavbarBrand,
-  NavbarText,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -15,26 +10,22 @@ import { connect } from "react-redux";
 import { logoutUser } from "../redux/actions/user";
 
 class TheNavbar extends React.Component {
-
-
-
   render() {
     return (
       <header className="sticky-top bg-dark text-white">
-        <div className="container">
-          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
-            <a
-              href="/"
-              className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-white text-decoration-none"
-            >
-              <h3>
-                <span>
-                  <i className="fas fa-tablets"></i>
-                </span>
-                AMR{" "}
-              </h3>
-            </a>
-            <form className="nav">
+        <div className="d-flex flex-wrap align-items-center justify-content-between py-2 mx-5">
+          <a
+            href="/"
+            className="d-flex col-md-3 mb-2 mb-md-0 text-white text-decoration-none"
+          >
+            <h3>
+              <span>
+                <i className="fas fa-tablets"></i>
+              </span>
+              AMR{" "}
+            </h3>
+          </a>
+          <form className="nav form-group">
             <div class="mx-sm-1 mb-2">
               <input
                 type="text"
@@ -47,69 +38,56 @@ class TheNavbar extends React.Component {
               <i className="fa fa-search"></i>
             </button>
           </form>
+          <div className="text-end">
+            {this.props.userGlobal.id_user ? (
+              <UncontrolledDropdown>
+                <DropdownToggle
+                  className="text-uppercase btn btn-success"
+                  caret
+                >
+                  Hello, {this.props.userGlobal.nama_depan}
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem>
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      className="text-dark"
+                      to={`/profile-page/${this.props.userGlobal.email}`}
+                    >
+                      PROFIL ANDA
+                    </Link>
+                  </DropdownItem>
 
-            <div className="col-md-3 text-end">
-              {this.props.userGlobal.id_user ? (
-                <UncontrolledDropdown>
-                  <DropdownToggle
-                    className="text-uppercase btn btn-success"
-                    caret
-                  >
-                    Hello, {this.props.userGlobal.nama_depan}
-                  </DropdownToggle>
-                  <DropdownMenu>
+                  {this.props.userGlobal.role === "USER" ? (
                     <DropdownItem>
                       <Link
                         style={{ textDecoration: "none" }}
                         className="text-dark"
-                        to={`/profile-page/${this.props.userGlobal.email}`}
+                        to="/prescription-page"
                       >
-                        PROFIL ANDA
+                        KIRIM RESEP
                       </Link>
                     </DropdownItem>
-                    {this.props.userGlobal.role === "ADMIN" ? (
-                      <DropdownItem>
-                        <Link
-                          style={{ textDecoration: "none" }}
-                          className="text-dark"
-                          to="/admin"
-                        >
-                          ADMIN
-                        </Link>
-                      </DropdownItem>
-                    ) : null}
-                    {
-                      this.props.userGlobal.role === "USER" ?
-                        <DropdownItem>
-                          <Link
-                            style={{ textDecoration: "none" }}
-                            className="text-dark"
-                            to="/prescription-page"
-                          >
-                            KIRIM RESEP
-                          </Link>
-                        </DropdownItem>
-                        : null
-                    }
-                    <DropdownItem>
-                      <Link
-                        style={{ textDecoration: "none" }}
-                        className="text-dark"
-                        to="/admin"
-                      >
-                        ADMIN
-                      </Link>
-                    </DropdownItem>
-                    <DropdownItem>
-                      <Link
-                        style={{ textDecoration: "none" }}
-                        className="text-dark"
-                        to="/change-password"
-                      >
-                        Change Password
-                      </Link>
-                    </DropdownItem>
-                    <DropdownItem>
+                  ) : null}
+                  <DropdownItem>
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      className="text-dark"
+                      to="/admin"
+                    >
+                      ADMIN
+                    </Link>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      className="text-dark"
+                      to="/change-password"
+                    >
+                      CHANGE PASSWORD
+                    </Link>
+                  </DropdownItem>
+                  <DropdownItem>
                     <Link
                       style={{ textDecoration: "none" }}
                       className="text-dark"
@@ -118,24 +96,23 @@ class TheNavbar extends React.Component {
                       KERANJANG ({this.props.cartGlobal.cartList.length})
                     </Link>
                   </DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem onClick={this.props.logoutUser}>
-                      LOG OUT
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              ) : (
-                <button
-                  type="button"
-                  href="/"
-                  className="btn btn-outline-success me-2 "
-                >
-                  <Link to="/login" className="text-light text-decoration-none">
-                    Login / Register
-                  </Link>
-                </button>
-              )}
-            </div>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={this.props.logoutUser}>
+                    LOG OUT
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            ) : (
+              <button
+                type="button"
+                href="/"
+                className="btn btn-outline-success me-2 "
+              >
+                <Link to="/login" className="text-light text-decoration-none">
+                  Login / Register
+                </Link>
+              </button>
+            )}
           </div>
         </div>
       </header>

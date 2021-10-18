@@ -59,6 +59,9 @@ module.exports = {
       nama_depan,
       nama_belakang,
       email,
+      alamat,
+      usia,
+      foto_profil,
       jenis_kelamin,
       tanggal_lahir,
       password,
@@ -74,14 +77,12 @@ module.exports = {
         return res.status(500).send(err);
       }
       if (result.length > 0) {
-        return res
-          .status(200)
-          .send({
-            messages: "Email telah terdaftar !",
-            registered: true,
-            redirect: false,
-            alert: "alert-warning",
-          });
+        return res.status(200).send({
+          messages: "Email telah terdaftar !",
+          registered: true,
+          redirect: false,
+          alert: "alert-warning",
+        });
       }
       console.log(password);
       let insertQuery = `Insert into user values (null, ${db.escape(
@@ -163,6 +164,10 @@ module.exports = {
     req.body.newPassword = Crypto.createHmac("sha1", "hash123")
       .update(req.body.newPassword)
       .digest("hex");
+    let selectQuery = `SELECT password FROM user WHERE email = ${db.escape(
+      req.body.email
+    )}`;
+    console.log(selectQuery);
     let updateQuery = `UPDATE user SET password = ${db.escape(
       req.body.newPassword
     )} WHERE email = ${db.escape(req.body.email)}`;

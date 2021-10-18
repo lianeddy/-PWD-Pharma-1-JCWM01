@@ -149,3 +149,13 @@ export const checkStorage = () => {
     type: "CHECK_STORAGE",
   };
 };
+
+
+export const searchProduct = (searchProduct) => {
+  return (dispatch) => {
+    dispatch({
+      type: "SEARCH_PRODUCT",
+      payload: searchProduct,
+    });
+  };
+};

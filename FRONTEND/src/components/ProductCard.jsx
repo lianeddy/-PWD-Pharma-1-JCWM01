@@ -16,14 +16,14 @@ render(){
             <h6 className="text-truncate mb-3">
               {this.props.productData.nama_obat}
             </h6>
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-start">
               <h6>
-                Rp. {this.props.productData.harga} /{" "}
+                Rp.{this.props.productData.harga} /{" "}
                 {this.props.productData.satuan_jual}
               </h6>
             </div>
           </div>
-          <span className="test-muted">Rp. {this.props.productData.harga_jual}</span>
+          {/* <span className="test-muted">Rp. {this.props.productData.harga_jual}</span> */}
         <div className="d-flex flex-row justify-content-between mx-auto">
         <div className="d-flex flex-row justify-content-between  mx-2 ">
         <Link

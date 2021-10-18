@@ -12,7 +12,7 @@ class ProductDetail extends React.Component {
   };
 
   fetchProductData = () => {
-    Axios.get(`http://localhost:3300/obat/get`, {
+    Axios.get(`http://localhost:3300/obat/get-drug-detail?product_id=${this.props.match.params.idobat}`, {
       params: {
         idobat: this.props.match.params.obatid,
       },
