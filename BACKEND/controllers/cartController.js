@@ -64,13 +64,24 @@ module.exports = {
   renderCart: (req, res) => {
     let scriptQuery = "Select * from obat;";
     if (req.query.id_user) {
-      scriptQuery = `select obat.foto_obat, obat.nama_obat, cart.qty_obat, cart.harga from cart
+      scriptQuery = `select cart.id_cart, obat.foto_obat, obat.nama_obat, cart.qty_obat, cart.harga from cart
       left join user on
       user.id_user = cart.id_user
       left join obat on obat.idobat = cart.idobat
       where cart.id_user = ${db.escape(req.query.id_user)};`;
     }
     db.query(scriptQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
+    });
+  },
+
+  deleteCart: (req, res) => {
+    let deleteQuery = `Delete from cart where id_cart = ${db.escape(
+      req.params.id_cart
+    )};`;
+    console.log(deleteQuery);
+    db.query(deleteQuery, (err, results) => {
       if (err) res.status(500).send(err);
       res.status(200).send(results);
     });
