@@ -1,4 +1,3 @@
-import axios from "axios";
 import Axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
@@ -51,24 +50,7 @@ class Cart extends React.Component {
     });
   };
 
-  incrementQty = (id_cart) => {
-    Axios.get(`${API_URL}/cart/get-cart`, {
-      params: {
-        id_user: this.props.userGlobal.id_user,
-      },
-    }).then((result) => {
-      this.setState({ drugsData: result.data[0] });
-      Axios.patch(`${API_URL}/cart/edit-cart/${id_cart}`, {
-        qty_obat: this.state.drugsData.qty_obat + 1,
-      }).then(() => {
-        this.props.getCartData(this.props.userGlobal.id_user);
-      });
-    });
-  };
-
-  qtyBtnHandler = (action, id_cart, qty_obat) => {
-    console.log(action);
-    console.log(qty_obat);
+  qtyBtnHandler = (id_cart, qty_obat) => {
     Axios.patch(`${API_URL}/cart/edit-cart/${id_cart}`, {
       qty_obat,
     })
@@ -77,17 +59,8 @@ class Cart extends React.Component {
       })
       .catch((err) => {
         console.log(err);
+        alert("Terjadi kesalahan saat mengubah qty");
       });
-    // if (action === "increment") {
-    //   await Axios.patch(`${API_URL}/cart/edit-cart/${id_cart}`, {
-    //     qty_obat,
-    //   });
-    // } else if (action === "decrement") {
-    //   await Axios.patch(`${API_URL}/cart/edit-cart/${id_cart}`, {
-    //     qty_obat,
-    //   });
-    // }
-    // console.log(qty_obat);
   };
 
   deleteItem = (id_cart) => {
@@ -127,11 +100,7 @@ class Cart extends React.Component {
               <div className="input-group-btn">
                 <button
                   onClick={() => {
-                    this.qtyBtnHandler(
-                      "decrement",
-                      val.id_cart,
-                      val.qty_obat - 1
-                    );
+                    this.qtyBtnHandler(val.id_cart, val.qty_obat - 1);
                   }}
                   className="btn btn-sm btn-primary btn-minus"
                 >
@@ -146,11 +115,7 @@ class Cart extends React.Component {
               <div className="input-group-btn">
                 <button
                   onClick={() => {
-                    this.qtyBtnHandler(
-                      "increment",
-                      val.id_cart,
-                      val.qty_obat + 1
-                    );
+                    this.qtyBtnHandler(val.id_cart, val.qty_obat + 1);
                   }}
                   className="btn btn-sm btn-primary btn-plus"
                 >
@@ -182,7 +147,7 @@ class Cart extends React.Component {
       <div className="container-fluid">
         <h2 className="text-center">KERANJANG BELANJA</h2>
         <div className="row px-xl-5 mt-2">
-          <div className="col-lg-8 table-responsive mb-5">
+          <div className="col-lg-8 table-responsive mb-3 bg-light">
             <h4 className="text-center text-uppercase">Obat bebas</h4>
             <table className="table table-light table-borderless table-hover table-striped text-center mb-0">
               <thead className="thead-dark border-bottom">

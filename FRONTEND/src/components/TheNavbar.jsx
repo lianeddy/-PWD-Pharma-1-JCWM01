@@ -16,7 +16,7 @@ class TheNavbar extends React.Component {
         <div className="d-flex flex-wrap align-items-center justify-content-between py-2 mx-5">
           <a
             href="/"
-            className="d-flex col-md-3 mb-2 mb-md-0 text-white text-decoration-none"
+            className="d-flex mb-md-0 text-white text-decoration-none"
           >
             <h3>
               <span>
@@ -25,7 +25,7 @@ class TheNavbar extends React.Component {
               AMR{" "}
             </h3>
           </a>
-          <form className="nav form-group">
+          <form className="nav form-group justify-content-center">
             <div class="mx-sm-1 mb-2">
               <input
                 type="text"

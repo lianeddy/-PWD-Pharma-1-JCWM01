@@ -9,7 +9,7 @@ class Home extends React.Component {
     filterDrugList: [],
     page: 1,
     maxPage: 0,
-    itemPerPage: 10,
+    itemPerPage: 8,
     searchProductName: "",
     searchCategory: "",
     sortBy: "",
@@ -188,24 +188,9 @@ class Home extends React.Component {
             {">"}
           </button>
         </div>
-        <p>
-          AMR Pharmacy memberikan kemudahan bagi Anda untuk tebus obat resep
-          tanpa antre secara online dengan adanya layanan upload resep dokter.
-          Tidak perlu antri menebus resep di Rumah Sakit, Klinik, atau Apotek,
-          sekarang Anda bisa langsung upload resep dokter di website AMR
-          Pharmacy. Caranya mudah, dengan foto langsung resep obat menggunakan
-          smartphone dan upload pada menu kirim resep yang tersedia di AMR
-          Pharmacy.
-        </p>
       </div>
     );
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    userGlobal: state.user,
-  };
-};
 
 export default Home;

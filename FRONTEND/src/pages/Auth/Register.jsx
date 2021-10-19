@@ -30,31 +30,37 @@ class Register extends React.Component {
     const name = event.target.name;
 
     // kondisi untuk disabled tombol kirim
-    if (this.state.nama_depan && this.state.nama_belakang && this.state.email && this.state.password) {
-      console.log("Masuk1")
+    if (
+      this.state.nama_depan &&
+      this.state.nama_belakang &&
+      this.state.email &&
+      this.state.password
+    ) {
+      console.log("Masuk1");
       if (value.length > 0) {
-        console.log("Masuk2")
-        this.setState({ btnSendDisabled: false })
+        console.log("Masuk2");
+        this.setState({ btnSendDisabled: false });
       } else {
-        this.setState({ btnSendDisabled: true })
+        this.setState({ btnSendDisabled: true });
       }
     } else {
-      this.setState({ btnSendDisabled: true })
+      this.setState({ btnSendDisabled: true });
     }
 
     // kondisi untuk password
-    if (name == "password" && value.length < 9) {
-      this.setState({ alertPassword: true, btnSendDisabled: true })
+    if (name === "password" && value.length < 9) {
+      this.setState({ alertPassword: true, btnSendDisabled: true });
     } else {
-      this.setState({ alertPassword: false })
+      this.setState({ alertPassword: false });
     }
 
     // kondisi untuk email
-    let filter = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (name == "email" && !filter.test(value)) {
-      this.setState({ alertEmail: true, btnSendDisabled: true })
+    let filter =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (name === "email" && !filter.test(value)) {
+      this.setState({ alertEmail: true, btnSendDisabled: true });
     } else {
-      this.setState({ alertEmail: false })
+      this.setState({ alertEmail: false });
     }
 
     if (name !== "password" || name !== "email")
@@ -62,14 +68,14 @@ class Register extends React.Component {
   };
 
   registerHandler = () => {
-    if (this.state.nama_depan && this.state.nama_belakang && this.state.email && this.state.password) {
-      const {
-        nama_depan,
-        nama_belakang,
-        jenis_kelamin,
-        email,
-        password,
-      } = this.state;
+    if (
+      this.state.nama_depan &&
+      this.state.nama_belakang &&
+      this.state.email &&
+      this.state.password
+    ) {
+      const { nama_depan, nama_belakang, jenis_kelamin, email, password } =
+        this.state;
       Axios.post(`${API_URL}/user/add-user`, {
         nama_depan,
         nama_belakang,
@@ -77,45 +83,44 @@ class Register extends React.Component {
         email,
         password,
         status: "UNVERIFIED",
-        role: "USER"
+        role: "USER",
       })
         .then((res) => {
-          this.setState({ messages: res.data.messages, registered: res.data.registered, alert: res.data.alert })
+          this.setState({
+            messages: res.data.messages,
+            registered: res.data.registered,
+            alert: res.data.alert,
+          });
           setTimeout(() => {
             // menjalankan redirect ke page login jika user berhasil terdaftar
-            this.setState({ redirect: res.data.redirect, })
+            this.setState({ redirect: res.data.redirect });
 
             // mematikan alert untuk username atau email telah terpakai
-            this.setState({ registered: false })
+            this.setState({ registered: false });
           }, 2000);
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
-      alert("Masukkan data dengan benar")
+      alert("Masukkan data dengan benar");
     }
   };
-
 
   render() {
     return (
       <div className="container">
-        {
-          this.state.registered ?
-            <div>
-              <div class={`alert postion-absolute ${this.state.alert}`} role="alert">
-
-                {this.state.messages}
-              </div>
-              {
-                this.state.redirect ?
-                  <Redirect to="/login" /> : null
-              }
+        {this.state.registered ? (
+          <div>
+            <div
+              class={`alert postion-absolute ${this.state.alert}`}
+              role="alert"
+            >
+              {this.state.messages}
             </div>
-            :
-            null
-        }
+            {this.state.redirect ? <Redirect to="/login" /> : null}
+          </div>
+        ) : null}
         <div className="row">
           <div className="col-12 text-center">
             <h1>Daftarkan diri anda!</h1>
@@ -153,13 +158,28 @@ class Register extends React.Component {
                   <label htmlFor="">Jenis Kelamin</label>
                   <div className="d-flex">
                     <div class="form-check mr-5">
-                      <input class="form-check-input" type="radio" name="jenis_kelamin" id="laki-laki" value="laki-laki" onClick={this.inputHandler} checked={this.state.jenis_kelamin == "laki-laki"} />
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="jenis_kelamin"
+                        id="laki-laki"
+                        value="laki-laki"
+                        onClick={this.inputHandler}
+                        checked={this.state.jenis_kelamin === "laki-laki"}
+                      />
                       <label class="form-check-label" for="laki-laki">
                         Laki-laki
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="jenis_kelamin" value="perempuan" onClick={this.inputHandler} id="perempuan" />
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="jenis_kelamin"
+                        value="perempuan"
+                        onClick={this.inputHandler}
+                        id="perempuan"
+                      />
                       <label class="form-check-label" for="perempuan">
                         Perempuan
                       </label>
@@ -174,14 +194,14 @@ class Register extends React.Component {
                     type="email"
                     className="form-control my-2"
                   />
-                  {
-                    this.state.alertEmail ?
-                      <div class="alert alert-warning position-absolute top-0 start-100 w-100" role="alert">
-                        Email harus benar
-                      </div>
-                      :
-                      null
-                  }
+                  {this.state.alertEmail ? (
+                    <div
+                      class="alert alert-warning position-absolute top-0 start-100 w-100"
+                      role="alert"
+                    >
+                      Email harus benar
+                    </div>
+                  ) : null}
                 </div>
 
                 <div className="position-relative">
@@ -192,14 +212,14 @@ class Register extends React.Component {
                     type="password"
                     className="form-control my-2"
                   />
-                  {
-                    this.state.alertPassword ?
-                      <div class="alert alert-warning position-absolute top-0 start-100 w-100" role="alert">
-                        password harus lebih dari 8 karakter
-                      </div>
-                      :
-                      null
-                  }
+                  {this.state.alertPassword ? (
+                    <div
+                      class="alert alert-warning position-absolute top-0 start-100 w-100"
+                      role="alert"
+                    >
+                      password harus lebih dari 8 karakter
+                    </div>
+                  ) : null}
                 </div>
 
                 <div className="d-flex flex-row justify-content-between align-items-center">

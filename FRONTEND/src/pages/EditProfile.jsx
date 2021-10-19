@@ -126,6 +126,7 @@ class EditProfile extends React.Component {
                 className="rounded-circle img-fluid"
                 width="150px"
                 src={this.state.edit_foto_profil}
+                alt=""
               />
               <div class="form-group mx-auto text-center align-items-center">
                 <label>Ganti foto profil?</label>

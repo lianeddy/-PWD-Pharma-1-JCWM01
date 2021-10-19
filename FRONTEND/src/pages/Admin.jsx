@@ -2,12 +2,12 @@ import React from "react";
 import { Redirect } from "react-router";
 import ListDataProduct from "./Admin/ListDataProduct";
 import { connect } from "react-redux";
-
 import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import classnames from "classnames";
 import AdminUploadProduct from "./Admin/AdminUploadProduct";
 import RawDrugList from "../components/RawDrugList";
 import PrescriptionRequestPage from "../components/PrescriptionRequestPage";
+import SubstanceUsage from "../components/SubstanceUsage";
 
 class Admin extends React.Component {
   constructor(props) {
@@ -74,6 +74,16 @@ class Admin extends React.Component {
               <h5 className="text-dark">Raw Drug List</h5>
             </NavLink>
           </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === "5" })}
+              onClick={() => {
+                this.toggle("5");
+              }}
+            >
+              <h5 className="text-dark">Substance Usage</h5>
+            </NavLink>
+          </NavItem>
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
@@ -87,6 +97,9 @@ class Admin extends React.Component {
           </TabPane>
           <TabPane tabId="4">
             {this.state.activeTab == 4 ? <RawDrugList /> : null}
+          </TabPane>
+          <TabPane tabId="5">
+            {this.state.activeTab == 5 ? <SubstanceUsage /> : null}
           </TabPane>
         </TabContent>
       </div>

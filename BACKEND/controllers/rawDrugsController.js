@@ -5,7 +5,7 @@ module.exports = {
     let scriptQuery =
       "select prescription_request.id_request, user.nama_depan, user.nama_belakang, user.email, prescription_request.request_date from prescription_request left join user on user.id_user = prescription_request.id_user;";
     if (req.query.id_request) {
-      scriptQuery = `select user.id_user, user.nama_depan, user.nama_belakang, user.email, prescription_request.request_date from prescription_request
+      scriptQuery = `select user.id_user, user.nama_depan, user.nama_belakang, user.email, prescription_request.id_request, prescription_request.request_date from prescription_request
             left join user on user.id_user = prescription_request.id_user
             where prescription_request.id_request = ${db.escape(
               req.query.id_request
@@ -38,6 +38,17 @@ module.exports = {
           });
         }
       );
+    });
+  },
+
+  deletePrescriptionRequest: (req, res) => {
+    let deleteQuery = `Delete from prescription_request where id_request = ${db.escape(
+      req.params.id_request
+    )};`;
+    console.log(deleteQuery);
+    db.query(deleteQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
     });
   },
 };

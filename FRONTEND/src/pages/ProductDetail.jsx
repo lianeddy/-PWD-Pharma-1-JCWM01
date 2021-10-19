@@ -115,7 +115,7 @@ class ProductDetail extends React.Component {
               <img
                 className="w-100 h-100"
                 src={this.state.productData.foto_obat}
-                alt="Image"
+                alt=""
               />
             </div>
 

@@ -26,14 +26,12 @@ class ProductCard extends React.Component {
 
           <div className="d-flex flex-row justify-content-between mx-auto">
             <div className="d-flex flex-row justify-content-between  mx-2 ">
-              <Link
-                to={`/product-detail/${this.props.productData.idobat}`}
-                style={{ textDecoration: "none", color: "inherit" }}
+              <a
+                href={`/product-detail/${this.props.productData.idobat}`}
+                className="btn btn-sm text-dark p-0"
               >
-                <a href="" className="btn btn-sm text-dark p-0">
-                  <i className="fas fa-eye text-primary mr-1"></i>View Detail
-                </a>
-              </Link>
+                <i className="fas fa-eye text-dark mr-1"></i>View Detail
+              </a>
             </div>
             <button
               onClick={this.addToCartHandler}

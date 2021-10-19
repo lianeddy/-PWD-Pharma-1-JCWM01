@@ -1,11 +1,13 @@
 import React from "react";
 import Axios from "axios";
 import { API_URL } from "../../constants/API";
+import { Redirect } from "react-router-dom";
 
 class RequestDetail extends React.Component {
   state = {
     requestData: {},
     substanceServed: [{ substance: "", content: 0 }],
+    executed: false,
   };
 
   inputHandler = (index, event) => {
@@ -53,14 +55,20 @@ class RequestDetail extends React.Component {
       const id_bahan_obat = parseInt(val.substance);
       const kandungan = parseInt(val.content);
 
-      Axios.post(`${API_URL}/prescription/post-prescriptions`, {
+      return Axios.post(`${API_URL}/prescription/post-prescriptions`, {
         id_user: this.state.requestData.id_user,
         id_bahan_obat,
         kandungan,
       })
         .then(() => {
-          Axios.patch(`${API_URL}`);
-          alert("Berhasil memasukkan request resep");
+          Axios.delete(
+            `${API_URL}/prescription/delete-prescription/${this.state.requestData.id_request}`
+          )
+            .then(() => {
+              alert("Prescription Proceed");
+              this.setState({ executed: true });
+            })
+            .catch((err) => console.log(err));
         })
         .catch((err) => {
           console.log(err);
@@ -74,6 +82,9 @@ class RequestDetail extends React.Component {
   }
 
   render() {
+    if (this.state.executed === true) {
+      return <Redirect to="/admin" />;
+    }
     return (
       <div>
         <div className="container-fluid bg-light mb-1">
