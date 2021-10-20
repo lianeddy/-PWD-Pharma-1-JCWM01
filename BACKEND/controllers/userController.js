@@ -6,22 +6,18 @@ const { uploader } = require("../helpers/uploader");
 const fs = require("fs");
 
 module.exports = {
-  getUser: (req, res) => {
+    getUser: (req, res) => {
     let scriptQuery = "Select * from user;";
     if (req.query.email) {
-      scriptQuery = `Select * from user where email= ${db.escape(
-        req.query.email
-      )} and password = ${db.escape(
-        Crypto.createHmac("sha1", "hash123")
-          .update(req.query.password)
-          .digest("hex")
-      )};`;
+      scriptQuery = `Select * from user where email = ${db.escape(
+        req.query.email)};`;
     }
     db.query(scriptQuery, (err, results) => {
       if (err) res.status(500).send(err);
       res.status(200).send(results);
     });
   },
+
 
   //{
 

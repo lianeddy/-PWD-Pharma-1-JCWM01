@@ -65,7 +65,7 @@ module.exports = {
       if(err){
         return response.status(500).send(err)
       }else{
-        console.log(result);
+        // console.log(result);
         return response.status(200).send(result)
       }
     })
