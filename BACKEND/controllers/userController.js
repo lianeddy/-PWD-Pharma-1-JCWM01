@@ -19,36 +19,6 @@ module.exports = {
   },
 
 
-  //{
-
-  // },
-
-  // req.body.password = Crypto.createHmac("sha1", "hash123")
-  //     .update(JSON.stringify(req.body.password))
-  //     .digest("hex");
-  //   let scriptQuery = `Select * from user where email = ${db.escape(
-  //     req.body.email
-  //   )} and password = ${db.escape(req.body.password)};`;
-  //   db.query(scriptQuery, (err, results) => {
-  //     if (err) return res.status(500).send(err);
-  //     if (results[0]) {
-  //       let { id_user, email, password, role, status } = results[0];
-  //       let token = createToken({
-  //         id_user,
-  //         email,
-  //         password,
-  //         role,
-  //         status,
-  //       });
-  //       if (status != "VERIFIED") {
-  //         res.status(200).send({ message: "Akun anda belum terverifikasi" });
-  //       } else {
-  //         res
-  //           .status(200)
-  //           .send({ dataLogin: results[0], token, message: "Login Success" });
-  //       }
-  //     }
-  //   });
 
   addUser: (req, res) => {
     let {
