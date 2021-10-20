@@ -164,10 +164,6 @@ module.exports = {
     req.body.newPassword = Crypto.createHmac("sha1", "hash123")
       .update(req.body.newPassword)
       .digest("hex");
-    let selectQuery = `SELECT password FROM user WHERE email = ${db.escape(
-      req.body.email
-    )}`;
-    console.log(selectQuery);
     let updateQuery = `UPDATE user SET password = ${db.escape(
       req.body.newPassword
     )} WHERE email = ${db.escape(req.body.email)}`;
