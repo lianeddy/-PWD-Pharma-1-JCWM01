@@ -58,7 +58,6 @@ export const registerUser = ({
 
 export const loginUser = ({ email, password }) => {
   return (dispatch) => {
-    console.log(email, password);
     if (email == "" || password == "") {
       alert("Fill in All the Form");
     }
@@ -70,9 +69,6 @@ export const loginUser = ({ email, password }) => {
     .then((res) => {
       if (res.data.dataLogin !== 1) {
         if (res.data.dataLogin) {
-          alert("Login Succes");
-          console.log("Login Success ✔");
-          console.log(res.data);
           localStorage.setItem(
             "userDataAMR",
             JSON.stringify(res.data.dataLogin)
@@ -126,6 +122,7 @@ export const userKeepLogin= (userData) => {
           type: "USER_LOGIN",
           payload: res.data.dataLogin,
         });
+        dispatch(getCartData(res.data.dataLogin))
       })
       .catch((err) => {
         alert("Error has occurred");

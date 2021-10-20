@@ -118,15 +118,8 @@ module.exports = {
         });
       }
       console.log(password);
-      let insertQuery = `Insert into user values (null, ${db.escape(
-        nama_depan
-      )}, ${db.escape(nama_belakang)}, ${db.escape(email)}, ${db.escape(
-        password
-      )}, ${db.escape(jenis_kelamin)}, ${db.escape(status)}, ${db.escape(
-        alamat
-      )}, ${db.escape(tanggal_lahir)}, ${db.escape(usia)}, ${db.escape(
-        foto_profil
-      )}, ${db.escape(role)});`;
+      let insertQuery = `insert into user (nama_depan, nama_belakang, email, password, jenis_kelamin, status, tanggal_lahir, role) values 
+      (${db.escape(nama_depan)}, ${db.escape(nama_belakang)}, ${db.escape(email)}, ${db.escape(password)}, ${db.escape(jenis_kelamin)}, ${db.escape(status)}, ${db.escape(tanggal_lahir)}, ${db.escape(role)});`
       console.log(insertQuery);
       db.query(insertQuery, (err, result) => {
         if (err) {
