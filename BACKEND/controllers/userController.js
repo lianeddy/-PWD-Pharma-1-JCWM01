@@ -6,11 +6,13 @@ const { uploader } = require("../helpers/uploader");
 const fs = require("fs");
 
 module.exports = {
-    getUser: (req, res) => {
+
+  getUser: (req, res) => {
     let scriptQuery = "Select * from user;";
     if (req.query.email) {
-      scriptQuery = `Select * from user where email = ${db.escape(
-        req.query.email)};`;
+      scriptQuery = `Select * from user where email= ${db.escape(
+        req.query.email
+      )};`;
     }
     db.query(scriptQuery, (err, results) => {
       if (err) res.status(500).send(err);
@@ -18,6 +20,71 @@ module.exports = {
     });
   },
 
+
+  loginUser : (req, res) => {
+    req.body.password = Crypto.createHmac("sha1", "hash123")
+      .update(req.body.password)
+      .digest("hex");
+    let scriptQuery = `SELECT * FROM user WHERE email = ${db.escape(
+      req.body.email
+    )} AND password = ${db.escape(req.body.password)};`;
+
+    db.query(scriptQuery, (err, results) => {
+      console.log(results);
+      if (err) return res.status(500).send(err);
+      if (results[0]) {
+        let {
+          id_user,
+          nama_depan,
+          nama_belakang,
+          email,
+          password,
+          jenis_kelamin,
+          tanggal_lahir,
+          usia,
+          foto_profil,
+          role,
+          status,
+        } = results[0];
+
+        let token = createToken({
+          id_user,
+          nama_depan,
+          nama_belakang,
+          email,
+          password,
+          jenis_kelamin,
+          tanggal_lahir,
+          usia,
+          foto_profil,
+          role,
+          status,
+        });
+
+        if (status != "VERIFIED") {
+          return res
+            .status(200)
+            .send({
+              dataLogin: null,
+              token: null,
+              message: "Your account is not verified",
+            });
+        } else {
+          return res
+            .status(200)
+            .send({ dataLogin: results[0], token, message: "Login Success" });
+        }
+      } else {
+        // Jika tidak dapat data (user not found)
+        return res
+          .status(200)
+          .send({ dataLogin: 1, token: null, message: "Login Failed" });
+      }
+    });
+  },
+
+
+  
 
 
   addUser: (req, res) => {
@@ -197,6 +264,59 @@ module.exports = {
     db.query(updateQuery, (err, results) => {
       if (err) res.status(500).send(err);
       res.status(200).send(results);
+    });
+  },
+
+  keepLogin: (req, res) => {
+    let scriptQuery = `SELECT * FROM user WHERE id_user = ${db.escape(
+      req.body.id_user
+    )};`;
+
+    db.query(scriptQuery, (err, results) => {
+      console.log(results);
+      if (err) return res.status(500).send(err);
+      if (results[0]) {
+        let {
+          id_user,
+          nama_depan,
+          nama_belakang,
+          email,
+          password,
+          jenis_kelamin,
+          tanggal_lahir,
+          usia,
+          foto_profil,
+          role,
+          status,
+        } = results[0];
+
+        let token = createToken({
+          id_user,
+          nama_depan,
+          nama_belakang,
+          email,
+          password,
+          jenis_kelamin,
+          tanggal_lahir,
+          usia,
+          foto_profil,
+          role,
+          status,
+        });
+
+        return res
+          .status(200)
+          .send({
+            dataLogin: results[0],
+            token,
+            message: "Keep Login Success",
+          });
+      } else {
+        // Jika tidak dapat data (user not found)
+        return res
+          .status(200)
+          .send({ dataLogin: null, token: null, message: "Keep Login Failed" });
+      }
     });
   },
 };

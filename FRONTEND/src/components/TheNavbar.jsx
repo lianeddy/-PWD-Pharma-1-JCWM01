@@ -68,7 +68,7 @@ class TheNavbar extends React.Component {
                         KIRIM RESEP
                       </Link>
                     </DropdownItem>
-                  ) : null}
+                  ) : 
                   <DropdownItem>
                     <Link
                       style={{ textDecoration: "none" }}
@@ -77,7 +77,7 @@ class TheNavbar extends React.Component {
                     >
                       ADMIN
                     </Link>
-                  </DropdownItem>
+                  </DropdownItem>}
                   <DropdownItem>
                     <Link
                       style={{ textDecoration: "none" }}
