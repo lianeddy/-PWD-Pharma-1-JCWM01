@@ -257,25 +257,7 @@ class Home extends React.Component {
                   <option value="name_desc">Z to A</option>
                 </select>
               </div>
-              <div className="card">
-                <div className="card-header">
-                  <strong>Sort Product</strong>
-                </div>
-                <div className="card-body">
-                  <label htmlFor="sortBy">Sort by</label>
-                  <select
-                    onChange={this.searchInputHandler}
-                    name="sortBy"
-                    className="form-control"
-                  >
-                    <option value="">Default</option>
-                    <option value="lowPrice">Lowest Price</option>
-                    <option value="highPrice">Highest Price</option>
-                    <option value="az">A-Z</option>
-                    <option value="za">Z-A</option>
-                  </select>
-                </div>
-              </div>
+
             </div>
 
             {this.state.drugList.length === 0 ? (
