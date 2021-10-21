@@ -9,7 +9,7 @@ class Register extends React.Component {
   state = {
     nama_depan: "",
     nama_belakang: "",
-    jenis_kelamin: "laki-laki",
+    jenis_kelamin: "",
 
     alertPassword: false,
     alertEmail: false,
@@ -162,13 +162,13 @@ class Register extends React.Component {
                         class="form-check-input"
                         type="radio"
                         name="jenis_kelamin"
-                        id="laki-laki"
-                        value="laki-laki"
+                        id="Pria"
+                        value="Pria"
                         onClick={this.inputHandler}
-                        checked={this.state.jenis_kelamin === "laki-laki"}
+                        checked={this.state.jenis_kelamin === "Pria"}
                       />
-                      <label class="form-check-label" for="laki-laki">
-                        Laki-laki
+                      <label class="form-check-label" for="Pria">
+                        Pria
                       </label>
                     </div>
                     <div class="form-check">
@@ -176,12 +176,12 @@ class Register extends React.Component {
                         class="form-check-input"
                         type="radio"
                         name="jenis_kelamin"
-                        value="perempuan"
+                        value="Wanita"
                         onClick={this.inputHandler}
-                        id="perempuan"
+                        id="Wanita"
                       />
-                      <label class="form-check-label" for="perempuan">
-                        Perempuan
+                      <label class="form-check-label" for="Wanita">
+                        Wanita
                       </label>
                     </div>
                   </div>

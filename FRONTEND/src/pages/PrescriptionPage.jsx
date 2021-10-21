@@ -59,7 +59,69 @@ class PrescriptionPage extends React.Component {
 
   render() {
     return (
-      <div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column text-center">
+      <div className="container py-1">
+        <header className="text-dark text-center">
+          <h1 className="display-4">Kirim Resep disini</h1>
+          <p className="mb-5 font-weight-light">
+            Upload foto resep pada form di bawah untuk melakukan permintaan
+            resep
+          </p>
+          <div className="d-flex justify-content-center">
+            <TransformWrapper>
+              <React.Fragment>
+                <TransformComponent>
+                  <img
+                    id="imgPreview"
+                    value=""
+                    src={camera}
+                    height="350"
+                    width=""
+                    alt="no image select"
+                    className={
+                      this.state.fotoObat === ""
+                        ? "no-img-selected border border-success"
+                        : null
+                    }
+                  />
+                </TransformComponent>
+              </React.Fragment>
+            </TransformWrapper>
+          </div>
+        </header>
+        <div className="row py-4">
+          <div className="mx-auto">
+            <FormGroup className="w-100">
+              <CustomInput
+                type="file"
+                id="image"
+                name="inputFile"
+                onChange={this.onBtnAddFile}
+              />
+            </FormGroup>
+            <Button
+              color="success"
+              className="align-self-end"
+              onClick={this.btnSendData}
+            >
+              KIRIM
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    userGlobal: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(PrescriptionPage);
+
+{
+  /* <div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column text-center">
         <header className="masthead mb-auto">
           <div className="inner">
             <h1 className="masthead-brand">UPLOAD RESEP DOKTER</h1>
@@ -107,15 +169,5 @@ class PrescriptionPage extends React.Component {
             </div>
           </div>
         </main>
-      </div>
-    );
-  }
+      </div> */
 }
-
-const mapStateToProps = (state) => {
-  return {
-    userGlobal: state.user,
-  };
-};
-
-export default connect(mapStateToProps)(PrescriptionPage);

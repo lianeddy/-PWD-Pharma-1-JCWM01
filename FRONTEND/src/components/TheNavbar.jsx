@@ -16,7 +16,7 @@ class TheNavbar extends React.Component {
         <div className="d-flex flex-wrap align-items-center justify-content-between py-2 mx-5">
           <a
             href="/"
-            className="d-flex mb-md-0 text-white text-decoration-none"
+            className="col-2 d-flex mb-md-0 text-white text-decoration-none text-start"
           >
             <h3>
               <span>
@@ -25,7 +25,7 @@ class TheNavbar extends React.Component {
               AMR{" "}
             </h3>
           </a>
-          <form className="nav form-group justify-content-center">
+          <form className="nav col-8 form-group justify-content-center">
             <div class="mx-sm-1 mb-2">
               <input
                 type="text"
@@ -34,11 +34,8 @@ class TheNavbar extends React.Component {
                 aria-label="Search"
               />
             </div>
-            <button type="submit" className="btn btn-primary mb-2">
-              <i className="fa fa-search"></i>
-            </button>
           </form>
-          <div className="text-end">
+          <div className="text-end col-2">
             {this.props.userGlobal.id_user ? (
               <UncontrolledDropdown>
                 <DropdownToggle
@@ -68,16 +65,17 @@ class TheNavbar extends React.Component {
                         KIRIM RESEP
                       </Link>
                     </DropdownItem>
-                  ) : null}
-                  <DropdownItem>
-                    <Link
-                      style={{ textDecoration: "none" }}
-                      className="text-dark"
-                      to="/admin"
-                    >
-                      ADMIN
-                    </Link>
-                  </DropdownItem>
+                  ) : (
+                    <DropdownItem>
+                      <Link
+                        style={{ textDecoration: "none" }}
+                        className="text-dark"
+                        to="/admin"
+                      >
+                        ADMIN
+                      </Link>
+                    </DropdownItem>
+                  )}
                   <DropdownItem>
                     <Link
                       style={{ textDecoration: "none" }}
@@ -106,7 +104,7 @@ class TheNavbar extends React.Component {
               <button
                 type="button"
                 href="/"
-                className="btn btn-outline-success me-2 "
+                className="btn btn-outline-success"
               >
                 <Link to="/login" className="text-light text-decoration-none">
                   Login / Register

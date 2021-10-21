@@ -3,7 +3,7 @@ import React from "react";
 class Footer extends React.Component {
   render() {
     return (
-      <footer className="bg-dark text-center text-lg-start">
+      <footer className="bg-dark text-center text-lg-start sticky-bottom">
         <div className="text-center text-white p-3">
           Final Project Purwadhika JC Web Development by
           <a className="text-white" href="https://mdbootstrap.com/">

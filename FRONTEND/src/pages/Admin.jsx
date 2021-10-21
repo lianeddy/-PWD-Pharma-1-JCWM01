@@ -71,7 +71,7 @@ class Admin extends React.Component {
                 this.toggle("4");
               }}
             >
-              <h5 className="text-dark">Raw Drug List</h5>
+              <h5 className="text-dark">Substance List</h5>
             </NavLink>
           </NavItem>
           <NavItem>

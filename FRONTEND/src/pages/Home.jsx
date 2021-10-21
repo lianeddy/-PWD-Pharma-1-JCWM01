@@ -9,7 +9,7 @@ class Home extends React.Component {
     filterDrugList: [],
     page: 1,
     maxPage: 0,
-    itemPerPage: 8,
+    itemPerPage: 10,
     searchProductName: "",
     searchCategory: "",
     sortBy: "",
@@ -145,7 +145,7 @@ class Home extends React.Component {
                   Search
                 </button>
               </div>
-              <div className="card mt-4">
+              <div className="card">
                 <div className="card-header">
                   <strong>Sort Product</strong>
                 </div>
