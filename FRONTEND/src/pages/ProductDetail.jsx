@@ -96,7 +96,7 @@ class ProductDetail extends React.Component {
               className="d-flex flex-column align-items-center justify-content-center"
               style={{ minHeight: "100px" }}
             >
-              <h1 className="font-weight-semi-bold text-uppercase mb-3">
+              <h1 className="font-weight-semi-bold text-uppercase mb-1">
                 Detail Obat
               </h1>
               <div className="d-inline-flex">
@@ -109,27 +109,17 @@ class ProductDetail extends React.Component {
             </div>
           )}
         </div>
-        <div className="container-fluid py-1">
+        <div className="container-fluid">
           <div className="row px-xl-5">
-            <div className="col-lg-5 pb-5">
-              <div
-                id="product-carousel"
-                className="carousel slide"
-                data-ride="carousel"
-              >
-                <div className="carousel-inner border">
-                  <div className="carousel-item active">
-                    <img
-                      className="w-100 h-100"
-                      src={this.state.productData.foto_obat}
-                      alt="Image"
-                    />
-                  </div>
-                </div>
-              </div>
+            <div className="col-lg-4 pb-5">
+              <img
+                className="w-100 h-100"
+                src={this.state.productData.foto_obat}
+                alt=""
+              />
             </div>
 
-            <div className="col-lg-7 pb-5">
+            <div className="col-lg-8 pb-5">
               <h3 className="font-weight-semi-bold">
                 {this.state.productData.nama_obat}
               </h3>

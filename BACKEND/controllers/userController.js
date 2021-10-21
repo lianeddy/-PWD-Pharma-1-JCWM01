@@ -6,7 +6,6 @@ const { uploader } = require("../helpers/uploader");
 const fs = require("fs");
 
 module.exports = {
-
   getUser: (req, res) => {
     let scriptQuery = "Select * from user;";
     if (req.query.email) {
@@ -20,8 +19,7 @@ module.exports = {
     });
   },
 
-
-  loginUser : (req, res) => {
+  loginUser: (req, res) => {
     req.body.password = Crypto.createHmac("sha1", "hash123")
       .update(req.body.password)
       .digest("hex");
@@ -62,13 +60,11 @@ module.exports = {
         });
 
         if (status != "VERIFIED") {
-          return res
-            .status(200)
-            .send({
-              dataLogin: null,
-              token: null,
-              message: "Your account is not verified",
-            });
+          return res.status(200).send({
+            dataLogin: null,
+            token: null,
+            message: "Your account is not verified",
+          });
         } else {
           return res
             .status(200)
@@ -82,10 +78,6 @@ module.exports = {
       }
     });
   },
-
-
-  
-
 
   addUser: (req, res) => {
     let {
@@ -118,8 +110,13 @@ module.exports = {
         });
       }
       console.log(password);
-      let insertQuery = `insert into user (nama_depan, nama_belakang, email, password, jenis_kelamin, status, tanggal_lahir, role) values 
-      (${db.escape(nama_depan)}, ${db.escape(nama_belakang)}, ${db.escape(email)}, ${db.escape(password)}, ${db.escape(jenis_kelamin)}, ${db.escape(status)}, ${db.escape(tanggal_lahir)}, ${db.escape(role)});`
+      let insertQuery = `insert into user (nama_depan, nama_belakang, email, password, jenis_kelamin, status, tanggal_lahir, role) values (${db.escape(
+        nama_depan
+      )}, ${db.escape(nama_belakang)}, ${db.escape(email)}, ${db.escape(
+        password
+      )}, ${db.escape(jenis_kelamin)}, ${db.escape(status)}, ${db.escape(
+        tanggal_lahir
+      )}, ${db.escape(role)});`;
       console.log(insertQuery);
       db.query(insertQuery, (err, result) => {
         if (err) {
@@ -190,6 +187,10 @@ module.exports = {
     req.body.newPassword = Crypto.createHmac("sha1", "hash123")
       .update(req.body.newPassword)
       .digest("hex");
+    selectQuery = `SELECT password FROM user WHERE email = ${db.escape(
+      req.body.email
+    )}`;
+    console.log(selectQuery);
     let updateQuery = `UPDATE user SET password = ${db.escape(
       req.body.newPassword
     )} WHERE email = ${db.escape(req.body.email)}`;
@@ -297,13 +298,11 @@ module.exports = {
           status,
         });
 
-        return res
-          .status(200)
-          .send({
-            dataLogin: results[0],
-            token,
-            message: "Keep Login Success",
-          });
+        return res.status(200).send({
+          dataLogin: results[0],
+          token,
+          message: "Keep Login Success",
+        });
       } else {
         // Jika tidak dapat data (user not found)
         return res

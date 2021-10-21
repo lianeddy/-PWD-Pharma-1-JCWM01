@@ -20,12 +20,15 @@ const {
   userRouter,
   userUploadRouter,
   cartRouter,
+  rawDrugsRouter,
 } = require("./routers");
+const { raw } = require("mysql");
 
 app.use("/obat", drugsRouters);
 app.use("/user", userRouter);
 app.use("/picture", userUploadRouter);
 app.use("/admin", adminRoute);
 app.use("/cart", cartRouter);
+app.use("/prescription", rawDrugsRouter);
 
 app.listen(PORT, () => console.log("API Running: ", PORT));

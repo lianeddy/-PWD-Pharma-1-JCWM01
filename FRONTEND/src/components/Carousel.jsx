@@ -20,7 +20,7 @@ const items = [
     src: "https://www.fresenius-kabi.com/images/Company_sub_Quality_Management-l5aO9HkPQbOYiVrtHN1C9qa2xmuSoGr-ISOzNTL2dz8.jpg",
     altText: "",
     caption: "",
-    header: "",
+    header: "TEST",
     key: "3",
   },
 ];

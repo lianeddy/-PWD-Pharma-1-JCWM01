@@ -1,7 +1,80 @@
+import Axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
+import { API_URL } from "../constants/API";
+import { getCartData } from "../redux/actions/cart";
 
 class Cart extends React.Component {
+  state = {
+    prescriptionData: [],
+    drugsData: [],
+  };
+
+  fetchPrescriptionData = () => {
+    Axios.get(`${API_URL}/cart/render-prescription`, {
+      params: {
+        id_user: this.props.userGlobal.id_user,
+      },
+    })
+      .then((result) => {
+        if (result.data.length) {
+          this.setState({ prescriptionData: result.data });
+        } else {
+          alert("Tidak ditemukan data resep");
+        }
+      })
+      .catch((err) => {
+        alert("Gagal mengambil data resep");
+        console.log(err);
+      });
+  };
+
+  userPrescription = () => {
+    return this.state.prescriptionData.map((val) => {
+      return (
+        <tr>
+          <td className="align-middle">{val.nama_bahan_obat}</td>
+          <td className="align-middle">{val.kandungan}</td>
+          <td className="align-middle">Rp. {val.harga_per_mg},-</td>
+          <td className="align-middle">
+            Rp. {val.kandungan * val.harga_per_mg}
+            ,-
+          </td>
+          <td className="align-middle">
+            <button className="btn btn-sm btn-danger">
+              <i className="fa fa-times"></i>
+            </button>
+          </td>
+        </tr>
+      );
+    });
+  };
+
+  qtyBtnHandler = (id_cart, qty_obat) => {
+    Axios.patch(`${API_URL}/cart/edit-cart/${id_cart}`, {
+      qty_obat,
+    })
+      .then((res) => {
+        this.props.getCartData(this.props.userGlobal.id_user);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Terjadi kesalahan saat mengubah qty");
+      });
+  };
+
+  deleteItem = (id_cart) => {
+    Axios.delete(`${API_URL}/cart/delete-item/${id_cart}`)
+      .then(() => {
+        alert("Obat dihapus dari cart");
+        this.props.getCartData(this.props.userGlobal.id_user);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Gagal hapus obat dari cart");
+      });
+  };
+
   renderTotal = () => {
     let total = 0;
     this.props.cartGlobal.cartList.forEach((val) => {
@@ -19,10 +92,44 @@ class Cart extends React.Component {
             {val.nama_obat}
           </td>
           <td className="align-middle">Rp. {val.harga},-</td>
-          <td className="align-middle"> {val.qty_obat}</td>
+          <td className="align-middle">
+            <div
+              className="input-group quantity mx-auto"
+              style={{ width: "100px" }}
+            >
+              <div className="input-group-btn">
+                <button
+                  onClick={() => {
+                    this.qtyBtnHandler(val.id_cart, val.qty_obat - 1);
+                  }}
+                  className="btn btn-sm btn-primary btn-minus"
+                >
+                  <i className="fa fa-minus"></i>
+                </button>
+              </div>
+              <input
+                type="text"
+                className="form-control form-control-sm bg-light text-center"
+                value={val.qty_obat}
+              />
+              <div className="input-group-btn">
+                <button
+                  onClick={() => {
+                    this.qtyBtnHandler(val.id_cart, val.qty_obat + 1);
+                  }}
+                  className="btn btn-sm btn-primary btn-plus"
+                >
+                  <i className="fa fa-plus"></i>
+                </button>
+              </div>
+            </div>
+          </td>
           <td className="align-middle">Rp. {val.harga * val.qty_obat},-</td>
           <td className="align-middle">
-            <button className="btn btn-sm btn-danger">
+            <button
+              onClick={() => this.deleteItem(val.id_cart)}
+              className="btn btn-sm btn-danger"
+            >
               <i className="fa fa-times"></i>
             </button>
           </td>
@@ -31,14 +138,17 @@ class Cart extends React.Component {
     });
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.fetchPrescriptionData();
+  }
 
   render() {
     return (
       <div className="container-fluid">
-        <h2 className="text-center display-4">KERANJANG BELANJA</h2>
-        <div className="row px-xl-5 mt-4">
-          <div className="col-lg-8 table-responsive mb-5">
+        <h2 className="text-center">KERANJANG BELANJA</h2>
+        <div className="row px-xl-5 mt-2">
+          <div className="col-lg-8 table-responsive mb-3 bg-light">
+            <h4 className="text-center text-uppercase">Obat bebas</h4>
             <table className="table table-light table-borderless table-hover table-striped text-center mb-0">
               <thead className="thead-dark border-bottom">
                 <tr>
@@ -79,6 +189,21 @@ class Cart extends React.Component {
             </div>
           </div>
         </div>
+        <div className="px-xl-5 col-lg-8 table-responsive mb-5">
+          <h4 className="text-center text-uppercase">Obat resep</h4>
+          <table className="table table-light table-borderless table-hover table-striped text-center mb-0">
+            <thead className="thead-dark border-bottom">
+              <tr>
+                <th>Obat</th>
+                <th>Kandungan (mg)</th>
+                <th>Harga / mg</th>
+                <th>Total</th>
+                <th>Hapus</th>
+              </tr>
+            </thead>
+            <tbody className="align-middle">{this.userPrescription()}</tbody>
+          </table>
+        </div>
       </div>
     );
   }
@@ -87,7 +212,12 @@ class Cart extends React.Component {
 const mapStateToProps = (state) => {
   return {
     cartGlobal: state.cart,
+    userGlobal: state.user,
   };
 };
 
-export default connect(mapStateToProps)(Cart);
+const mapDispatchToProps = {
+  getCartData,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

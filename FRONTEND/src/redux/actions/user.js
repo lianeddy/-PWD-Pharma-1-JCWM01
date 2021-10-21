@@ -59,44 +59,43 @@ export const registerUser = ({
 export const loginUser = ({ email, password }) => {
   return (dispatch) => {
     if (email == "" || password == "") {
-      alert("Fill in All the Form");
+      alert("Please fill all the form");
     }
-
     Axios.post(`${API_URL}/user/login`, {
-        email,
-        password,
+      email,
+      password,
     })
-    .then((res) => {
-      if (res.data.dataLogin !== 1) {
-        if (res.data.dataLogin) {
-          localStorage.setItem(
-            "userDataAMR",
-            JSON.stringify(res.data.dataLogin)
-          );
-          dispatch({
-            type: "USER_LOGIN",
-            payload: res.data.dataLogin,
-          });
+      .then((res) => {
+        if (res.data.dataLogin !== 1) {
+          if (res.data.dataLogin) {
+            localStorage.setItem(
+              "userDataAMR",
+              JSON.stringify(res.data.dataLogin)
+            );
+            dispatch({
+              type: "USER_LOGIN",
+              payload: res.data.dataLogin,
+            });
+          } else {
+            dispatch({
+              type: "USER_ERROR",
+              payload:
+                "Your Account is not Verified. Please Verify your Account",
+            });
+          }
         } else {
           dispatch({
             type: "USER_ERROR",
-            payload:
-              "Your Account is not Verified. Please Verify your Account!",
+            payload: "Wrong Username or Password",
           });
         }
-      } else {
-        dispatch({
-          type: "USER_ERROR",
-          payload: "Wrong Username or Password",
-        });
-      }
-    })    .catch((err) => {
-      alert("Terjadi kesalahan di server");
-    });
-};
+      })
+      .catch((err) => {
+        alert("Kesalahan saat Login");
+      });
+  };
 };
 
-  
 export const logoutUser = () => {
   localStorage.removeItem("userDataAMR");
   return {
@@ -104,25 +103,18 @@ export const logoutUser = () => {
   };
 };
 
-
-
-
-export const userKeepLogin= (userData) => {
+export const userKeepLogin = (userData) => {
   return (dispatch) => {
     Axios.post(`${API_URL}/user/keep-login`, {
       id_user: userData.id_user,
     })
       .then((res) => {
-        localStorage.setItem(
-          "userDataAMR",
-          JSON.stringify(res.data.dataLogin)
-        );
-
+        localStorage.setItem("userDataAMR", JSON.stringify(res.data.dataLogin));
         dispatch({
           type: "USER_LOGIN",
           payload: res.data.dataLogin,
         });
-        dispatch(getCartData(res.data.dataLogin))
+        dispatch(getCartData(res.data.dataLogin.id_user));
       })
       .catch((err) => {
         alert("Error has occurred");
@@ -136,7 +128,6 @@ export const checkStorage = () => {
     type: "CHECK_STORAGE",
   };
 };
-
 
 export const searchProduct = (searchProduct) => {
   return (dispatch) => {
