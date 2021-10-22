@@ -21,7 +21,7 @@ class RequestDetail extends React.Component {
   fetchRequest = () => {
     Axios.get(`${API_URL}/prescription/get-prescriptions`, {
       params: {
-        id_request: this.props.match.params.id,
+        id_prescriptions: this.props.match.params.id,
       },
     })
       .then((result) => {
@@ -62,7 +62,7 @@ class RequestDetail extends React.Component {
       })
         .then(() => {
           Axios.delete(
-            `${API_URL}/prescription/delete-prescription/${this.state.requestData.id_request}`
+            `${API_URL}/prescription/delete-prescription/${this.state.requestData.id_prescriptions}`
           )
             .then(() => {
               alert("Prescription Proceed");
@@ -97,7 +97,7 @@ class RequestDetail extends React.Component {
             <div className="col-lg-4 pb-5">
               <img
                 className="w-100 h-100"
-                src="https://cdn-brilio-net.akamaized.net/news/2016/03/26/50872/750xauto-15-tulisan-resep-dokter-yang-bikin-kepala-malah-tambah-cenut-cenut-160326p.jpg"
+                src={this.state.requestData.foto_prescription}
                 alt="Image"
               />
             </div>
@@ -121,17 +121,20 @@ class RequestDetail extends React.Component {
               <p>
                 <strong className="text-uppercase">Request Date:</strong>
                 <span>
-                  <strong> {this.state.requestData.request_date}</strong>
+                  <strong> Perlu tanggal</strong>
                 </span>
               </p>
               {this.state.substanceServed.map((val, idx) => {
                 return (
-                  <div key={idx} className="form-inline form-group">
+                  <div
+                    key={idx}
+                    className="d-flex form-inline form-group col-md-4"
+                  >
                     <select
                       onChange={(event) => this.inputHandler(idx, event)}
                       value={val.substance}
                       name="substance"
-                      className="custom-select mr-2"
+                      className="form-select mr-2"
                     >
                       <option selected>Bahan {idx + 1}</option>
                       <option value="195">Allopourinol</option>

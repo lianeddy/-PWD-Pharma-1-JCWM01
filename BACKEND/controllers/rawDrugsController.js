@@ -3,12 +3,12 @@ const { db } = require("../database");
 module.exports = {
   getRawDrugs: (req, res) => {
     let scriptQuery =
-      "select prescription_request.id_request, user.nama_depan, user.nama_belakang, user.email, prescription_request.request_date from prescription_request left join user on user.id_user = prescription_request.id_user;";
-    if (req.query.id_request) {
-      scriptQuery = `select user.id_user, user.nama_depan, user.nama_belakang, user.email, prescription_request.id_request, prescription_request.request_date from prescription_request
-            left join user on user.id_user = prescription_request.id_user
-            where prescription_request.id_request = ${db.escape(
-              req.query.id_request
+      "select prescriptions.id_prescriptions, user.nama_depan, user.nama_belakang, user.email from prescriptions left join user on user.id_user = prescriptions.id_user;";
+    if (req.query.id_prescriptions) {
+      scriptQuery = `select user.id_user, user.nama_depan, user.nama_belakang, user.email, prescriptions.id_prescriptions, prescriptions.foto_prescription from prescriptions
+            left join user on user.id_user = prescriptions.id_user
+            where prescriptions.id_prescriptions = ${db.escape(
+              req.query.id_prescriptions
             )};`;
     }
     db.query(scriptQuery, (err, results) => {

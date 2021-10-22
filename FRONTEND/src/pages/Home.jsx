@@ -2,6 +2,7 @@ import React from "react";
 import ProductCard from "../components/ProductCard";
 import Axios from "axios";
 import { connect } from "react-redux";
+import CategoriesCarousel from "../components/CategoriesCarousel";
 // import CategoriesCarousel from "../components/CategoriesCarousel";
 
 class Home extends React.Component {
@@ -10,7 +11,7 @@ class Home extends React.Component {
     categoryDrugList: [],
     page: 1,
     maxPage: 0,
-    itemPerPage: 6,
+    itemPerPage: 10,
     searchProductName: "",
     searchCategory: "",
     sortProduct: "",
@@ -41,9 +42,10 @@ class Home extends React.Component {
       });
   };
 
-  categoryHandler = (golongan) => {
-    this.setState({ searchCategory: golongan });
-    this.setState({ page: 1 });
+  categoryHandler = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    this.setState({ [name]: value }, this.fetchFilterDrug);
   };
 
   fetchMaxPage = () => {
@@ -72,45 +74,19 @@ class Home extends React.Component {
     });
   };
 
+  //   <option onClick={() => this.categoryHandler(val.golongan)}>
+  //   {capital}
+  // </option>
+
   renderCategory = () => {
     return this.state.categoryDrugList.map((val) => {
-      const capital =
-        val.golongan.charAt(0).toUpperCase() + val.golongan.slice(1);
       if (this.state.searchCategory === "") {
-        return (
-          <li>
-            <button
-              onClick={() => this.categoryHandler(val.golongan)}
-              className="button-second btn btn-primary"
-            >
-              <p>{capital}</p>
-            </button>
-          </li>
-        );
+        return <option value={val.golongan}>{val.golongan}</option>;
       } else {
         if (val.golongan === this.state.searchCategory) {
-          return (
-            <li>
-              <button
-                onClick={() => this.categoryHandler(val.golongan)}
-                className="button-second selected btn btn-info"
-              >
-                <p>{capital}</p>
-              </button>
-            </li>
-          );
+          return <option value={val.golongan}>{val.golongan}</option>;
         } else {
-          return (
-            <li>
-              <button
-                onClick={() => this.categoryHandler(val.golongan)}
-                className="button-second"
-                style={{ color: "lightgrey" }}
-              >
-                <p>{capital}</p>
-              </button>
-            </li>
-          );
+          return <option value={val.golongan}>{val.golongan}</option>;
         }
       }
     });
@@ -222,80 +198,72 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className=" mt-4 mb-5 container-style">
-        <div className="row">
-          <div className="col-2 filter-bar">
-            <ul>{this.renderCategory()}</ul>
-            <div>
-              <button
-                className="btn btn-dark btn-sm filter"
-                onClick={this.fetchFilterDrug}
-              >
-                <p>Filter</p>
-              </button>
-              <button
-                className="btn btn-light btn-sm ms-2 filter"
-                onClick={this.clearFilter}
-              >
-                <p>Reset Filter</p>
-              </button>
+      <div className="container-style px-5 my-3">
+        <CategoriesCarousel />
+        <h4 className="display-5 text-uppercase text-center">Daftar Obat</h4>
+        <div className="d-flex flex-row col-3">
+          <select
+            onChange={this.sortHandler}
+            name="sortProduct"
+            className="form-control filter-style"
+          >
+            <option value="">SORT BY</option>
+            <option value="price_asc">Lowest price</option>
+            <option value="price_desc">Highest price</option>
+            <option value="name_asc">A to Z</option>
+            <option value="name_desc">Z to A</option>
+          </select>
+          <select
+            onChange={this.categoryHandler}
+            name="searchCategory"
+            className="form-control filter-style"
+          >
+            <option value="">CATEGORIES</option>
+            {this.renderCategory()}
+          </select>
+          <button
+            className="btn btn-secondary btn-sm ms-2 filter"
+            onClick={this.clearFilter}
+          >
+            Reset
+          </button>
+        </div>
+        <div className=" row col-12 bg-light mt-3">
+          <div className="d-flex flex-direction-row align-items-center justify-content-between"></div>
+
+          {this.state.drugList.length === 0 ? (
+            <div className="d-flex align-items-center flex-row justify-content-center mt-5">
+              <h4>sorry error page!</h4>
             </div>
-          </div>
-
-          <div className="col-10 ">
-            <div className="d-flex flex-direction-row align-items-center justify-content-between mb-3">
-              <div className="d-flex flex-direction-row align-items-center justify-content-start col-4 px-3">
-                <select
-                  onChange={this.sortHandler}
-                  name="sortProduct"
-                  className="form-control filter-style"
-                >
-                  <option value="">SORT BY</option>
-                  <option value="price_asc">Lowest price</option>
-                  <option value="price_desc">Highest price</option>
-                  <option value="name_asc">A to Z</option>
-                  <option value="name_desc">Z to A</option>
-                </select>
+          ) : (
+            <>
+              <div className="d-flex flex-wrap  align-items-center flex-row justify-content-center">
+                {/* Render Products Here */}
+                {this.renderProducts()}
               </div>
-
-            </div>
-
-            {this.state.drugList.length === 0 ? (
-              <div className="d-flex align-items-center flex-row justify-content-center mt-5">
-                <h4>sorry error page!</h4>
+              <div className="d-flex flex-direction-row align-items-center justify-content-center mt-3">
+                <div className="col-4 d-flex flex-direction-row align-items-center justify-content-center">
+                  <button
+                    disabled={this.state.page === 1}
+                    onClick={this.prevPageHandler}
+                    className="btn btn-sm btn-dark"
+                  >
+                    {"<"}
+                  </button>
+                  <p className="text-center text-page my-0 mx-2">
+                    Page {this.state.page} of {this.state.maxPage}
+                  </p>
+                  <button
+                    disabled={this.state.page === this.state.maxPage}
+                    onClick={this.nextPageHandler}
+                    className="btn btn-sm btn-dark"
+                  >
+                    {">"}
+                  </button>
+                </div>
               </div>
-            ) : (
-              <>
-                <div className="d-flex flex-wrap  align-items-center flex-row justify-content-start">
-                  {/* Render Products Here */}
-                  {this.renderProducts()}
-                </div>
-                <div className="d-flex flex-direction-row align-items-center justify-content-between mt-3">
-                  <div className="col-4"></div>
-                  <div className="col-4 d-flex flex-direction-row align-items-center justify-content-center">
-                    <button
-                      disabled={this.state.page === 1}
-                      onClick={this.prevPageHandler}
-                      className="btn btn-sm btn-dark"
-                    >
-                      {"<"}
-                    </button>
-                    <p className="text-center text-page my-0 mx-2">
-                      Page {this.state.page} of {this.state.maxPage}
-                    </p>
-                    <button
-                      disabled={this.state.page === this.state.maxPage}
-                      onClick={this.nextPageHandler}
-                      className="btn btn-sm btn-dark"
-                    >
-                      {">"}
-                    </button>
-                  </div>
-                  <div className="col-4"></div>
-                </div>
-              </>
-            )}
-          </div>
+            </>
+          )}
         </div>
       </div>
     );
