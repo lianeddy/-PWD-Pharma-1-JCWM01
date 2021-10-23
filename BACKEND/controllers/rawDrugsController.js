@@ -17,6 +17,19 @@ module.exports = {
     });
   },
 
+  restockRawDrugs: (req, res) => {
+    let dataUpdate = [];
+    for (let prop in req.body) {
+      dataUpdate.push(`${prop} = ${db.escape(req.body[prop])}`);
+    }
+    let updateQuery = `UPDATE obat_bahan set ${dataUpdate} where id_bahan_obat = ${req.params.id};`;
+    console.log(updateQuery);
+    db.query(updateQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      return res.status(200).send(results);
+    });
+  },
+
   prescriptionToCart: (req, res) => {
     console.log(req.body);
     let { id_user, id_bahan_obat, kandungan } = req.body;

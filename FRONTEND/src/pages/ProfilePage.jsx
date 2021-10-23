@@ -97,15 +97,11 @@ class ProfilePage extends React.Component {
                     <h6 className="labels">Alamat Pengiriman</h6>
                     <p>{this.state.userData.alamat}</p>
                   </div>
-                  <div className="col-md-12 mt-2">
-                    <h6 className="labels">Kode Pos</h6>
-                    <p>12780</p>
-                  </div>
                   <div className="mt-4">
-                    <h6>
+                    <h6 className="text-center">
                       <a
                         href="/"
-                        className="text-dark mx-auto"
+                        className="text-dark"
                         style={{ textDecoration: "none" }}
                       >
                         Kembali ke Home
