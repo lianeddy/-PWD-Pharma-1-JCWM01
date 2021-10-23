@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { API_URL } from "../constants/API";
 import Axios from "axios";
 
@@ -33,11 +33,9 @@ class ProfilePage extends React.Component {
   }
 
   render() {
-    return (
-      <div className="container rounded bg-light">
-        {this.state.userNotFound ? (
-          <div className="alert alert-danger mt-3">User tidak ditemukan</div>
-        ) : (
+    if (this.props.userGlobal.id_user) {
+      return (
+        <div className="container rounded bg-light">
           <div className="row">
             <div className="col-md-3 border-right">
               <div className="d-flex flex-column align-items-center text-center p-3 py-5">
@@ -107,7 +105,7 @@ class ProfilePage extends React.Component {
                     <h6>
                       <a
                         href="/"
-                        className="text-dark text-center"
+                        className="text-dark mx-auto"
                         style={{ textDecoration: "none" }}
                       >
                         Kembali ke Home
@@ -118,9 +116,11 @@ class ProfilePage extends React.Component {
               </div>
             </div>
           </div>
-        )}
-      </div>
-    );
+        </div>
+      );
+    } else {
+      return <Redirect to="/" />;
+    }
   }
 }
 

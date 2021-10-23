@@ -76,6 +76,7 @@ export const loginUser = ({ email, password }) => {
               type: "USER_LOGIN",
               payload: res.data.dataLogin,
             });
+            dispatch(getCartData(res.data.dataLogin.id_user));
           } else {
             dispatch({
               type: "USER_ERROR",

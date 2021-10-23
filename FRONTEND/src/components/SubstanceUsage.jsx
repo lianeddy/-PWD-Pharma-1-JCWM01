@@ -71,7 +71,7 @@ class SubstanceUsage extends React.Component {
     return (
       <>
         <form className="form-inline justify-content-center mt-3">
-          <div className="form-group mx-sm-3 mb-2">
+          <div className="form-group mx-auto mb-2 col-2">
             <input
               onChange={this.inputHandler}
               type="text"

@@ -26,14 +26,12 @@ class TheNavbar extends React.Component {
             </h3>
           </a>
           <form className="nav col-8 form-group justify-content-center">
-            <div class="mx-sm-1 mb-2">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Temukan obat..."
-                aria-label="Search"
-              />
-            </div>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Temukan obat..."
+              style={{ width: "500px" }}
+            />
           </form>
           <div className="text-end col-2">
             {this.props.userGlobal.id_user ? (
@@ -65,16 +63,17 @@ class TheNavbar extends React.Component {
                         KIRIM RESEP
                       </Link>
                     </DropdownItem>
-                  ) : 
-                  <DropdownItem>
-                    <Link
-                      style={{ textDecoration: "none" }}
-                      className="text-dark"
-                      to="/admin"
-                    >
-                      ADMIN
-                    </Link>
-                  </DropdownItem>}
+                  ) : (
+                    <DropdownItem>
+                      <Link
+                        style={{ textDecoration: "none" }}
+                        className="text-dark"
+                        to="/admin"
+                      >
+                        ADMIN
+                      </Link>
+                    </DropdownItem>
+                  )}
                   <DropdownItem>
                     <Link
                       style={{ textDecoration: "none" }}
