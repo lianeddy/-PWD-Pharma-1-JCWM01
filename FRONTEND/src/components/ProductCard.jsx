@@ -84,14 +84,14 @@ class ProductCard extends React.Component {
             {this.props.userGlobal.id_user ? (
               <button
                 onClick={this.addToCartHandler}
-                className="btn btn-success btn-sm text-white"
+                className="btn btn-info btn-sm text-dark"
               >
-                <i className="fas fa-shopping-cart text-white mr-1 "></i> Add to
+                <i className="fas fa-shopping-cart text-dark mr-1 "></i> Add to
                 cart
               </button>
             ) : (
-              <button disabled className="btn btn-success btn-sm text-white">
-                <i className="fas fa-shopping-cart text-white mr-1 "></i> Add to
+              <button disabled className="btn btn-info btn-sm text-dark">
+                <i className="fas fa-shopping-cart text-dark mr-1 "></i> Add to
                 cart
               </button>
             )}

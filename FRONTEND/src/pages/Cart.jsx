@@ -29,17 +29,20 @@ class Cart extends React.Component {
       });
   };
 
-  deletePrescription = () => {
-    const deletePrescription = window.confirm(`Hapus obat resep dari cart?`);
-    if (deletePrescription) {
-      this.state.prescriptionData.map((val) => {
-        Axios.delete(
-          `${API_URL}/cart/delete-prescription/${val.idprescription_cart}`
-        )
-          .then(() => alert("Obat resep dihapus"))
-          .catch((err) => console.log(err));
-      });
-    }
+  userPrescription = () => {
+    return this.state.prescriptionData.map((val) => {
+      return (
+        <tr>
+          <td className="align-middle">{val.nama_bahan_obat}</td>
+          <td className="align-middle">{val.kandungan} mg</td>
+          <td className="align-middle">Rp. {val.harga_per_mg},-</td>
+          <td className="align-middle">
+            Rp. {val.kandungan * val.harga_per_mg}
+            ,-
+          </td>
+        </tr>
+      );
+    });
   };
 
   prescriptionTotal = () => {
@@ -50,20 +53,18 @@ class Cart extends React.Component {
     return total;
   };
 
-  userPrescription = () => {
-    return this.state.prescriptionData.map((val) => {
-      return (
-        <tr>
-          <td className="align-middle">{val.nama_bahan_obat}</td>
-          <td className="align-middle">{val.kandungan}</td>
-          <td className="align-middle">Rp. {val.harga_per_mg},-</td>
-          <td className="align-middle">
-            Rp. {val.kandungan * val.harga_per_mg}
-            ,-
-          </td>
-        </tr>
-      );
-    });
+  deletePrescription = () => {
+    const deletePrescription = window.confirm(`Hapus obat resep dari cart?`);
+    if (deletePrescription) {
+      this.state.prescriptionData.map((val) => {
+        Axios.delete(
+          `${API_URL}/cart/delete-prescription/${val.idprescription_cart}`
+        )
+          .then(() => this.setState({ prescriptionData: [] }))
+
+          .catch((err) => console.log(err));
+      });
+    }
   };
 
   qtyBtnHandler = (id_cart, qty_obat) => {
@@ -257,7 +258,7 @@ class Cart extends React.Component {
                       onClick={this.deletePrescription}
                       className="btn btn-block btn-danger font-weight-bold my-3 py-3"
                     >
-                      BATAL
+                      BATALKAN RESEP
                     </button>
                     <button className="btn btn-block btn-primary font-weight-bold mx-3 my-3 py-3">
                       KE PEMBAYARAN

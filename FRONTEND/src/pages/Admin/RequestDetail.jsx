@@ -55,7 +55,6 @@ class RequestDetail extends React.Component {
       `${API_URL}/prescription/delete-prescription/${this.state.requestData.id_prescriptions}`
     )
       .then(() => {
-        this.setState({ executed: true });
         this.state.substanceServed.map((val) => {
           const id_bahan_obat = parseInt(val.substance);
           const kandungan = parseInt(val.content);
@@ -66,7 +65,7 @@ class RequestDetail extends React.Component {
             kandungan,
           })
             .then(() => {
-              alert("Prescription Proceed");
+              this.setState({ executed: true });
             })
             .catch((err) => {
               console.log(err);

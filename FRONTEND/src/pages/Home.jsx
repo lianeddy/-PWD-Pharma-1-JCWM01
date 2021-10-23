@@ -229,7 +229,7 @@ class Home extends React.Component {
             {this.renderCategory()}
           </select>
           <button
-            className="btn btn-secondary btn-sm ms-2 filter"
+            className="btn btn-dark btn-sm ms-2 filter"
             onClick={this.clearFilter}
           >
             Reset

@@ -58,6 +58,7 @@ class ProductDetail extends React.Component {
           .then(() => {
             alert("Berhasil menambahkan qty ke cart");
             this.props.getCartData(this.props.userGlobal.id_user);
+            this.setState({ quantity: 1 });
           })
           .catch((err) => {
             alert("Gagal saat patch data");
@@ -75,6 +76,7 @@ class ProductDetail extends React.Component {
           .then(() => {
             alert("Berhasil menambahkan obat ke cart");
             this.props.getCartData(this.props.userGlobal.id_user);
+            this.setState({ quantity: 1 });
           })
           .catch((err) => {
             alert(`Gagal menambahkan obat ke cart`);
