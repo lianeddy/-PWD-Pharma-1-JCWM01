@@ -4,6 +4,7 @@ const Crypto = require("crypto");
 const transporter = require("../helper/nodemailer");
 const { uploader } = require("../helpers/uploader");
 const fs = require("fs");
+const moment = require("moment");
 
 module.exports = {
   getUser: (req, res) => {
@@ -227,10 +228,11 @@ module.exports = {
       // membuat nama file untuk image
       const { file } = req.files;
       const filePath = file ? path + "/" + file[0].filename : null;
+      const tanggal = moment().format("YYYY-MM-DD");
       console.log("file", filePath);
-      let insertQuery = `INSERT INTO prescriptions VALUES (null,${id},${db.escape(
+      let insertQuery = `INSERT INTO prescriptions (id_user, foto_prescription, tanggal) values (${id}, ${db.escape(
         filePath
-      )},default);`;
+      )}, ${db.escape(tanggal)});`;
 
       db.query(insertQuery, (err, result) => {
         if (err) {

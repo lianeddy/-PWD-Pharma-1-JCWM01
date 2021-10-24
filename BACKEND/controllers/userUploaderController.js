@@ -17,27 +17,17 @@ module.exports = {
         const { file } = req.files;
         const filepath = file ? path + "/" + file[0].filename : null;
 
-        let data = JSON.parse(req.body.data);
-        data.image = filepath;
-
-        let sqlInsert = `UPDATE user set nama_depan = ${db.escape(
-          data.nama_depan
-        )}, nama_belakang = ${db.escape(
-          data.nama_belakang
-        )}, username = ${db.escape(data.username)}, email = ${db.escape(
-          data.email
-        )}, jenis_kelamin = ${db.escape(
-          data.jenis_kelamin
-        )}, alamat = ${db.escape(data.alamat)}, tanggal_lahir = ${db.escape(
-          data.foto_profil
-        )}, foto_profil = ${db.escape(data.foto_profil)}  ;`;
+        let sqlInsert = `UPDATE user set foto_profil = ${db.escape(
+          filepath
+        )} where id_user = ${req.params.id};`;
+        console.log(sqlInsert);
         db.query(sqlInsert, (err, results) => {
           if (err) {
             console.log(err);
             fs.unlinkSync("./public" + filepath);
             res.status(500).send(err);
           }
-          res.status(200).send({ message: "Upload file success" });
+          res.status(200).send({ message: "Foto Profil Anda diperbarui" });
         });
       });
     } catch (error) {

@@ -2,6 +2,7 @@ import React from "react";
 import Axios from "axios";
 import { API_URL } from "../../constants/API";
 import { Redirect } from "react-router-dom";
+import moment from "moment";
 
 class RequestDetail extends React.Component {
   state = {
@@ -63,6 +64,7 @@ class RequestDetail extends React.Component {
             id_user: this.state.requestData.id_user,
             id_bahan_obat,
             kandungan,
+            tanggal: moment().format("YYYY-MM-DD"),
           })
             .then(() => {
               this.setState({ executed: true });
@@ -121,7 +123,12 @@ class RequestDetail extends React.Component {
               <p>
                 <strong className="text-uppercase">Request Date:</strong>
                 <span>
-                  <strong> Perlu tanggal</strong>
+                  <strong>
+                    {" "}
+                    {moment(this.state.requestData.tanggal).format(
+                      "DD MMMM YYYY"
+                    )}
+                  </strong>
                 </span>
               </p>
               {this.state.substanceServed.map((val, idx) => {

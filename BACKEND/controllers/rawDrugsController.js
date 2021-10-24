@@ -3,9 +3,9 @@ const { db } = require("../database");
 module.exports = {
   getRawDrugs: (req, res) => {
     let scriptQuery =
-      "select prescriptions.id_prescriptions, user.nama_depan, user.nama_belakang, user.email from prescriptions left join user on user.id_user = prescriptions.id_user;";
+      "select prescriptions.id_prescriptions, prescriptions.tanggal, user.nama_depan, user.nama_belakang, user.email from prescriptions left join user on user.id_user = prescriptions.id_user;";
     if (req.query.id_prescriptions) {
-      scriptQuery = `select user.id_user, user.nama_depan, user.nama_belakang, user.email, prescriptions.id_prescriptions, prescriptions.foto_prescription from prescriptions
+      scriptQuery = `select user.id_user, user.nama_depan, user.nama_belakang, user.email, prescriptions.id_prescriptions, prescriptions.foto_prescription, prescriptions.tanggal from prescriptions
             left join user on user.id_user = prescriptions.id_user
             where prescriptions.id_prescriptions = ${db.escape(
               req.query.id_prescriptions
@@ -32,11 +32,11 @@ module.exports = {
 
   prescriptionToCart: (req, res) => {
     console.log(req.body);
-    let { id_user, id_bahan_obat, kandungan } = req.body;
-    let insertQuery = `Insert into prescription_cart (id_user, id_bahan_obat, kandungan, status) values (${db.escape(
+    let { id_user, id_bahan_obat, kandungan, tanggal } = req.body;
+    let insertQuery = `Insert into prescription_cart (id_user, id_bahan_obat, kandungan, tanggal, status) values (${db.escape(
       id_user
-    )}, ${db.escape(id_bahan_obat)}, ${db.escape(
-      kandungan
+    )}, ${db.escape(id_bahan_obat)}, ${db.escape(kandungan)}, ${db.escape(
+      tanggal
     )}, "MENUNGGU PEMBAYARAN");`;
     console.log(insertQuery);
     db.query(insertQuery, (err, result) => {

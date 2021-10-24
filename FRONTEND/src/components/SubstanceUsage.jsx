@@ -1,6 +1,7 @@
 import Axios from "axios";
 import React from "react";
 import { API_URL } from "../constants/API";
+import moment from "moment";
 
 class SubstanceUsage extends React.Component {
   state = {
@@ -50,7 +51,7 @@ class SubstanceUsage extends React.Component {
           <td>
             {val.nama_depan} {val.nama_belakang}
           </td>
-          <td>2021/10/19</td>
+          <td>{moment(val.tanggal).format("DD MMMM YYYY")}</td>
           <td>{val.status}</td>
         </tr>
       );
@@ -90,7 +91,7 @@ class SubstanceUsage extends React.Component {
                 <th scope="col">Obat</th>
                 <th scope="col">Kandungan</th>
                 <th scope="col">Penerima</th>
-                <th scope="col">Tanggal</th>
+                <th scope="col">Tanggal Pelayanan</th>
                 <th scope="col">Status</th>
               </tr>
             </thead>

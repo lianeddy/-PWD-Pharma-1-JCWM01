@@ -236,7 +236,7 @@ class Home extends React.Component {
           </button>
         </div>
         <div className=" row col-12 bg-white mt-3">
-          <div className="d-flex flex-direction-row align-items-center justify-content-between"></div>
+          <div className="d-flex flex-direction-row align-items-center justify-content-center"></div>
 
           {this.state.drugList.length === 0 ? (
             <div className="d-flex align-items-center flex-row justify-content-center mt-5">

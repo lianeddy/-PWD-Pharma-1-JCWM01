@@ -111,19 +111,19 @@ module.exports = {
   },
 
   substanceUsageHistory: (req, res) => {
-    let scriptQuery = `select prescription_cart.idprescription_cart, obat_bahan.nama_bahan_obat, prescription_cart.kandungan, prescription_cart.status, user.nama_depan, user.nama_belakang, obat_bahan.harga_per_mg from prescription_cart
+    let scriptQuery = `select prescription_cart.idprescription_cart, obat_bahan.nama_bahan_obat, prescription_cart.kandungan, prescription_cart.tanggal,  prescription_cart.status, user.nama_depan, user.nama_belakang, obat_bahan.harga_per_mg from prescription_cart
     left join user on user.id_user = prescription_cart.id_user
     left join obat_bahan on obat_bahan.id_bahan_obat = prescription_cart.id_bahan_obat;`;
     db.query(scriptQuery, (err, results) => {
-      if (err) res.status(500).send(err);
-      res.status(200).send(results);
+      if (err) return res.status(500).send(err);
+      return res.status(200).send(results);
     });
   },
 
   searchUsageHistory: (req, res) => {
     let scriptQuery = `select * from obat_bahan;`;
     if (req.query.nama_bahan_obat) {
-      scriptQuery = `select prescription_cart.idprescription_cart, obat_bahan.nama_bahan_obat, prescription_cart.kandungan, user.nama_depan, user.nama_belakang, obat_bahan.harga_per_mg from prescription_cart
+      scriptQuery = `select prescription_cart.idprescription_cart, obat_bahan.nama_bahan_obat, prescription_cart.kandungan, prescription_cart.tanggal, prescription_cart.status, user.nama_depan, user.nama_belakang, obat_bahan.harga_per_mg from prescription_cart
       left join user on user.id_user = prescription_cart.id_user
       left join obat_bahan on obat_bahan.id_bahan_obat = prescription_cart.id_bahan_obat
       where nama_bahan_obat like "%${req.query.nama_bahan_obat}%";`;
