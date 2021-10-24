@@ -48,6 +48,7 @@ class Home extends React.Component {
     const name = event.target.name;
     const value = event.target.value;
     this.setState({ [name]: value }, this.fetchFilterDrug);
+    this.setState({page:1})
   };
 
   fetchMaxPage = () => {
@@ -98,7 +99,8 @@ class Home extends React.Component {
 
   clearFilter = () => {
     this.setState({ searchCategory: "" });
-    this.fetchProducts();
+    this.fetchFilterDrug();
+    this.setState({page:1})
   };
 
   componentDidUpdate(prevProps) {
