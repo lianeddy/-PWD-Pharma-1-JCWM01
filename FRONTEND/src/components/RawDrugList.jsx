@@ -32,12 +32,7 @@ class RawDrugList extends React.Component {
           <td>{val.stock_mg}</td>
           <td>{val.harga_per_mg}</td>
           <td>
-            <Link
-              to={`/admin-edit-product/${val.id_obat}`}
-              style={{ textDecoration: "none" }}
-            >
-              Usage History
-            </Link>
+            <button className="btn btn-sm btn-primary">Restock</button>
           </td>
         </tr>
       );
@@ -50,7 +45,8 @@ class RawDrugList extends React.Component {
 
   render() {
     return (
-      <div className="mx-5 my-5">
+      <div className="mx-5 my-2">
+        <h5 className="text-center ">Daftar Bahan Obat Resep</h5>
         <table class="table table-striped text-center">
           <thead>
             <tr>
@@ -61,6 +57,7 @@ class RawDrugList extends React.Component {
               <th scope="col">Volume Botol (mg)</th>
               <th scope="col">Stock Total (mg)</th>
               <th scope="col">Harga per mg</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>{this.renderDataProduct()}</tbody>

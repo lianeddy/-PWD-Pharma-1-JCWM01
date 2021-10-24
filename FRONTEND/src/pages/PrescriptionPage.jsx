@@ -2,6 +2,7 @@ import React from "react";
 import { CustomInput, FormGroup, Button } from "reactstrap";
 import "../assets/styles/prescriptions.css";
 import camera from "../assets/images/admin/camera.png";
+import { Redirect } from "react-router-dom";
 import Axios from "axios";
 import { API_URL } from "../constants/API";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
@@ -58,95 +59,16 @@ class PrescriptionPage extends React.Component {
   };
 
   render() {
-    return (
-      <div className="container py-1">
-        <header className="text-dark text-center">
-          <h1 className="display-4">Kirim Resep disini</h1>
-          <p className="mb-5 font-weight-light">
-            Upload foto resep pada form di bawah untuk melakukan permintaan
-            resep
-          </p>
-          <div className="d-flex justify-content-center">
-            <TransformWrapper>
-              <React.Fragment>
-                <TransformComponent>
-                  <img
-                    id="imgPreview"
-                    value=""
-                    src={camera}
-                    height="350"
-                    width=""
-                    alt="no image select"
-                    className={
-                      this.state.fotoObat === ""
-                        ? "no-img-selected border border-success"
-                        : null
-                    }
-                  />
-                </TransformComponent>
-              </React.Fragment>
-            </TransformWrapper>
-          </div>
-        </header>
-        <div className="row py-4">
-          <div className="mx-auto">
-            <FormGroup className="w-100">
-              <CustomInput
-                type="file"
-                id="image"
-                name="inputFile"
-                onChange={this.onBtnAddFile}
-              />
-            </FormGroup>
-            <Button
-              color="success"
-              className="align-self-end"
-              onClick={this.btnSendData}
-            >
-              KIRIM
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    userGlobal: state.user,
-  };
-};
-
-export default connect(mapStateToProps)(PrescriptionPage);
-
-{
-  /* <div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column text-center">
-        <header className="masthead mb-auto">
-          <div className="inner">
-            <h1 className="masthead-brand">UPLOAD RESEP DOKTER</h1>
-          </div>
-        </header>
-        <main role="main" className="inner-cover">
-          <div className="w-100 row input-prescription-image">
-            <div className="col-4 d-flex flex-column align-items-center justify-content-center">
-              <FormGroup className="w-100">
-                <CustomInput
-                  type="file"
-                  id="image"
-                  name="inputFile"
-                  onChange={this.onBtnAddFile}
-                />
-              </FormGroup>
-              <Button
-                color="success"
-                className="align-self-end"
-                onClick={this.btnSendData}
-              >
-                KIRIM
-              </Button>
-            </div>
-            <div className="col-8 w-50 d-flex align-items-center justify-content-center ">
+    if (this.props.userGlobal.id_user) {
+      return (
+        <div className="container py-1">
+          <header className="text-dark text-center">
+            <h1 className="display-4">Kirim Resep disini</h1>
+            <p className="mb-5 font-weight-light">
+              Upload foto resep pada form di bawah untuk melakukan permintaan
+              resep
+            </p>
+            <div className="d-flex justify-content-center">
               <TransformWrapper>
                 <React.Fragment>
                   <TransformComponent>
@@ -154,7 +76,7 @@ export default connect(mapStateToProps)(PrescriptionPage);
                       id="imgPreview"
                       value=""
                       src={camera}
-                      height="500"
+                      height="350"
                       width=""
                       alt="no image select"
                       className={
@@ -167,7 +89,38 @@ export default connect(mapStateToProps)(PrescriptionPage);
                 </React.Fragment>
               </TransformWrapper>
             </div>
-          </div>
-        </main>
-      </div> */
+            <div className="row py-4">
+              <div className="mx-auto">
+                <FormGroup className="w-100">
+                  <CustomInput
+                    type="file"
+                    id="image"
+                    name="inputFile"
+                    onChange={this.onBtnAddFile}
+                  />
+                </FormGroup>
+                <Button
+                  color="success"
+                  className="align-self-start mt-5"
+                  onClick={this.btnSendData}
+                >
+                  KIRIM
+                </Button>
+              </div>
+            </div>
+          </header>
+        </div>
+      );
+    } else {
+      return <Redirect to="/" />;
+    }
+  }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    userGlobal: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(PrescriptionPage);

@@ -12,11 +12,14 @@ class ProductDetail extends React.Component {
   };
 
   fetchProductData = () => {
-    Axios.get(`http://localhost:3300/obat/get-drug-detail?product_id=${this.props.match.params.idobat}`, {
-      params: {
-        idobat: this.props.match.params.obatid,
-      },
-    })
+    Axios.get(
+      `http://localhost:3300/obat/get-drug-detail?product_id=${this.props.match.params.idobat}`,
+      {
+        params: {
+          idobat: this.props.match.params.obatid,
+        },
+      }
+    )
       .then((result) => {
         if (result.data.length) {
           this.setState({ productData: result.data[0] });
@@ -151,37 +154,45 @@ class ProductDetail extends React.Component {
               )}
 
               <div className="d-flex align-items-center mt-5">
-                <div
-                  className="input-group quantity"
-                  style={{ width: "130px" }}
-                >
-                  <div className="input-group-btn">
-                    <button
-                      onClick={() => this.qtyBtnHandler("decrement")}
-                      className="btn btn-primary btn-minus"
-                    >
-                      <i className="fa fa-minus"></i>
-                    </button>
+                {this.props.userGlobal.id_user ? (
+                  <div
+                    className="input-group quantity"
+                    style={{ width: "130px" }}
+                  >
+                    <div className="input-group-btn">
+                      <button
+                        onClick={() => this.qtyBtnHandler("decrement")}
+                        className="btn btn-primary btn-minus"
+                      >
+                        <i className="fa fa-minus"></i>
+                      </button>
+                    </div>
+                    <p className="text-center mx-auto pt-1 font-weight-bold">
+                      {this.state.quantity}
+                    </p>
+                    <div className="input-group-btn">
+                      <button
+                        onClick={() => this.qtyBtnHandler("increment")}
+                        className="btn btn-primary btn-plus mr-3"
+                      >
+                        <i className="fa fa-plus"></i>
+                      </button>
+                    </div>
                   </div>
-                  <p className="text-center mx-auto pt-1 font-weight-bold">
-                    {this.state.quantity}
-                  </p>
-                  <div className="input-group-btn">
-                    <button
-                      onClick={() => this.qtyBtnHandler("increment")}
-                      className="btn btn-primary btn-plus mr-3"
-                    >
-                      <i className="fa fa-plus"></i>
-                    </button>
-                  </div>
-                </div>
+                ) : null}
               </div>
-              <button
-                onClick={this.addToCartHandler}
-                className="btn btn-success mt-3"
-              >
-                <i className="fa fa-shopping-cart"></i> Add To Cart
-              </button>
+              {this.props.userGlobal.id_user ? (
+                <button
+                  onClick={this.addToCartHandler}
+                  className="btn btn-success mt-3"
+                >
+                  <i className="fa fa-shopping-cart"></i> Add To Cart
+                </button>
+              ) : (
+                <button disabled className="btn btn-success mt-3">
+                  <i className="fa fa-shopping-cart"></i> Add To Cart
+                </button>
+              )}
             </div>
           </div>
         </div>

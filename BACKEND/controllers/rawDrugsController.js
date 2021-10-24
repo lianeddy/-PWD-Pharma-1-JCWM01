@@ -25,13 +25,13 @@ module.exports = {
     )}, ${db.escape(id_bahan_obat)}, ${db.escape(kandungan)});`;
     console.log(insertQuery);
     db.query(insertQuery, (err, result) => {
-      if (err) res.status(500).send(err);
+      if (err) return res.status(500).send(err);
       db.query(
         `Select * from prescription_cart where id_user = ${db.escape(
           id_user
         )};`,
         (err2, result2) => {
-          if (err2) res.status(500).send(err2);
+          if (err2) return res.status(500).send(err2);
           return res.status(200).send({
             message: `Berhasil menambah permintaan resep ke cart user`,
             data: result2,
@@ -42,8 +42,8 @@ module.exports = {
   },
 
   deletePrescriptionRequest: (req, res) => {
-    let deleteQuery = `Delete from prescription_request where id_request = ${db.escape(
-      req.params.id_request
+    let deleteQuery = `Delete from prescriptions where id_prescriptions = ${db.escape(
+      req.params.id_prescriptions
     )};`;
     console.log(deleteQuery);
     db.query(deleteQuery, (err, results) => {

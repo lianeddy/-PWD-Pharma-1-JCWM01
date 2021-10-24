@@ -99,6 +99,17 @@ module.exports = {
     });
   },
 
+  deletePrescription: (req, res) => {
+    let deleteQuery = `Delete from prescription_cart where idprescription_cart = ${db.escape(
+      req.params.idprescription_cart
+    )};`;
+    console.log(deleteQuery);
+    db.query(deleteQuery, (err, results) => {
+      if (err) return res.status(500).send(err);
+      return res.status(200).send(results);
+    });
+  },
+
   substanceUsageHistory: (req, res) => {
     let scriptQuery = `select prescription_cart.idprescription_cart, obat_bahan.nama_bahan_obat, prescription_cart.kandungan, user.nama_depan, user.nama_belakang, obat_bahan.harga_per_mg from prescription_cart
     left join user on user.id_user = prescription_cart.id_user

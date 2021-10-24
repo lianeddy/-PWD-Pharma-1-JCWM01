@@ -28,7 +28,6 @@ module.exports = {
     )} AND password = ${db.escape(req.body.password)};`;
 
     db.query(scriptQuery, (err, results) => {
-      console.log(results);
       if (err) return res.status(500).send(err);
       if (results[0]) {
         let {
@@ -267,7 +266,6 @@ module.exports = {
     )};`;
 
     db.query(scriptQuery, (err, results) => {
-      console.log(results);
       if (err) return res.status(500).send(err);
       if (results[0]) {
         let {

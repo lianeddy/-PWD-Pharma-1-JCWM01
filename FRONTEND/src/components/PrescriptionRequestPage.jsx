@@ -23,13 +23,13 @@ class PrescriptionRequestPage extends React.Component {
     return this.state.requestList.map((val) => {
       return (
         <tr>
-          <th>{val.id_request}</th>
+          <th>{val.id_prescriptions}</th>
           <td>
             {val.nama_depan} {val.nama_belakang}
           </td>
-          <td>{val.request_date}</td>
+          <td>{val.email}</td>
           <td>
-            <Link to={`/request-detail/${val.id_request}`}>
+            <Link to={`/request-detail/${val.id_prescriptions}`}>
               <button type="button" className="btn btn-outline-success">
                 Execute
               </button>
@@ -52,7 +52,7 @@ class PrescriptionRequestPage extends React.Component {
             <tr>
               <th scope="col">Request ID</th>
               <th scope="col">Applicant</th>
-              <th scope="col">Request Date</th>
+              <th scope="col">Applicant E-mail</th>
               <th scope="col">Action</th>
             </tr>
           </thead>

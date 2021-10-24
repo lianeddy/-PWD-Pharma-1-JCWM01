@@ -51,10 +51,16 @@ class RequestDetail extends React.Component {
   };
 
   serveHandler = () => {
-    this.state.substanceServed.map((val) => {
-      const id_bahan_obat = parseInt(val.substance);
-      const kandungan = parseInt(val.content);
+    Axios.delete(
+      `${API_URL}/prescription/delete-prescription/${this.state.requestData.id_prescriptions}`
+    )
+      .then(() => {
+        this.setState({ executed: true });
+        this.state.substanceServed.map((val) => {
+          const id_bahan_obat = parseInt(val.substance);
+          const kandungan = parseInt(val.content);
 
+<<<<<<< HEAD
       return Axios.post(`${API_URL}/prescription/post-prescriptions`, {
         id_user: this.state.requestData.id_user,
         id_bahan_obat,
@@ -64,17 +70,24 @@ class RequestDetail extends React.Component {
           Axios.delete(
             `${API_URL}/prescription/delete-prescription/${this.state.requestData.id_prescriptions}`
           )
+=======
+          return Axios.post(`${API_URL}/prescription/post-prescriptions`, {
+            id_user: this.state.requestData.id_user,
+            id_bahan_obat,
+            kandungan,
+          })
+>>>>>>> 81ca60485f860efcd236651e9396358eda23b1c8
             .then(() => {
               alert("Prescription Proceed");
-              this.setState({ executed: true });
             })
-            .catch((err) => console.log(err));
-        })
-        .catch((err) => {
-          console.log(err);
-          alert("Gagal menambah resep ke cart");
+            .catch((err) => {
+              console.log(err);
+            });
         });
-    });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   componentDidMount() {
@@ -97,7 +110,11 @@ class RequestDetail extends React.Component {
             <div className="col-lg-4 pb-5">
               <img
                 className="w-100 h-100"
+<<<<<<< HEAD
                 src={this.state.requestData.foto_prescription}
+=======
+                src={`${API_URL}/${this.state.requestData.foto_prescription}`}
+>>>>>>> 81ca60485f860efcd236651e9396358eda23b1c8
                 alt="Image"
               />
             </div>
@@ -128,13 +145,22 @@ class RequestDetail extends React.Component {
                 return (
                   <div
                     key={idx}
+<<<<<<< HEAD
                     className="d-flex form-inline form-group col-md-4"
+=======
+                    className="d-flex flex-row form-inline form-group col-md-4 mb-2"
+>>>>>>> 81ca60485f860efcd236651e9396358eda23b1c8
                   >
                     <select
                       onChange={(event) => this.inputHandler(idx, event)}
                       value={val.substance}
                       name="substance"
+<<<<<<< HEAD
                       className="form-select mr-2"
+=======
+                      className="form-select"
+                      style={{ marginRight: "5px" }}
+>>>>>>> 81ca60485f860efcd236651e9396358eda23b1c8
                     >
                       <option selected>Bahan {idx + 1}</option>
                       <option value="195">Allopourinol</option>
@@ -167,12 +193,13 @@ class RequestDetail extends React.Component {
                       onChange={(event) => this.inputHandler(idx, event)}
                       placeholder="mg"
                       type="number"
-                      className="form-control col-lg-1"
+                      className="form-control"
+                      style={{ marginRight: "5px", width: "80px" }}
                     />
                     {idx === 0 ? (
                       <button
                         onClick={this.addSubstance}
-                        className="btn btn-primary text-center ml-2"
+                        className="btn btn-primary text-center"
                       >
                         <i className="fa fa-plus-circle"></i>
                       </button>
@@ -187,10 +214,11 @@ class RequestDetail extends React.Component {
                   </div>
                 );
               })}
-              <div className="mb-4">
+              <div className="mt-5">
                 <button
                   onClick={this.serveHandler}
                   className="btn btn-primary mr-2"
+                  style={{ marginRight: "5px" }}
                 >
                   SERVE
                 </button>

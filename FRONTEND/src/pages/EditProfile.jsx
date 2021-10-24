@@ -57,12 +57,12 @@ class EditProfile extends React.Component {
       foto_profil: this.state.edit_foto_profil,
     })
       .then(() => {
-        alert("Pembaharuan data berhasil");
+        alert("Pembaruan data berhasil");
         this.setState({ edit_success: true });
       })
       .catch((err) => {
         console.log(err);
-        alert("Pembaharuan data gagal");
+        alert("Pembaruan data gagal");
       });
   };
 
@@ -115,124 +115,130 @@ class EditProfile extends React.Component {
   render() {
     if (this.state.edit_success === true) {
       return <Redirect to={`/profile-page/${this.state.edit_email}`} />;
-    }
-    return (
-      <div className="container rounded bg-light">
-        <div className="row">
-          <div className="col-md-3 border-right">
-            <div className="d-flex flex-column align-items-center text-center p-3 py-5">
-              <img
-                id="imgpreview"
-                className="rounded-circle img-fluid"
-                width="150px"
-                src={this.state.edit_foto_profil}
-                alt=""
-              />
-              <div class="form-group mx-auto text-center align-items-center">
-                <label>Ganti foto profil?</label>
-                <input
-                  type="file"
-                  className="form-control"
-                  id="img"
-                  onChange={this.onBtAddFile}
+    } else if (this.props.userGlobal.id_user) {
+      return (
+        <div className="container rounded bg-light">
+          <div className="row">
+            <div className="col-md-3 border-right">
+              <div className="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img
+                  id="imgpreview"
+                  className="rounded-circle img-fluid"
+                  width="150px"
+                  src={this.state.edit_foto_profil}
+                  alt=""
                 />
+                <div class="form-group mx-auto text-center align-items-center">
+                  <label>Ganti foto profil?</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="img"
+                    onChange={this.onBtAddFile}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="col-md-6 border-right">
-            <div className="p-3 py-5">
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <h4 className="text-right">Edit Profil</h4>
-              </div>
-              <div className="row mt-2">
-                <div className="col-md-6">
-                  <label className="labels">Nama Depan</label>
-                  <input
-                    onChange={this.inputHandler}
-                    name="edit_nama_depan"
-                    type="text"
-                    className="form-control"
-                    value={this.state.edit_nama_depan}
-                  />
+            <div className="col-md-6 border-right">
+              <div className="p-3 py-5">
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h4 className="text-right">Edit Profil</h4>
                 </div>
-                <div className="col-md-6">
-                  <label className="labels">Nama Belakang</label>
-                  <input
-                    onChange={this.inputHandler}
-                    name="edit_nama_belakang"
-                    type="text"
-                    className="form-control"
-                    value={this.state.edit_nama_belakang}
-                  />
+                <div className="row mt-2">
+                  <div className="col-md-6">
+                    <label className="labels">Nama Depan</label>
+                    <input
+                      onChange={this.inputHandler}
+                      name="edit_nama_depan"
+                      type="text"
+                      className="form-control"
+                      value={this.state.edit_nama_depan}
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label className="labels">Nama Belakang</label>
+                    <input
+                      onChange={this.inputHandler}
+                      name="edit_nama_belakang"
+                      type="text"
+                      className="form-control"
+                      value={this.state.edit_nama_belakang}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="row mt-3">
-                <div className="col-md-6">
-                  <label className="labels">E-mail</label>
-                  <input
-                    onChange={this.inputHandler}
-                    name="edit_email"
-                    type="text"
-                    className="form-control"
-                    value={this.state.edit_email}
-                  />
+                <div className="row mt-3">
+                  <div className="col-md-6">
+                    <label className="labels">E-mail</label>
+                    <input
+                      onChange={this.inputHandler}
+                      name="edit_email"
+                      type="text"
+                      className="form-control"
+                      value={this.state.edit_email}
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label className="labels">Jenis Kelamin</label>
+                    <select
+                      onChange={this.inputHandler}
+                      className="form-select"
+                      name="edit_jenis_kelamin"
+                      value={this.state.edit_jenis_kelamin}
+                    >
+                      <option value="Pria">Pria</option>
+                      <option value="Wanita">Wanita</option>
+                    </select>
+                  </div>
+                  <div className="col-md-6 mt-3">
+                    <label className="labels">Tanggal Lahir</label>
+                    <input
+                      onChange={this.inputHandler}
+                      name="edit_tanggal_lahir"
+                      type="text"
+                      className="form-control"
+                      value={this.state.edit_tanggal_lahir}
+                    />
+                  </div>
+                  <div className="col-md-12 mt-3">
+                    <label className="labels">Alamat Pengiriman</label>
+                    <textarea
+                      onChange={this.inputHandler}
+                      name="edit_alamat"
+                      type="text"
+                      className="form-control"
+                      value={this.state.edit_alamat}
+                    ></textarea>
+                  </div>
                 </div>
-                <div className="col-md-6">
-                  <label className="labels">Jenis Kelamin</label>
-                  <select
-                    onChange={this.inputHandler}
-                    className="custom-select"
-                    name="edit_jenis_kelamin"
-                    value={this.state.edit_jenis_kelamin}
+                <div className="mt-4 text-center">
+                  <button
+                    onClick={this.saveBtnHandler}
+                    className="btn btn-primary profile-button mx-2"
+                    type="button"
                   >
-                    <option value="Pria">Pria</option>
-                    <option value="Wanita">Wanita</option>
-                  </select>
-                </div>
-                <div className="col-md-6 mt-3">
-                  <label className="labels">Tanggal Lahir</label>
-                  <input
-                    onChange={this.inputHandler}
-                    name="edit_tanggal_lahir"
-                    type="text"
-                    className="form-control"
-                    value={this.state.edit_tanggal_lahir}
-                  />
-                </div>
-                <div className="col-md-12 mt-3">
-                  <label className="labels">Alamat Pengiriman</label>
-                  <textarea
-                    onChange={this.inputHandler}
-                    name="edit_alamat"
-                    type="text"
-                    className="form-control"
-                    value={this.state.edit_alamat}
-                  ></textarea>
-                </div>
-              </div>
-              <div className="mt-4 text-center">
-                <button
-                  onClick={this.saveBtnHandler}
-                  className="btn btn-primary profile-button mx-2"
-                  type="button"
-                >
-                  Simpan
-                </button>
-                <button className="btn btn-danger profile-button" type="button">
-                  <Link
-                    to={`/profile-page/${this.props.userGlobal.username}`}
-                    style={{ textDecoration: "none" }}
-                    className="text-white"
+                    Simpan
+                  </button>
+                  <button
+                    className="btn btn-danger profile-button"
+                    type="button"
                   >
-                    Batal
-                  </Link>
-                </button>
+                    <Link
+                      to={`/profile-page/${this.props.userGlobal.username}`}
+                      style={{ textDecoration: "none" }}
+                      className="text-white"
+                    >
+                      Batal
+                    </Link>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return <Redirect to="/" />;
+    }
   }
 }
 
