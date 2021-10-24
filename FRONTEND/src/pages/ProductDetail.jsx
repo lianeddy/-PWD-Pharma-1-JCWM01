@@ -143,7 +143,19 @@ class ProductDetail extends React.Component {
                   <strong className="text-uppercase">Golongan</strong>
                 </p>
               </div>
-              <p className="mt-2">{this.state.productData.golongan}</p>
+              <p className="mt-2">
+                {this.state.productData.golongan === "Obat Bebas" ? (
+                  <i className="fas fa-circle text-success"></i>
+                ) : this.state.productData.golongan === "Obat Keras" ? (
+                  <i className="fas fa-circle text-danger"></i>
+                ) : this.state.productData.golongan ===
+                  "Obat Bebas Terbatas" ? (
+                  <i className="fas fa-circle text-primary"></i>
+                ) : this.state.productData.golongan === "Herbal" ? (
+                  <i className="fas fa-circle text-warning"></i>
+                ) : null}{" "}
+                {this.state.productData.golongan}
+              </p>
               <div>
                 <p>
                   <strong className="text-uppercase">Stock</strong>

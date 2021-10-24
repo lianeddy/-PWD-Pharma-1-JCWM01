@@ -31,15 +31,15 @@ class Cart extends React.Component {
 
   userPrescription = () => {
     return this.state.prescriptionData.map((val) => {
+      let total = val.kandungan * val.harga_per_mg;
       return (
         <tr>
           <td className="align-middle">{val.nama_bahan_obat}</td>
           <td className="align-middle">{val.kandungan} mg</td>
-          <td className="align-middle">Rp. {val.harga_per_mg},-</td>
           <td className="align-middle">
-            Rp. {val.kandungan * val.harga_per_mg}
-            ,-
+            Rp. {val.harga_per_mg.toLocaleString("id")}
           </td>
+          <td className="align-middle">Rp. {total.toLocaleString("id")}</td>
         </tr>
       );
     });
@@ -50,7 +50,7 @@ class Cart extends React.Component {
     this.state.prescriptionData.forEach((val) => {
       total += val.kandungan * val.harga_per_mg;
     });
-    return total;
+    return total.toLocaleString("id");
   };
 
   deletePrescription = () => {
@@ -100,18 +100,19 @@ class Cart extends React.Component {
     this.props.cartGlobal.cartList.forEach((val) => {
       total += val.harga * val.qty_obat;
     });
-    return total;
+    return total.toLocaleString("id");
   };
 
   renderCart = () => {
     return this.props.cartGlobal.cartList.map((val) => {
+      let total = val.harga * val.qty_obat;
       return (
         <tr>
           <td className="align-middle">
             <img src={val.foto_obat} alt="" style={{ width: "50px" }} />{" "}
             {val.nama_obat}
           </td>
-          <td className="align-middle">Rp. {val.harga},-</td>
+          <td className="align-middle">Rp. {val.harga.toLocaleString("id")}</td>
           <td className="align-middle">
             <div
               className="input-group quantity mx-auto"
@@ -144,7 +145,7 @@ class Cart extends React.Component {
               </div>
             </div>
           </td>
-          <td className="align-middle">Rp. {val.harga * val.qty_obat},-</td>
+          <td className="align-middle">Rp. {total.toLocaleString("id")}</td>
           <td className="align-middle">
             <button
               onClick={() => this.deleteItem(val.id_cart)}

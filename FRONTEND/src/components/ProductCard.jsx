@@ -59,6 +59,17 @@ class ProductCard extends React.Component {
           src={this.props.productData.foto_obat}
           alt=""
         />
+        {this.props.productData.golongan === "Obat Bebas" ? (
+          <i className="fas fa-circle text-success"></i>
+        ) : this.props.productData.golongan === "Obat Keras" ? (
+          <i className="fas fa-circle text-danger"></i>
+        ) : this.props.productData.golongan === "Obat Bebas Terbatas" ? (
+          <i className="fas fa-circle text-primary"></i>
+        ) : this.props.productData.golongan === "Herbal" ? (
+          <i className="fas fa-circle text-warning"></i>
+        ) : this.props.productData.golongan === "Alat Kesehatan" ? (
+          <i className="fas fa-plus-square"></i>
+        ) : null}
         <div className="mt-2">
           <div>
             <h6 className="text-truncate mb-3">
@@ -84,7 +95,8 @@ class ProductCard extends React.Component {
             {this.props.userGlobal.id_user ? (
               <button
                 onClick={this.addToCartHandler}
-                className="btn btn-info btn-sm text-dark"
+                className="btn btn-sm text-dark"
+                style={{ backgroundColor: "#50c878" }}
               >
                 <i className="fas fa-shopping-cart text-dark mr-1 "></i> Add to
                 cart

@@ -8,6 +8,7 @@ import {
 } from "reactstrap";
 import { connect } from "react-redux";
 import { logoutUser } from "../redux/actions/user";
+import SearchBar from "./SearchBar";
 
 class TheNavbar extends React.Component {
   render() {
@@ -25,14 +26,7 @@ class TheNavbar extends React.Component {
               AMR{" "}
             </h3>
           </a>
-          <form className="nav col-8 form-group justify-content-center">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Temukan obat..."
-              style={{ width: "500px" }}
-            />
-          </form>
+          <SearchBar />
           <div className="text-end col-2">
             {this.props.userGlobal.id_user ? (
               <UncontrolledDropdown>
@@ -44,7 +38,7 @@ class TheNavbar extends React.Component {
                     <Link
                       style={{ textDecoration: "none" }}
                       className="text-dark"
-                      to={`/profile-page/${this.props.userGlobal.email}`}
+                      to={`/profile-page/${this.props.userGlobal.id_user}`}
                     >
                       PROFIL ANDA
                     </Link>

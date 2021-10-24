@@ -21,7 +21,7 @@ class EditProfile extends React.Component {
   fetchUserData = () => {
     Axios.get(`${API_URL}/user/get`, {
       params: {
-        email: this.props.userGlobal.email,
+        id_user: this.props.userGlobal.id_user,
       },
     })
       .then((result) => {
@@ -114,7 +114,7 @@ class EditProfile extends React.Component {
 
   render() {
     if (this.state.edit_success === true) {
-      return <Redirect to={`/profile-page/${this.state.edit_email}`} />;
+      return <Redirect to={`/profile-page/${this.state.editUser}`} />;
     } else if (this.props.userGlobal.id_user) {
       return (
         <div className="container rounded bg-light">
@@ -190,11 +190,14 @@ class EditProfile extends React.Component {
                     </select>
                   </div>
                   <div className="col-md-6 mt-3">
-                    <label className="labels">Tanggal Lahir</label>
+                    <label className="labels" for="birthday">
+                      Tanggal Lahir
+                    </label>
                     <input
                       onChange={this.inputHandler}
                       name="edit_tanggal_lahir"
-                      type="text"
+                      type="date"
+                      id="birthday"
                       className="form-control"
                       value={this.state.edit_tanggal_lahir}
                     />

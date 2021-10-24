@@ -15,6 +15,19 @@ module.exports = {
     });
   },
 
+  searchDrug: (req, res) => {
+    let scriptQuery = `select * from obat;`;
+    if (req.query.nama_obat) {
+      scriptQuery = `select * from obat
+      where nama_obat like "%${req.query.nama_obat}%";`;
+    }
+    console.log(scriptQuery);
+    db.query(scriptQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
+    });
+  },
+
   getData: (request, response) => {
     const limit = 10;
     console.log(request.query.nama_obat);

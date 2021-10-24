@@ -33,9 +33,11 @@ module.exports = {
   prescriptionToCart: (req, res) => {
     console.log(req.body);
     let { id_user, id_bahan_obat, kandungan } = req.body;
-    let insertQuery = `Insert into prescription_cart (id_user, id_bahan_obat, kandungan) values (${db.escape(
+    let insertQuery = `Insert into prescription_cart (id_user, id_bahan_obat, kandungan, status) values (${db.escape(
       id_user
-    )}, ${db.escape(id_bahan_obat)}, ${db.escape(kandungan)});`;
+    )}, ${db.escape(id_bahan_obat)}, ${db.escape(
+      kandungan
+    )}, "MENUNGGU PEMBAYARAN");`;
     console.log(insertQuery);
     db.query(insertQuery, (err, result) => {
       if (err) return res.status(500).send(err);

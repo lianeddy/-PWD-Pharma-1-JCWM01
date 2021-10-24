@@ -51,7 +51,7 @@ class SubstanceUsage extends React.Component {
             {val.nama_depan} {val.nama_belakang}
           </td>
           <td>2021/10/19</td>
-          <td>"PENDING"</td>
+          <td>{val.status}</td>
         </tr>
       );
     });

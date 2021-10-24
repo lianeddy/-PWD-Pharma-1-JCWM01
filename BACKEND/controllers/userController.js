@@ -8,9 +8,9 @@ const fs = require("fs");
 module.exports = {
   getUser: (req, res) => {
     let scriptQuery = "Select * from user;";
-    if (req.query.email) {
-      scriptQuery = `Select * from user where email= ${db.escape(
-        req.query.email
+    if (req.query.id_user) {
+      scriptQuery = `Select * from user where id_user= ${db.escape(
+        req.query.id_user
       )};`;
     }
     db.query(scriptQuery, (err, results) => {
