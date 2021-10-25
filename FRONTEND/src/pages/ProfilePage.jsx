@@ -300,7 +300,9 @@ class ProfilePage extends React.Component {
                   >
                     Edit Profil
                   </button>
-                  <button className="btn btn-primary">Kembali ke Home</button>
+                  <Link to="/">
+                    <button className="btn btn-primary">Kembali ke Home</button>
+                  </Link>
                 </div>
               </div>
             </div>
