@@ -60,23 +60,11 @@ class RequestDetail extends React.Component {
           const id_bahan_obat = parseInt(val.substance);
           const kandungan = parseInt(val.content);
 
-<<<<<<< HEAD
-      return Axios.post(`${API_URL}/prescription/post-prescriptions`, {
-        id_user: this.state.requestData.id_user,
-        id_bahan_obat,
-        kandungan,
-      })
-        .then(() => {
-          Axios.delete(
-            `${API_URL}/prescription/delete-prescription/${this.state.requestData.id_prescriptions}`
-          )
-=======
           return Axios.post(`${API_URL}/prescription/post-prescriptions`, {
             id_user: this.state.requestData.id_user,
             id_bahan_obat,
             kandungan,
           })
->>>>>>> 81ca60485f860efcd236651e9396358eda23b1c8
             .then(() => {
               alert("Prescription Proceed");
             })
@@ -110,11 +98,7 @@ class RequestDetail extends React.Component {
             <div className="col-lg-4 pb-5">
               <img
                 className="w-100 h-100"
-<<<<<<< HEAD
-                src={this.state.requestData.foto_prescription}
-=======
                 src={`${API_URL}/${this.state.requestData.foto_prescription}`}
->>>>>>> 81ca60485f860efcd236651e9396358eda23b1c8
                 alt="Image"
               />
             </div>
@@ -145,22 +129,14 @@ class RequestDetail extends React.Component {
                 return (
                   <div
                     key={idx}
-<<<<<<< HEAD
-                    className="d-flex form-inline form-group col-md-4"
-=======
                     className="d-flex flex-row form-inline form-group col-md-4 mb-2"
->>>>>>> 81ca60485f860efcd236651e9396358eda23b1c8
                   >
                     <select
                       onChange={(event) => this.inputHandler(idx, event)}
                       value={val.substance}
                       name="substance"
-<<<<<<< HEAD
-                      className="form-select mr-2"
-=======
                       className="form-select"
                       style={{ marginRight: "5px" }}
->>>>>>> 81ca60485f860efcd236651e9396358eda23b1c8
                     >
                       <option selected>Bahan {idx + 1}</option>
                       <option value="195">Allopourinol</option>

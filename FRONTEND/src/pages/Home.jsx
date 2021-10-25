@@ -83,21 +83,12 @@ class Home extends React.Component {
   renderCategory = () => {
     return this.state.categoryDrugList.map((val) => {
       if (this.state.searchCategory === "") {
-<<<<<<< HEAD
         return <option value={val.golongan}>{val.golongan}</option>;
       } else {
         if (val.golongan === this.state.searchCategory) {
           return <option value={val.golongan}>{val.golongan}</option>;
         } else {
           return <option value={val.golongan}>{val.golongan}</option>;
-=======
-        return <option value={val.golongan}>{capital}</option>;
-      } else {
-        if (val.golongan === this.state.searchCategory) {
-          return <option value={val.golongan}>{capital}</option>;
-        } else {
-          return <option value={val.golongan}>{capital}</option>;
->>>>>>> 81ca60485f860efcd236651e9396358eda23b1c8
         }
       }
     });
@@ -212,12 +203,9 @@ class Home extends React.Component {
       <div className="container-style px-5 my-3">
         <CategoriesCarousel />
         <h4 className="display-5 text-uppercase text-center">Daftar Obat</h4>
-<<<<<<< HEAD
-=======
         <h6 className="text-start text-uppercase">
           filter <i className="fas fa-filter"></i>
         </h6>
->>>>>>> 81ca60485f860efcd236651e9396358eda23b1c8
         <div className="d-flex flex-row col-3">
           <select
             onChange={this.sortHandler}
@@ -245,48 +233,12 @@ class Home extends React.Component {
             Reset
           </button>
         </div>
-<<<<<<< HEAD
-        <div className=" row col-12 bg-light mt-3">
-=======
         <div className=" row col-12 bg-white mt-3">
->>>>>>> 81ca60485f860efcd236651e9396358eda23b1c8
           <div className="d-flex flex-direction-row align-items-center justify-content-between"></div>
 
           {this.state.drugList.length === 0 ? (
             <div className="d-flex align-items-center flex-row justify-content-center mt-5">
               <h4>sorry error page!</h4>
-<<<<<<< HEAD
-            </div>
-          ) : (
-            <>
-              <div className="d-flex flex-wrap  align-items-center flex-row justify-content-center">
-                {/* Render Products Here */}
-                {this.renderProducts()}
-              </div>
-              <div className="d-flex flex-direction-row align-items-center justify-content-center mt-3">
-                <div className="col-4 d-flex flex-direction-row align-items-center justify-content-center">
-                  <button
-                    disabled={this.state.page === 1}
-                    onClick={this.prevPageHandler}
-                    className="btn btn-sm btn-dark"
-                  >
-                    {"<"}
-                  </button>
-                  <p className="text-center text-page my-0 mx-2">
-                    Page {this.state.page} of {this.state.maxPage}
-                  </p>
-                  <button
-                    disabled={this.state.page === this.state.maxPage}
-                    onClick={this.nextPageHandler}
-                    className="btn btn-sm btn-dark"
-                  >
-                    {">"}
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-=======
             </div>
           ) : (
             <>
@@ -365,7 +317,6 @@ class Home extends React.Component {
               </div>
             </div>
           </div>
->>>>>>> 81ca60485f860efcd236651e9396358eda23b1c8
         </div>
       </div>
     );
