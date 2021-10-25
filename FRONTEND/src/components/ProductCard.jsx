@@ -62,7 +62,19 @@ class ProductCard extends React.Component {
         {this.props.productData.golongan === "Obat Bebas" ? (
           <i className="fas fa-circle text-success"></i>
         ) : this.props.productData.golongan === "Obat Keras" ? (
-          <i className="fas fa-circle text-danger"></i>
+          <div
+            className="circle text-center"
+            style={{
+              width: "18px",
+              height: "18px",
+              backgroundColor: "red",
+              borderRadius: "100%",
+              fontWeight: "bolder",
+              fontSize: "13px",
+            }}
+          >
+            K
+          </div>
         ) : this.props.productData.golongan === "Obat Bebas Terbatas" ? (
           <i className="fas fa-circle text-primary"></i>
         ) : this.props.productData.golongan === "Herbal" ? (
