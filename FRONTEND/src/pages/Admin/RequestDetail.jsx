@@ -224,6 +224,7 @@ class RequestDetail extends React.Component {
               name="reason"
               onChange={this.reasonInput}
             >
+              <option selected>Pilih Alasan Penolakan Resep</option>
               <option value="Foto Resep Tidak Jelas">
                 Foto Resep Tidak Jelas
               </option>
@@ -258,12 +259,15 @@ class RequestDetail extends React.Component {
         <div>
           <button
             onClick={this.servedButton}
-            className="btn btn-primary mr-2"
+            className="btn btn-primary"
             style={{ marginRight: "5px" }}
           >
             SERVE
           </button>
-          <button onClick={this.rejectedButton} className="btn btn-danger">
+          <button
+            onClick={this.rejectedButton}
+            className="btn btn-danger mx-auto"
+          >
             REJECT
           </button>
         </div>
@@ -325,6 +329,13 @@ class RequestDetail extends React.Component {
               </p>
               {this.servingPage()}
             </div>
+            <a
+              href="/admin"
+              style={{ textDecoration: "none", color: "black" }}
+              className="text-center"
+            >
+              <h5>Back to Admin Page</h5>
+            </a>
           </div>
         </div>
       </div>
