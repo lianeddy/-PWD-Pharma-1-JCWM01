@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import { userKeepLogin, checkStorage } from "./redux/actions/user";
 import changePassword from "./pages/changePassword";
 import Verification from "./pages/Auth/Verification";
-import EditProfile from "./pages/EditProfile";
+import EditProfilePicture from "./pages/EditProfilePicture";
 import AdminUploadProduct from "./pages/Admin/AdminUploadProduct";
 import AdminEditProduct from "./pages/Admin/AdminEditProduct";
 import { getCartData } from "./redux/actions/cart";
@@ -50,8 +50,11 @@ class App extends React.Component {
           <Route component={AdminUploadProduct} path="/admin-upload-product" />
           <Route component={AdminEditProduct} path="/admin-edit-product/:id" />
           <Route component={changePassword} path="/change-password" />
-          <Route component={ProfilePage} path="/profile-page/:email" />
-          <Route component={EditProfile} path="/edit-profile/:email" />
+          <Route component={ProfilePage} path="/profile-page/:id" />
+          <Route
+            component={EditProfilePicture}
+            path="/edit-profile-picture/:id"
+          />
           <Route component={Cart} path="/cart" />
           <Route component={History} path="/history" />
           <Route component={ProductDetail} path="/product-detail/:obatid" />

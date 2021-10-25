@@ -2,6 +2,7 @@ import Axios from "axios";
 import React from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "../constants/API";
+import moment from "moment";
 
 class PrescriptionRequestPage extends React.Component {
   state = {
@@ -27,7 +28,7 @@ class PrescriptionRequestPage extends React.Component {
           <td>
             {val.nama_depan} {val.nama_belakang}
           </td>
-          <td>{val.email}</td>
+          <td>{moment(val.tanggal).format("DD MMMM YYYY")}</td>
           <td>
             <Link to={`/request-detail/${val.id_prescriptions}`}>
               <button type="button" className="btn btn-outline-success">
@@ -52,7 +53,7 @@ class PrescriptionRequestPage extends React.Component {
             <tr>
               <th scope="col">Request ID</th>
               <th scope="col">Applicant</th>
-              <th scope="col">Applicant E-mail</th>
+              <th scope="col">Request Date</th>
               <th scope="col">Action</th>
             </tr>
           </thead>

@@ -109,15 +109,17 @@ class CategoriesCarousel extends React.Component {
                     className="text-dark"
                     to="/prescription-page"
                   >
-                    <button className="btn btn-warning">Kirim Resep</button>
+                    <button className="btn btn-info">
+                      <h6 className="text-center">Kirim Resep</h6>
+                    </button>
                   </Link>
                 ) : (
                   <a
                     onClick={this.alertHandler}
                     href=""
-                    className="btn btn-warning"
+                    className="btn btn-info"
                   >
-                    Kirim Resep
+                    <h6 className="text-center">Kirim Resep</h6>
                   </a>
                 )}
               </div>
@@ -153,11 +155,11 @@ class CategoriesCarousel extends React.Component {
                 <h6 className="text-white text-uppercase">Paket Covid-19</h6>
                 <h3 className="text-white mb-3">Diskon 20%</h3>
                 {this.props.userGlobal.id_user ? (
-                  <a href="" className="btn btn-warning">
+                  <a href="" className="btn btn-info">
                     Shop Now
                   </a>
                 ) : (
-                  <a href="" className="btn btn-warning disabled">
+                  <a href="" className="btn btn-info disabled">
                     Shop Now
                   </a>
                 )}

@@ -48,6 +48,7 @@ class Home extends React.Component {
     const name = event.target.name;
     const value = event.target.value;
     this.setState({ [name]: value }, this.fetchFilterDrug);
+    this.setState({page:1})
   };
 
   fetchMaxPage = () => {
@@ -96,7 +97,8 @@ class Home extends React.Component {
 
   clearFilter = () => {
     this.setState({ searchCategory: "" });
-    this.fetchProducts();
+    this.fetchFilterDrug();
+    this.setState({page:1})
   };
 
   componentDidUpdate(prevProps) {
@@ -227,14 +229,14 @@ class Home extends React.Component {
             {this.renderCategory()}
           </select>
           <button
-            className="btn btn-secondary btn-sm ms-2 filter"
+            className="btn btn-dark btn-sm ms-2 filter"
             onClick={this.clearFilter}
           >
             Reset
           </button>
         </div>
         <div className=" row col-12 bg-white mt-3">
-          <div className="d-flex flex-direction-row align-items-center justify-content-between"></div>
+          <div className="d-flex flex-direction-row align-items-center justify-content-center"></div>
 
           {this.state.drugList.length === 0 ? (
             <div className="d-flex align-items-center flex-row justify-content-center mt-5">

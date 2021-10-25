@@ -58,6 +58,7 @@ class ProductDetail extends React.Component {
           .then(() => {
             alert("Berhasil menambahkan qty ke cart");
             this.props.getCartData(this.props.userGlobal.id_user);
+            this.setState({ quantity: 1 });
           })
           .catch((err) => {
             alert("Gagal saat patch data");
@@ -75,6 +76,7 @@ class ProductDetail extends React.Component {
           .then(() => {
             alert("Berhasil menambahkan obat ke cart");
             this.props.getCartData(this.props.userGlobal.id_user);
+            this.setState({ quantity: 1 });
           })
           .catch((err) => {
             alert(`Gagal menambahkan obat ke cart`);
@@ -141,7 +143,31 @@ class ProductDetail extends React.Component {
                   <strong className="text-uppercase">Golongan</strong>
                 </p>
               </div>
-              <p className="mt-2">{this.state.productData.golongan}</p>
+              <p className="mt-2">
+                {this.state.productData.golongan === "Obat Bebas" ? (
+                  <i className="fas fa-circle text-success"></i>
+                ) : this.state.productData.golongan === "Obat Keras" ? (
+                  <div
+                    className="circle text-center"
+                    style={{
+                      width: "18px",
+                      height: "18px",
+                      backgroundColor: "red",
+                      borderRadius: "100%",
+                      fontWeight: "bolder",
+                      fontSize: "13px",
+                    }}
+                  >
+                    K
+                  </div>
+                ) : this.state.productData.golongan ===
+                  "Obat Bebas Terbatas" ? (
+                  <i className="fas fa-circle text-primary"></i>
+                ) : this.state.productData.golongan === "Herbal" ? (
+                  <i className="fas fa-circle text-warning"></i>
+                ) : null}{" "}
+                {this.state.productData.golongan}
+              </p>
               <div>
                 <p>
                   <strong className="text-uppercase">Stock</strong>

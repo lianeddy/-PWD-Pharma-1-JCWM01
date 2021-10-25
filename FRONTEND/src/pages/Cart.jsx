@@ -29,17 +29,20 @@ class Cart extends React.Component {
       });
   };
 
-  deletePrescription = () => {
-    const deletePrescription = window.confirm(`Hapus obat resep dari cart?`);
-    if (deletePrescription) {
-      this.state.prescriptionData.map((val) => {
-        Axios.delete(
-          `${API_URL}/cart/delete-prescription/${val.idprescription_cart}`
-        )
-          .then(() => alert("Obat resep dihapus"))
-          .catch((err) => console.log(err));
-      });
-    }
+  userPrescription = () => {
+    return this.state.prescriptionData.map((val) => {
+      let total = val.kandungan * val.harga_per_mg;
+      return (
+        <tr>
+          <td className="align-middle">{val.nama_bahan_obat}</td>
+          <td className="align-middle">{val.kandungan} mg</td>
+          <td className="align-middle">
+            Rp. {val.harga_per_mg.toLocaleString("id")}
+          </td>
+          <td className="align-middle">Rp. {total.toLocaleString("id")}</td>
+        </tr>
+      );
+    });
   };
 
   prescriptionTotal = () => {
@@ -47,23 +50,21 @@ class Cart extends React.Component {
     this.state.prescriptionData.forEach((val) => {
       total += val.kandungan * val.harga_per_mg;
     });
-    return total;
+    return total.toLocaleString("id");
   };
 
-  userPrescription = () => {
-    return this.state.prescriptionData.map((val) => {
-      return (
-        <tr>
-          <td className="align-middle">{val.nama_bahan_obat}</td>
-          <td className="align-middle">{val.kandungan}</td>
-          <td className="align-middle">Rp. {val.harga_per_mg},-</td>
-          <td className="align-middle">
-            Rp. {val.kandungan * val.harga_per_mg}
-            ,-
-          </td>
-        </tr>
-      );
-    });
+  deletePrescription = () => {
+    const deletePrescription = window.confirm(`Hapus obat resep dari cart?`);
+    if (deletePrescription) {
+      this.state.prescriptionData.map((val) => {
+        Axios.delete(
+          `${API_URL}/cart/delete-prescription/${val.idprescription_cart}`
+        )
+          .then(() => this.setState({ prescriptionData: [] }))
+
+          .catch((err) => console.log(err));
+      });
+    }
   };
 
   qtyBtnHandler = (id_cart, qty_obat) => {
@@ -99,18 +100,19 @@ class Cart extends React.Component {
     this.props.cartGlobal.cartList.forEach((val) => {
       total += val.harga * val.qty_obat;
     });
-    return total;
+    return total.toLocaleString("id");
   };
 
   renderCart = () => {
     return this.props.cartGlobal.cartList.map((val) => {
+      let total = val.harga * val.qty_obat;
       return (
         <tr>
           <td className="align-middle">
             <img src={val.foto_obat} alt="" style={{ width: "50px" }} />{" "}
             {val.nama_obat}
           </td>
-          <td className="align-middle">Rp. {val.harga},-</td>
+          <td className="align-middle">Rp. {val.harga.toLocaleString("id")}</td>
           <td className="align-middle">
             <div
               className="input-group quantity mx-auto"
@@ -143,7 +145,7 @@ class Cart extends React.Component {
               </div>
             </div>
           </td>
-          <td className="align-middle">Rp. {val.harga * val.qty_obat},-</td>
+          <td className="align-middle">Rp. {total.toLocaleString("id")}</td>
           <td className="align-middle">
             <button
               onClick={() => this.deleteItem(val.id_cart)}
@@ -257,7 +259,7 @@ class Cart extends React.Component {
                       onClick={this.deletePrescription}
                       className="btn btn-block btn-danger font-weight-bold my-3 py-3"
                     >
-                      BATAL
+                      BATALKAN RESEP
                     </button>
                     <button className="btn btn-block btn-primary font-weight-bold mx-3 my-3 py-3">
                       KE PEMBAYARAN

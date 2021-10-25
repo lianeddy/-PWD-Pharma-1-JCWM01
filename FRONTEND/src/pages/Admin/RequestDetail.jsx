@@ -2,6 +2,7 @@ import React from "react";
 import Axios from "axios";
 import { API_URL } from "../../constants/API";
 import { Redirect } from "react-router-dom";
+import moment from "moment";
 
 class RequestDetail extends React.Component {
   state = {
@@ -55,7 +56,6 @@ class RequestDetail extends React.Component {
       `${API_URL}/prescription/delete-prescription/${this.state.requestData.id_prescriptions}`
     )
       .then(() => {
-        this.setState({ executed: true });
         this.state.substanceServed.map((val) => {
           const id_bahan_obat = parseInt(val.substance);
           const kandungan = parseInt(val.content);
@@ -64,9 +64,10 @@ class RequestDetail extends React.Component {
             id_user: this.state.requestData.id_user,
             id_bahan_obat,
             kandungan,
+            tanggal: moment().format("YYYY-MM-DD"),
           })
             .then(() => {
-              alert("Prescription Proceed");
+              this.setState({ executed: true });
             })
             .catch((err) => {
               console.log(err);
@@ -122,7 +123,12 @@ class RequestDetail extends React.Component {
               <p>
                 <strong className="text-uppercase">Request Date:</strong>
                 <span>
-                  <strong> Perlu tanggal</strong>
+                  <strong>
+                    {" "}
+                    {moment(this.state.requestData.tanggal).format(
+                      "DD MMMM YYYY"
+                    )}
+                  </strong>
                 </span>
               </p>
               {this.state.substanceServed.map((val, idx) => {
