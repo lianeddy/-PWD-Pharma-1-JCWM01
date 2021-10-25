@@ -12,11 +12,14 @@ class ProductDetail extends React.Component {
   };
 
   fetchProductData = () => {
-    Axios.get(`http://localhost:3300/obat/get-drug-detail?product_id=${this.props.match.params.idobat}`, {
-      params: {
-        idobat: this.props.match.params.obatid,
-      },
-    })
+    Axios.get(
+      `http://localhost:3300/obat/get-drug-detail?product_id=${this.props.match.params.idobat}`,
+      {
+        params: {
+          idobat: this.props.match.params.obatid,
+        },
+      }
+    )
       .then((result) => {
         if (result.data.length) {
           this.setState({ productData: result.data[0] });
@@ -55,6 +58,7 @@ class ProductDetail extends React.Component {
           .then(() => {
             alert("Berhasil menambahkan qty ke cart");
             this.props.getCartData(this.props.userGlobal.id_user);
+            this.setState({ quantity: 1 });
           })
           .catch((err) => {
             alert("Gagal saat patch data");
@@ -72,6 +76,7 @@ class ProductDetail extends React.Component {
           .then(() => {
             alert("Berhasil menambahkan obat ke cart");
             this.props.getCartData(this.props.userGlobal.id_user);
+            this.setState({ quantity: 1 });
           })
           .catch((err) => {
             alert(`Gagal menambahkan obat ke cart`);
@@ -138,7 +143,31 @@ class ProductDetail extends React.Component {
                   <strong className="text-uppercase">Golongan</strong>
                 </p>
               </div>
-              <p className="mt-2">{this.state.productData.golongan}</p>
+              <p className="mt-2">
+                {this.state.productData.golongan === "Obat Bebas" ? (
+                  <i className="fas fa-circle text-success"></i>
+                ) : this.state.productData.golongan === "Obat Keras" ? (
+                  <div
+                    className="circle text-center"
+                    style={{
+                      width: "18px",
+                      height: "18px",
+                      backgroundColor: "red",
+                      borderRadius: "100%",
+                      fontWeight: "bolder",
+                      fontSize: "13px",
+                    }}
+                  >
+                    K
+                  </div>
+                ) : this.state.productData.golongan ===
+                  "Obat Bebas Terbatas" ? (
+                  <i className="fas fa-circle text-primary"></i>
+                ) : this.state.productData.golongan === "Herbal" ? (
+                  <i className="fas fa-circle text-warning"></i>
+                ) : null}{" "}
+                {this.state.productData.golongan}
+              </p>
               <div>
                 <p>
                   <strong className="text-uppercase">Stock</strong>
@@ -151,37 +180,45 @@ class ProductDetail extends React.Component {
               )}
 
               <div className="d-flex align-items-center mt-5">
-                <div
-                  className="input-group quantity"
-                  style={{ width: "130px" }}
-                >
-                  <div className="input-group-btn">
-                    <button
-                      onClick={() => this.qtyBtnHandler("decrement")}
-                      className="btn btn-primary btn-minus"
-                    >
-                      <i className="fa fa-minus"></i>
-                    </button>
+                {this.props.userGlobal.id_user ? (
+                  <div
+                    className="input-group quantity"
+                    style={{ width: "130px" }}
+                  >
+                    <div className="input-group-btn">
+                      <button
+                        onClick={() => this.qtyBtnHandler("decrement")}
+                        className="btn btn-primary btn-minus"
+                      >
+                        <i className="fa fa-minus"></i>
+                      </button>
+                    </div>
+                    <p className="text-center mx-auto pt-1 font-weight-bold">
+                      {this.state.quantity}
+                    </p>
+                    <div className="input-group-btn">
+                      <button
+                        onClick={() => this.qtyBtnHandler("increment")}
+                        className="btn btn-primary btn-plus mr-3"
+                      >
+                        <i className="fa fa-plus"></i>
+                      </button>
+                    </div>
                   </div>
-                  <p className="text-center mx-auto pt-1 font-weight-bold">
-                    {this.state.quantity}
-                  </p>
-                  <div className="input-group-btn">
-                    <button
-                      onClick={() => this.qtyBtnHandler("increment")}
-                      className="btn btn-primary btn-plus mr-3"
-                    >
-                      <i className="fa fa-plus"></i>
-                    </button>
-                  </div>
-                </div>
+                ) : null}
               </div>
-              <button
-                onClick={this.addToCartHandler}
-                className="btn btn-success mt-3"
-              >
-                <i className="fa fa-shopping-cart"></i> Add To Cart
-              </button>
+              {this.props.userGlobal.id_user ? (
+                <button
+                  onClick={this.addToCartHandler}
+                  className="btn btn-success mt-3"
+                >
+                  <i className="fa fa-shopping-cart"></i> Add To Cart
+                </button>
+              ) : (
+                <button disabled className="btn btn-success mt-3">
+                  <i className="fa fa-shopping-cart"></i> Add To Cart
+                </button>
+              )}
             </div>
           </div>
         </div>

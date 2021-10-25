@@ -10,11 +10,9 @@ class Register extends React.Component {
     nama_depan: "",
     nama_belakang: "",
     jenis_kelamin: "",
-
     alertPassword: false,
     alertEmail: false,
     btnSendDisabled: true,
-
     messages: "",
     alert: "",
     registered: true,
@@ -109,7 +107,7 @@ class Register extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container mb-5">
         {this.state.registered ? (
           <div>
             <div

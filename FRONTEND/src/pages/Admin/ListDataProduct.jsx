@@ -9,7 +9,7 @@ class ListDataProduct extends React.Component {
   };
 
   fetchDataProduct = () => {
-    Axios.get(`${API_URL}/obat/get`)
+    Axios.get(`${API_URL}/obat/get-drug`)
       .then((result) => {
         this.setState({ productList: result.data });
         console.log(this.state.productList);
@@ -32,7 +32,7 @@ class ListDataProduct extends React.Component {
           <td>{val.stock}</td>
           <td>{val.harga}</td>
           <td>
-            <Link to={`/admin-edit-product/${val.id_obat}`}>Edit</Link>
+            <Link to={`/admin-edit-product/${val.idobat}`}>Edit</Link>
           </td>
         </tr>
       );

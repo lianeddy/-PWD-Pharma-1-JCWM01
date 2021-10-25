@@ -10,5 +10,9 @@ routers.get("/search-substance", cartController.searchUsageHistory);
 routers.post("/add-to-cart", cartController.addToCart);
 routers.patch("/edit-cart/:id", cartController.editCart);
 routers.delete("/delete-item/:id_cart", cartController.deleteCart);
+routers.delete(
+  "/delete-prescription/:idprescription_cart",
+  cartController.deletePrescription
+);
 
 module.exports = routers;
