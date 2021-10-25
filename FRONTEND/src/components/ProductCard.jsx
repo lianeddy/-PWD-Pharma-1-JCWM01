@@ -70,7 +70,8 @@ class ProductCard extends React.Component {
               backgroundColor: "red",
               borderRadius: "100%",
               fontWeight: "bolder",
-              fontSize: "13px",
+              fontSize: "10px",
+              border: "2px solid",
             }}
           >
             K
