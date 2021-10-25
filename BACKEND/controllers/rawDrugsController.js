@@ -66,4 +66,36 @@ module.exports = {
       res.status(200).send(results);
     });
   },
+
+  rejectPrescription: (req, res) => {
+    let { id_user, tanggal } = req.body;
+    let insertQuery = `Insert into rejected_prescriptions (id_user, tanggal) values (${db.escape(
+      id_user
+    )}, ${db.escape(tanggal)});`;
+    console.log(insertQuery);
+    db.query(insertQuery, (err, result) => {
+      if (err) return res.status(500).send(err);
+      db.query(
+        `Select * from rejected_prescriptions where id_user = ${db.escape(
+          id_user
+        )};`,
+        (err2, result2) => {
+          if (err2) return res.status(500).send(err2);
+          return res.status(200).send({
+            message: `Permintaan resep telah ditolak`,
+            data: result2,
+          });
+        }
+      );
+    });
+  },
+
+  getRejectedPrescriptions: (req, res) => {
+    let scriptQuery = `select rejected_prescriptions.idrejected_prescriptions, rejected_prescriptions.tanggal, rejected_prescriptions.status, user.nama_depan, user.nama_belakang from rejected_prescriptions
+    left join user on user.id_user = rejected_prescriptions.id_user;`;
+    db.query(scriptQuery, (err, results) => {
+      if (err) return res.status(500).send(err);
+      res.status(200).send(results);
+    });
+  },
 };

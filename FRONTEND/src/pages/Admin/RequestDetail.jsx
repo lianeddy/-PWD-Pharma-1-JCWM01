@@ -79,6 +79,28 @@ class RequestDetail extends React.Component {
       });
   };
 
+  rejectHandler = () => {
+    Axios.delete(
+      `${API_URL}/prescription/delete-prescription/${this.state.requestData.id_prescriptions}`
+    )
+      .then(() => {
+        Axios.post(`${API_URL}/prescription/reject-prescription`, {
+          id_user: this.state.requestData.id_user,
+          tanggal: moment().format("YYYY-MM-DD"),
+        })
+          .then(() => {
+            alert("Permintaan resep telah ditolak");
+            this.setState({ executed: true });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   componentDidMount() {
     this.fetchRequest();
   }
@@ -204,7 +226,9 @@ class RequestDetail extends React.Component {
                 >
                   SERVE
                 </button>
-                <button className="btn btn-danger">REJECT</button>
+                <button onClick={this.rejectHandler} className="btn btn-danger">
+                  REJECT
+                </button>
               </div>
             </div>
           </div>

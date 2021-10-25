@@ -12,7 +12,7 @@ module.exports = {
       upload(req, res, (error) => {
         if (error) {
           console.log(error);
-          res.status(500).send(error);
+          return res.status(500).send(error);
         }
 
         const { file } = req.files;
@@ -26,14 +26,16 @@ module.exports = {
           if (err) {
             console.log(err);
             fs.unlinkSync("./public" + filepath);
-            res.status(500).send(err);
+            return res.status(500).send(err);
           }
-          res.status(200).send({ message: "Foto Profil Anda diperbarui" });
+          return res
+            .status(200)
+            .send({ message: "Foto Profil Anda diperbarui" });
         });
       });
     } catch (error) {
       console.log(error);
-      res.status(500).send(error);
+      return res.status(500).send(error);
     }
   },
   getProfileImage: (req, res) => {
