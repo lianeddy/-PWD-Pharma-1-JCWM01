@@ -65,16 +65,17 @@ class TheNavbar extends React.Component {
                         KIRIM RESEP
                       </Link>
                     </DropdownItem>
-                  ) : 
-                  <DropdownItem>
-                    <Link
-                      style={{ textDecoration: "none" }}
-                      className="text-dark"
-                      to="/admin"
-                    >
-                      ADMIN
-                    </Link>
-                  </DropdownItem>}
+                  ) : (
+                    <DropdownItem>
+                      <Link
+                        style={{ textDecoration: "none" }}
+                        className="text-dark"
+                        to="/admin"
+                      >
+                        ADMIN
+                      </Link>
+                    </DropdownItem>
+                  )}
                   <DropdownItem>
                     <Link
                       style={{ textDecoration: "none" }}
