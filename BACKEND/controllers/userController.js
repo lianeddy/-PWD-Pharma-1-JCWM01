@@ -242,7 +242,7 @@ module.exports = {
           return res.status(500).send(err);
         }
         res.status(200).send({
-          message: "Data product berhasil ditambahkan",
+          message: "Permintaan resep anda telah kami terima",
           success: true,
         });
       });

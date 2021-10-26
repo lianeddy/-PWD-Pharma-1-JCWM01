@@ -8,6 +8,7 @@ import AdminUploadProduct from "./Admin/AdminUploadProduct";
 import RawDrugList from "../components/RawDrugList";
 import PrescriptionRequestPage from "../components/PrescriptionRequestPage";
 import SubstanceUsage from "../components/SubstanceUsage";
+import Rejected from "./Admin/Rejected";
 
 class Admin extends React.Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class Admin extends React.Component {
     }
     return (
       <div>
-        <Nav tabs className="justify-content-center bg-secondary">
+        <Nav tabs className="justify-content-center bg-light">
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.activeTab === "1" })}
@@ -84,6 +85,16 @@ class Admin extends React.Component {
               <h5 className="text-dark">Substance Usage</h5>
             </NavLink>
           </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === "6" })}
+              onClick={() => {
+                this.toggle("6");
+              }}
+            >
+              <h5 className="text-dark">Rejected Prescriptions</h5>
+            </NavLink>
+          </NavItem>
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
@@ -100,6 +111,9 @@ class Admin extends React.Component {
           </TabPane>
           <TabPane tabId="5">
             {this.state.activeTab == 5 ? <SubstanceUsage /> : null}
+          </TabPane>
+          <TabPane tabId="6">
+            {this.state.activeTab == 6 ? <Rejected /> : null}
           </TabPane>
         </TabContent>
       </div>
