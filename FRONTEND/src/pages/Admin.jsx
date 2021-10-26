@@ -34,7 +34,7 @@ class Admin extends React.Component {
     }
     return (
       <div>
-        <Nav tabs className="justify-content-center bg-secondary">
+        <Nav tabs className="justify-content-center bg-light">
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.activeTab === "1" })}
