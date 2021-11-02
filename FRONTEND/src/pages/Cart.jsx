@@ -68,16 +68,20 @@ class Cart extends React.Component {
   };
 
   qtyBtnHandler = (id_cart, qty_obat) => {
-    Axios.patch(`${API_URL}/cart/edit-cart/${id_cart}`, {
-      qty_obat,
-    })
-      .then((res) => {
-        this.props.getCartData(this.props.userGlobal.id_user);
+    if (qty_obat > 0) {
+      Axios.patch(`${API_URL}/cart/edit-cart/${id_cart}`, {
+        qty_obat,
       })
-      .catch((err) => {
-        console.log(err);
-        alert("Terjadi kesalahan saat mengubah qty");
-      });
+        .then((res) => {
+          this.props.getCartData(this.props.userGlobal.id_user);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Terjadi kesalahan saat mengubah qty");
+        });
+    } else {
+      this.deleteItem(id_cart);
+    }
   };
 
   deleteItem = (id_cart) => {
@@ -112,7 +116,9 @@ class Cart extends React.Component {
             <img src={val.foto_obat} alt="" style={{ width: "50px" }} />{" "}
             {val.nama_obat}
           </td>
-          <td className="align-middle">Rp. {val.harga.toLocaleString("id")}</td>
+          <td className="align-middle">
+            Rp. {val.harga.toLocaleString("id")} / {val.satuan_jual}
+          </td>
           <td className="align-middle">
             <div
               className="input-group quantity mx-auto"

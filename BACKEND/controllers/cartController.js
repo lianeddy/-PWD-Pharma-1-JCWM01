@@ -62,7 +62,7 @@ module.exports = {
   renderCart: (req, res) => {
     let scriptQuery = "Select * from obat;";
     if (req.query.id_user) {
-      scriptQuery = `select cart.id_cart, obat.foto_obat, obat.nama_obat, cart.qty_obat, cart.harga from cart
+      scriptQuery = `select cart.id_cart, obat.foto_obat, obat.satuan_jual, obat.nama_obat, cart.qty_obat, cart.harga from cart
       left join user on
       user.id_user = cart.id_user
       left join obat on obat.idobat = cart.idobat

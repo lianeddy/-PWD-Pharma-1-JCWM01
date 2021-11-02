@@ -1,6 +1,7 @@
 import React from "react";
 import Axios from "axios";
 import { API_URL } from "../constants/API";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCartData } from "../redux/actions/cart";
 
