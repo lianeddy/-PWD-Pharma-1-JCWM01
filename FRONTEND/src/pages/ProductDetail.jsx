@@ -1,7 +1,6 @@
 import React from "react";
 import Axios from "axios";
 import { API_URL } from "../constants/API";
-import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCartData } from "../redux/actions/cart";
 
@@ -13,14 +12,11 @@ class ProductDetail extends React.Component {
   };
 
   fetchProductData = () => {
-    Axios.get(
-      `http://localhost:3300/obat/get-drug-detail?product_id=${this.props.match.params.idobat}`,
-      {
-        params: {
-          idobat: this.props.match.params.obatid,
-        },
-      }
-    )
+    Axios.get(`${API_URL}/obat/get-drug`, {
+      params: {
+        idobat: this.props.match.params.obatid,
+      },
+    })
       .then((result) => {
         if (result.data.length) {
           this.setState({ productData: result.data[0] });
@@ -130,7 +126,7 @@ class ProductDetail extends React.Component {
                 {this.state.productData.nama_obat}
               </h3>
               <h3 className="font-weight-semi-bold mb-4">
-                Rp. {this.state.productData.harga},- /
+                Rp {this.state.productData.harga} /
                 {this.state.productData.satuan_jual}
               </h3>
               <div>

@@ -90,7 +90,7 @@ class ProductCard extends React.Component {
             </h6>
             <div className="d-flex justify-content-start">
               <h6>
-                Rp.{this.props.productData.harga} /{" "}
+                Rp {this.props.productData.harga.toLocaleString("id")} /{" "}
                 {this.props.productData.satuan_jual}
               </h6>
             </div>

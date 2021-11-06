@@ -6,37 +6,103 @@ import { API_URL } from "../constants/API";
 class ProductList extends React.Component {
   state = {
     drugList: [],
-    filterDrugList: [],
     page: 1,
     maxPage: 0,
-    itemPerPage: 8,
+    itemPerPage: 12,
     searchCategory: "",
-    sortBy: "",
+    sortBy: "default",
   };
 
   fetchDrugs = () => {
-    Axios.get(`${API_URL}/obat/get-drug`)
-      .then((result) => {
-        this.setState({
-          drugList: result.data,
-          maxPage: Math.ceil(result.data.length / this.state.itemPerPage),
-        });
+    if (this.state.searchCategory === "") {
+      Axios.get(`${API_URL}/obat/get-drug`)
+        .then(
+          (result) =>
+            this.setState({
+              maxPage: Math.ceil(result.data.length / this.state.itemPerPage),
+            }),
+          Axios.get(`${API_URL}/obat/get-drug`, {
+            params: {
+              page: (this.state.page - 1) * this.state.itemPerPage,
+              item: this.state.itemPerPage,
+              sortBy: this.state.sortBy,
+            },
+          })
+            .then((result) => {
+              this.setState({
+                drugList: result.data,
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+        )
+        .catch((err) => console.log(err));
+    } else if (this.state.searchCategory !== "") {
+      Axios.get(`${API_URL}/obat/drug-list`, {
+        params: {
+          golongan: this.state.searchCategory,
+        },
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then(
+          (result) =>
+            this.setState({
+              maxPage: Math.ceil(result.data.length / this.state.itemPerPage),
+            }),
+          Axios.get(`${API_URL}/obat/drug-list`, {
+            params: {
+              golongan: this.state.searchCategory,
+              sortBy: this.state.sortBy,
+              page: (this.state.page - 1) * this.state.itemPerPage,
+              item: this.state.itemPerPage,
+            },
+          })
+            .then((result) => {
+              this.setState({
+                drugList: result.data,
+              });
+            })
+            .catch((err) => console.log(err))
+        )
+        .catch((err) => console.log(err));
+    }
   };
 
   renderDrugs = () => {
-    return this.state.drugList
-      .slice(this.state.page - 1, this.state.itemPerPage)
-      .map((val) => {
-        return <ProductCard productData={val} />;
-      });
+    return this.state.drugList.map((val) => {
+      return <ProductCard productData={val} />;
+    });
+  };
+
+  inputHandler = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value, page: 1 });
+  };
+
+  nextPageHandler = () => {
+    if (this.state.page < this.state.maxPage) {
+      this.setState({ page: this.state.page + 1 });
+    }
+  };
+
+  prevPageHandler = () => {
+    if (this.state.page > 1) {
+      this.setState({ page: this.state.page - 1 });
+    }
   };
 
   componentDidMount() {
     this.fetchDrugs();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.searchCategory !== this.state.searchCategory ||
+      prevState.page !== this.state.page ||
+      prevState.sortBy !== this.state.sortBy
+    ) {
+      return this.fetchDrugs();
+    }
   }
 
   render() {
@@ -50,7 +116,11 @@ class ProductList extends React.Component {
             </div>
             <div className="card-body">
               <label htmlFor="searchCategory">Kategori Obat</label>
-              <select name="searchCategory" className="form-control">
+              <select
+                onChange={this.inputHandler}
+                name="searchCategory"
+                className="form-control"
+              >
                 <option value="">Semua Obat</option>
                 <option value="Obat Bebas">Obat Bebas</option>
                 <option value="Obat Bebas Terbatas">Obat Bebas Terbatas</option>
@@ -62,14 +132,17 @@ class ProductList extends React.Component {
               <label className="mt-2" htmlFor="sortBy">
                 Urutkan
               </label>
-              <select name="sortBy" className="form-control">
-                <option value="">Default</option>
+              <select
+                onChange={this.inputHandler}
+                name="sortBy"
+                className="form-control"
+              >
+                <option value="default">Default</option>
                 <option value="lowPrice">Harga Terendah</option>
                 <option value="highPrice">Harga Tertinggi</option>
                 <option value="az">Nama Obat A-Z</option>
                 <option value="za">Nama Obat Z-A</option>
               </select>
-              <button className="btn btn-info mt-3">Reset</button>
             </div>
           </div>
         </div>
@@ -81,11 +154,17 @@ class ProductList extends React.Component {
         </div>
         <div className="mt-5 mb-2">
           <div className="d-flex flex-row justify-content-center align-items-center">
-            <button className="btn btn-primary">{"<"}</button>
+            <button onClick={this.prevPageHandler} className="btn btn-primary">
+              {"<"}
+            </button>
             <div className="text-center mx-2">
-              Page {this.state.page} of {this.state.maxPage}
+              <strong>
+                Page {this.state.page} of {this.state.maxPage}
+              </strong>
             </div>
-            <button className="btn btn-primary">{">"}</button>
+            <button onClick={this.nextPageHandler} className="btn btn-primary">
+              {">"}
+            </button>
           </div>
         </div>
       </div>
