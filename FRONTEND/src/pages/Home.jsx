@@ -269,6 +269,9 @@ class Home extends React.Component {
                   </button>
                 </div>
               </div>
+              <a className="align-self-end" href="/product-list">
+                Lihat semua obat
+              </a>
             </>
           )}
         </div>

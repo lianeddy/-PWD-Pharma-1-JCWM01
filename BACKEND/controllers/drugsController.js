@@ -14,6 +14,14 @@ module.exports = {
     });
   },
 
+  drugList: (req, res) => {
+    let scriptQuery = `Select * from obat limit ${req.query.page}, ${req.query.maxPage};`;
+    db.query(scriptQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
+    });
+  },
+
   searchDrug: (req, res) => {
     let scriptQuery = `select * from obat;`;
     if (req.query.nama_obat) {

@@ -6,37 +6,47 @@ import { API_URL } from "../constants/API";
 class ProductList extends React.Component {
   state = {
     drugList: [],
+    filterDrugList: [],
     page: 1,
     maxPage: 0,
-    itemPerPage: 10,
+    itemPerPage: 8,
     searchCategory: "",
     sortBy: "",
   };
 
+  fetchDrugs = () => {
+    Axios.get(`${API_URL}/obat/get-drug`)
+      .then((result) => {
+        this.setState({
+          drugList: result.data,
+          maxPage: Math.ceil(result.data.length / this.state.itemPerPage),
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   renderDrugs = () => {
-    if (this.state.searchCategory === "" && this.state.sortBy === "") {
-      Axios.get(`${API_URL}/obat/get-drug`)
-        .then((result) => {
-          this.setState({ drugList: result.data });
-          return this.state.drugList.map((val) => {
-            <ProductCard productData={val} />;
-          });
-        })
-        .catch((err) => console.log(err));
-    }
+    return this.state.drugList
+      .slice(this.state.page - 1, this.state.itemPerPage)
+      .map((val) => {
+        return <ProductCard productData={val} />;
+      });
   };
 
   componentDidMount() {
-    this.renderDrugs();
+    this.fetchDrugs();
   }
 
   render() {
     return (
-      <div className="container row mt-3">
-        <div className="col-3">
+      <div className="container-fluid row mt-3">
+        <h3 className="text-center">DAFTAR OBAT</h3>
+        <div className="col-2">
           <div className="card">
-            <div className="card-header text-center">
-              <strong>Filter Obat</strong>
+            <div className="card-header">
+              <strong>Filter</strong>
             </div>
             <div className="card-body">
               <label htmlFor="searchCategory">Kategori Obat</label>
@@ -63,17 +73,19 @@ class ProductList extends React.Component {
             </div>
           </div>
         </div>
-        <div className="col-9">
+        <div className="col-10">
           <div className="d-flex flex-wrap flex-row">
             {/* Render Products here */}
             {this.renderDrugs()}
           </div>
-          <div className="mt-3">
-            <div className="d-flex flex-row justify-content-center align-items-center">
-              <button className="btn btn-dark">{"<"}</button>
-              <div className="text-center">Page 1 of 1</div>
-              <button className="btn btn-dark">{">"}</button>
+        </div>
+        <div className="mt-5 mb-2">
+          <div className="d-flex flex-row justify-content-center align-items-center">
+            <button className="btn btn-primary">{"<"}</button>
+            <div className="text-center mx-2">
+              Page {this.state.page} of {this.state.maxPage}
             </div>
+            <button className="btn btn-primary">{">"}</button>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ const { drugsController } = require("../controllers");
 const routers = express.Router();
 
 routers.get("/get-drug", drugsController.getDrug);
+routers.get("/drug-list", drugsController.drugList);
 routers.get("/search-drug", drugsController.searchDrug);
 routers.get("/get", drugsController.getData);
 routers.get("/get-drug-max-page", drugsController.getMaxPage);
