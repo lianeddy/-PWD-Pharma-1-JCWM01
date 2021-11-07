@@ -154,7 +154,7 @@ class ProductList extends React.Component {
         </div>
         <div className="mt-5 mb-2">
           <div className="d-flex flex-row justify-content-center align-items-center">
-            <button onClick={this.prevPageHandler} className="btn btn-primary">
+            <button onClick={this.prevPageHandler} className="btn btn-success">
               {"<"}
             </button>
             <div className="text-center mx-2">
@@ -162,7 +162,7 @@ class ProductList extends React.Component {
                 Page {this.state.page} of {this.state.maxPage}
               </strong>
             </div>
-            <button onClick={this.nextPageHandler} className="btn btn-primary">
+            <button onClick={this.nextPageHandler} className="btn btn-success">
               {">"}
             </button>
           </div>

@@ -30,7 +30,10 @@ class TheNavbar extends React.Component {
           <div className="text-end col-2">
             {this.props.userGlobal.id_user ? (
               <UncontrolledDropdown>
-                <DropdownToggle className="text-uppercase btn btn-info" caret>
+                <DropdownToggle
+                  className="text-uppercase btn btn-success"
+                  caret
+                >
                   Hello, {this.props.userGlobal.nama_depan}
                 </DropdownToggle>
                 <DropdownMenu>
@@ -90,7 +93,7 @@ class TheNavbar extends React.Component {
                 </DropdownMenu>
               </UncontrolledDropdown>
             ) : (
-              <button type="button" href="/" className="btn btn-info">
+              <button type="button" href="/" className="btn btn-success">
                 <Link to="/login" className="text-dark text-decoration-none">
                   Login / Register
                 </Link>

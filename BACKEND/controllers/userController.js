@@ -14,6 +14,7 @@ module.exports = {
         req.query.id_user
       )};`;
     }
+    console.log(scriptQuery);
     db.query(scriptQuery, (err, results) => {
       if (err) res.status(500).send(err);
       res.status(200).send(results);

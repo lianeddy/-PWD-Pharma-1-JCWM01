@@ -1,7 +1,7 @@
 import Axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { API_URL } from "../constants/API";
 import { getCartData } from "../redux/actions/cart";
 
@@ -79,8 +79,6 @@ class Cart extends React.Component {
           console.log(err);
           alert("Terjadi kesalahan saat mengubah qty");
         });
-    } else {
-      this.deleteItem(id_cart);
     }
   };
 
@@ -99,12 +97,27 @@ class Cart extends React.Component {
     }
   };
 
-  renderTotal = () => {
+  drugsTotal = () => {
     let total = 0;
     this.props.cartGlobal.cartList.forEach((val) => {
       total += val.harga * val.qty_obat;
     });
     return total.toLocaleString("id");
+  };
+
+  grandTotal = () => {
+    let total = 0;
+    let total1 = 0;
+    let total2 = 0;
+    this.props.cartGlobal.cartList.forEach((val) => {
+      total1 += val.harga * val.qty_obat;
+    });
+
+    this.state.prescriptionData.forEach((val) => {
+      total2 += val.kandungan * val.harga_per_mg;
+    });
+
+    return (total = total1 + total2).toLocaleString("id");
   };
 
   renderCart = () => {
@@ -198,14 +211,20 @@ class Cart extends React.Component {
             </div>
             <div className="bg-white col-lg-4">
               <h5 className="section-title position-relative text-uppercase text-center mb-3">
-                <span className="pr-3">RINCIAN BELANJA OBAT</span>
+                <span className="pr-3">RINCIAN BELANJA</span>
               </h5>
               <div className="p-30 mb-5">
                 <div className="border-bottom pb-2">
                   <div className="d-flex justify-content-between mb-3">
-                    <h6>Subtotal</h6>
-                    <h6>Rp {this.renderTotal()},-</h6>
+                    <h6>Subtotal Belanja Obat</h6>
+                    <h6>Rp {this.drugsTotal()},-</h6>
                   </div>
+                  {this.state.prescriptionData.length ? (
+                    <div className="d-flex justify-content-between mb-3">
+                      <h6>Subtotal Obat Resep</h6>
+                      <h6>Rp {this.prescriptionTotal()},-</h6>
+                    </div>
+                  ) : null}
                   <div className="d-flex justify-content-between">
                     <h6 className="font-weight-medium">Biaya Pengiriman</h6>
                     <h6 className="font-weight-bold">GRATIS</h6>
@@ -214,10 +233,16 @@ class Cart extends React.Component {
                 <div className="pt-2 text-center">
                   <div className="d-flex justify-content-between mt-2">
                     <h5>Total</h5>
-                    <h5>Rp {this.renderTotal()},-</h5>
+                    <h5>Rp {this.grandTotal()},-</h5>
                   </div>
                   <button className="btn btn-block btn-primary font-weight-bold my-3 py-3">
-                    KE PEMBAYARAN
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      className="text-light"
+                      to={`/checkout/${this.props.userGlobal.id_user}`}
+                    >
+                      KE PEMBAYARAN
+                    </Link>
                   </button>
                 </div>
               </div>
@@ -240,37 +265,13 @@ class Cart extends React.Component {
                     {this.userPrescription()}
                   </tbody>
                 </table>
-              </div>
-              <div className="bg-white col-lg-4">
-                <h5 className="section-title position-relative text-uppercase text-center mb-3">
-                  <span className="pr-3">RINCIAN OBAT RESEP</span>
-                </h5>
-                <div className="p-30 mb-5">
-                  <div className="border-bottom pb-2">
-                    <div className="d-flex justify-content-between mb-3">
-                      <h6>Subtotal</h6>
-                      <h6>Rp {this.prescriptionTotal()},-</h6>
-                    </div>
-                    <div className="d-flex justify-content-between">
-                      <h6 className="font-weight-medium">Biaya Pengiriman</h6>
-                      <h6 className="font-weight-bold">GRATIS</h6>
-                    </div>
-                  </div>
-                  <div className="pt-2 text-center">
-                    <div className="d-flex justify-content-between mt-2">
-                      <h5>Total</h5>
-                      <h5>Rp {this.prescriptionTotal()},-</h5>
-                    </div>
-                    <button
-                      onClick={this.deletePrescription}
-                      className="btn btn-block btn-danger font-weight-bold my-3 py-3"
-                    >
-                      BATALKAN RESEP
-                    </button>
-                    <button className="btn btn-block btn-primary font-weight-bold mx-3 my-3 py-3">
-                      KE PEMBAYARAN
-                    </button>
-                  </div>
+                <div className="text-center">
+                  <button
+                    onClick={this.deletePrescription}
+                    className="btn btn-block btn-danger font-weight-bold my-3 py-3 text-center"
+                  >
+                    BATALKAN PERMINTAAN RESEP
+                  </button>
                 </div>
               </div>
             </div>

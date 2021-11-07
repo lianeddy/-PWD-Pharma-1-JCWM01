@@ -67,7 +67,7 @@ class CategoriesCarousel extends React.Component {
                       "
                       href="/product-list"
                     >
-                      Learn More
+                      Cari Obat
                     </a>
                   </div>
                 </div>

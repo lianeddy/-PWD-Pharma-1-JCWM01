@@ -23,6 +23,8 @@ import AdminEditProduct from "./pages/Admin/AdminEditProduct";
 import { getCartData } from "./redux/actions/cart";
 import RequestDetail from "./pages/Admin/RequestDetail";
 import ProductList from "./pages/ProductList";
+import Checkout from "./pages/Checkout";
+import PaymentProof from "./pages/PaymentProof";
 
 class App extends React.Component {
   componentDidMount() {
@@ -57,6 +59,8 @@ class App extends React.Component {
             path="/edit-profile-picture/:id"
           />
           <Route component={Cart} path="/cart" />
+          <Route component={Checkout} path="/checkout/:id" />
+          <Route component={PaymentProof} path="/payment-proof/:id" />
           <Route component={History} path="/history" />
           <Route component={ProductDetail} path="/product-detail/:obatid" />
           <Route component={PrescriptionPage} path="/prescription-page" />

@@ -164,7 +164,7 @@ class Home extends React.Component {
                   <button
                     disabled={this.state.page === 1}
                     onClick={this.prevPageHandler}
-                    className="btn btn-sm btn-dark"
+                    className="btn btn-sm btn-success"
                   >
                     {"<"}
                   </button>
@@ -174,7 +174,7 @@ class Home extends React.Component {
                   <button
                     disabled={this.state.page === this.state.maxPage}
                     onClick={this.nextPageHandler}
-                    className="btn btn-sm btn-dark"
+                    className="btn btn-sm btn-success"
                   >
                     {">"}
                   </button>
