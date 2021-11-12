@@ -8,7 +8,7 @@ class ProductList extends React.Component {
     drugList: [],
     page: 1,
     maxPage: 0,
-    itemPerPage: 12,
+    itemPerPage: 10,
     searchCategory: "",
     sortBy: "default",
   };
@@ -108,46 +108,39 @@ class ProductList extends React.Component {
   render() {
     return (
       <div className="container-fluid row mt-3">
-        <h3 className="text-center">DAFTAR OBAT</h3>
-        <div className="col-2">
-          <div className="card">
-            <div className="card-header">
-              <strong>Filter</strong>
-            </div>
-            <div className="card-body">
-              <label htmlFor="searchCategory">Kategori Obat</label>
-              <select
-                onChange={this.inputHandler}
-                name="searchCategory"
-                className="form-control"
-              >
-                <option value="">Semua Obat</option>
-                <option value="Obat Bebas">Obat Bebas</option>
-                <option value="Obat Bebas Terbatas">Obat Bebas Terbatas</option>
-                <option value="Obat Keras">Obat Keras</option>
-                <option value="Herbal">Herbal</option>
-                <option value="Covid-19">Covid-19</option>
-                <option value="Alat Kesehatan">Alat Kesehatan</option>
-              </select>
-              <label className="mt-2" htmlFor="sortBy">
-                Urutkan
-              </label>
-              <select
-                onChange={this.inputHandler}
-                name="sortBy"
-                className="form-control"
-              >
-                <option value="default">Default</option>
-                <option value="lowPrice">Harga Terendah</option>
-                <option value="highPrice">Harga Tertinggi</option>
-                <option value="az">Nama Obat A-Z</option>
-                <option value="za">Nama Obat Z-A</option>
-              </select>
-            </div>
-          </div>
+        <h3 className="text-center display-6">DAFTAR OBAT</h3>
+        <h6 className="text-start text-uppercase">
+          filter <i className="fas fa-filter"></i>
+        </h6>
+        <div className="d-flex flex-row col-3">
+          <select
+            onChange={this.inputHandler}
+            name="searchCategory"
+            className="form-control"
+          >
+            <option value="">Semua Obat</option>
+            <option value="Obat Bebas">Obat Bebas</option>
+            <option value="Obat Bebas Terbatas">Obat Bebas Terbatas</option>
+            <option value="Obat Keras">Obat Keras</option>
+            <option value="Herbal">Herbal</option>
+            <option value="Covid-19">Covid-19</option>
+            <option value="Alat Kesehatan">Alat Kesehatan</option>
+          </select>
+
+          <select
+            onChange={this.inputHandler}
+            name="sortBy"
+            className="form-control"
+          >
+            <option value="default">Default</option>
+            <option value="lowPrice">Harga Terendah</option>
+            <option value="highPrice">Harga Tertinggi</option>
+            <option value="az">Nama Obat A-Z</option>
+            <option value="za">Nama Obat Z-A</option>
+          </select>
         </div>
-        <div className="col-10">
-          <div className="d-flex flex-wrap flex-row">
+        <div className="col-12">
+          <div className="d-flex flex-wrap  align-items-center flex-row justify-content-center">
             {/* Render Products here */}
             {this.renderDrugs()}
           </div>

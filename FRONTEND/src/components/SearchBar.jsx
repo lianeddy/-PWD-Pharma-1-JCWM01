@@ -75,10 +75,10 @@ class SearchBar extends React.Component {
         />
         <div
           style={{
-            position: "absolute",
             width: "500px",
             backgroundColor: "white",
           }}
+          className="position-absolute"
         >
           {this.renderSearchList()}
         </div>

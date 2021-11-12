@@ -13,7 +13,7 @@ import SearchBar from "./SearchBar";
 class TheNavbar extends React.Component {
   render() {
     return (
-      <header className="sticky-top bg-dark text-white">
+      <header className="sticky-top bg-dark text-white container-fluid">
         <div className="d-flex flex-wrap align-items-center justify-content-between py-2 mx-5">
           <a
             href="/"
