@@ -4,6 +4,7 @@ const route = express.Router();
 
 route.patch("/upload/:id", userUploaderController.userUpload);
 route.patch("/uploadimg/:id", userUploaderController.userUpload);
-route.get("/get", userUploaderController.getProfileImage)
+route.patch("/payment-proof/:id", userUploaderController.paymentProof);
+route.get("/get", userUploaderController.getProfileImage);
 
 module.exports = route;

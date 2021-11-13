@@ -115,7 +115,7 @@ class Home extends React.Component {
         <h6 className="text-start text-uppercase">
           filter <i className="fas fa-filter"></i>
         </h6>
-        <div className="d-flex flex-row col-3">
+        <div className="d-flex flex-row col-md-3">
           <select
             onChange={this.inputHandler}
             name="sortBy"

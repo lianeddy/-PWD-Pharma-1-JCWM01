@@ -37,7 +37,7 @@ module.exports = {
       id_user
     )}, ${db.escape(id_bahan_obat)}, ${db.escape(kandungan)}, ${db.escape(
       tanggal
-    )}, "MENUNGGU PEMBAYARAN");`;
+    )}, "Menunggu Pembayaran");`;
     console.log(insertQuery);
     db.query(insertQuery, (err, result) => {
       if (err) return res.status(500).send(err);

@@ -4,34 +4,51 @@ import { connect } from "react-redux";
 import { userKeepLogin } from "../redux/actions/user";
 import Axios from "axios";
 import { API_URL } from "../constants/API";
+import { getCartData } from "../redux/actions/cart";
 
 class PaymentProof extends React.Component {
   state = {
-    userData: {},
-    editUser: 0,
-    edit_foto_profil: "",
-    edit_success: false,
+    prescriptionData: [],
+    idcheckout: 0,
+    addFile: null,
+    backtoCart: false,
+    backtoHome: false,
   };
 
-  fetchUserData = () => {
-    Axios.get(`${API_URL}/user/get`, {
+  fetchCheckOut = () => {
+    Axios.get(`${API_URL}/cart/get-checkout`, {
       params: {
         id_user: this.props.userGlobal.id_user,
+        status: "Menunggu Pembayaran",
       },
     })
       .then((result) => {
         if (result.data.length) {
           this.setState({
-            userData: result.data[0],
-            editUser: result.data[0].id_user,
-            edit_foto_profil: result.data[0].foto_profil,
+            idcheckout: result.data[0].idcheckout,
           });
-        } else {
-          this.setState({ userNotFound: true });
+          this.fetchPrescriptionData();
         }
       })
-      .catch(() => {
-        alert(`Kesalahan saat mengambil data user`);
+      .catch((err) => console.log(err));
+  };
+
+  fetchPrescriptionData = () => {
+    Axios.get(`${API_URL}/cart/render-prescription`, {
+      params: {
+        id_user: this.props.userGlobal.id_user,
+        status: "Menunggu Pembayaran",
+      },
+    })
+      .then((result) => {
+        if (result.data.length) {
+          this.setState({ prescriptionData: result.data });
+        } else {
+        }
+      })
+      .catch((err) => {
+        alert("Gagal mengambil data resep");
+        console.log(err);
       });
   };
 
@@ -51,35 +68,72 @@ class PaymentProof extends React.Component {
     }
   };
 
+  prescriptionStatus = () => {
+    this.state.prescriptionData.map((val) => {
+      Axios.patch(
+        `${API_URL}/cart/edit-prescription/${val.idprescription_cart}`,
+        {
+          status: "Menunggu Konfirmasi Pembayaran",
+        }
+      )
+        .then(() => {
+          alert("status resep diperbarui");
+        })
+        .catch((err) => console.log(err));
+    });
+  };
+
+  cartStatus = () => {
+    this.props.cartGlobal.cartList.map((val) => {
+      Axios.patch(`${API_URL}/cart/edit-cart/${val.id_cart}`, {
+        status: "Menunggu Konfirmasi Pembayaran",
+      })
+        .then(() => {
+          this.props.getCartData(this.props.userGlobal.id_user);
+        })
+        .catch((err) => console.log(err));
+    });
+  };
+
   saveBtn = () => {
     if (this.state.addFile) {
       let formData = new FormData();
 
       formData.append("file", this.state.addFile);
-      Axios.patch(`${API_URL}/picture/upload/${this.state.editUser}`, formData)
+      Axios.patch(
+        `${API_URL}/picture/payment-proof/${this.state.idcheckout}`,
+        formData
+      )
         .then((res) => {
           alert(res.data.message);
-          this.setState({ edit_success: true });
+
+          this.cartStatus();
+          this.prescriptionStatus();
+          this.setState({ backtoHome: true });
         })
         .catch((err) => {
-          alert("Gagal upload foto");
+          alert("Gagal upload bukti pembayaran");
           console.log(err);
         });
     }
   };
 
   cancelPictureBtn = () => {
-    this.setState({ edit_success: true });
+    Axios.delete(`${API_URL}/cart/delete-checkout/${this.state.idcheckout}`)
+      .then(() => this.setState({ backtoCart: true }))
+      .catch((err) => console.log(err));
   };
 
   componentDidMount() {
-    this.fetchUserData();
+    this.fetchCheckOut();
   }
 
   render() {
-    if (this.state.edit_success === true) {
+    if (this.state.backtoHome === true) {
+      return <Redirect to="/" />;
+    } else if (this.state.backtoCart === true) {
       return <Redirect to={`/checkout/${this.props.userGlobal.id_user}`} />;
-    } else if (this.props.userGlobal.id_user) {
+    } else {
       return (
         <div className="container rounded bg-light my-5">
           <div className="row">
@@ -89,7 +143,7 @@ class PaymentProof extends React.Component {
                   id="imgpreview"
                   className="img-fluid"
                   width="300px"
-                  src={`${API_URL}/${this.state.edit_foto_profil}`}
+                  src={`${API_URL}/${this.state.paymentProof}`}
                   alt=""
                 />
                 <div class="form-group mx-auto text-center align-items-center mt-2">
@@ -104,12 +158,18 @@ class PaymentProof extends React.Component {
                   />
                 </div>
                 <div className="mt-5 text-center">
-                  <button
-                    onClick={this.saveBtn}
-                    className="btn btn-lg btn-primary"
-                  >
-                    Unggah
-                  </button>
+                  {this.state.addFile !== null ? (
+                    <button
+                      onClick={this.saveBtn}
+                      className="btn btn-lg btn-primary"
+                    >
+                      Unggah
+                    </button>
+                  ) : (
+                    <button disabled className="btn btn-lg btn-primary">
+                      Unggah
+                    </button>
+                  )}
                   <button
                     onClick={this.cancelPictureBtn}
                     className="btn btn-lg btn-danger mx-2"
@@ -122,8 +182,6 @@ class PaymentProof extends React.Component {
           </div>
         </div>
       );
-    } else {
-      return <Redirect to="/" />;
     }
   }
 }
@@ -131,11 +189,13 @@ class PaymentProof extends React.Component {
 const mapStateToProps = (state) => {
   return {
     userGlobal: state.user,
+    cartGlobal: state.cart,
   };
 };
 
 const mapDispatchToProps = {
   userKeepLogin,
+  getCartData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentProof);

@@ -42,6 +42,7 @@ class ProductDetail extends React.Component {
       params: {
         id_user: this.props.userGlobal.id_user,
         idobat: this.state.productData.idobat,
+        status: "Menunggu Pembayaran",
       },
     }).then((result) => {
       if (result.data.length) {
@@ -68,7 +69,7 @@ class ProductDetail extends React.Component {
           idobat: this.state.productData.idobat,
           qty_obat: this.state.quantity,
           harga: this.state.productData.harga,
-          status: "PENDING",
+          status: "Menunggu Pembayaran",
         })
           .then(() => {
             alert("Berhasil menambahkan obat ke cart");

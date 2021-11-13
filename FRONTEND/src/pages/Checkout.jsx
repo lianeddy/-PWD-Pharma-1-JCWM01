@@ -4,6 +4,8 @@ import { Redirect, Link } from "react-router-dom";
 import Axios from "axios";
 import { API_URL } from ".././constants/API";
 import { userKeepLogin } from "../redux/actions/user";
+import { getCartData } from "../redux/actions/cart";
+import moment from "moment";
 
 class Checkout extends React.Component {
   state = {
@@ -11,12 +13,14 @@ class Checkout extends React.Component {
     edit: false,
     edit_alamat: "",
     paymentMethod: "",
+    checkout: false,
   };
 
   fetchPrescriptionData = () => {
     Axios.get(`${API_URL}/cart/render-prescription`, {
       params: {
         id_user: this.props.userGlobal.id_user,
+        status: "MENUNGGU PEMBAYARAN",
       },
     })
       .then((result) => {
@@ -60,7 +64,7 @@ class Checkout extends React.Component {
       total2 += val.kandungan * val.harga_per_mg;
     });
 
-    return (total = total1 + total2).toLocaleString("id");
+    return (total = total1 + total2);
   };
 
   prescriptionTotal = () => {
@@ -132,7 +136,8 @@ class Checkout extends React.Component {
           <p className="text-center">Pembayaran dengan metode Transfer Bank</p>
           <ol>
             <li>
-              Transfer dengan jumlah Rp <strong>{this.grandTotal()}</strong> ke
+              Transfer dengan jumlah Rp{" "}
+              <strong>{this.grandTotal().toLocaleString("id")}</strong> ke
               rekening Bank XXXX dengan nomor rekening xxx.xxxxx.xxxx atas nama
               xxxx xxxx xxxx
             </li>
@@ -241,10 +246,37 @@ class Checkout extends React.Component {
 
   componentDidMount() {
     this.fetchPrescriptionData();
+    this.props.getCartData(this.props.userGlobal.id_user);
   }
 
+  userCheckOut = () => {
+    Axios.get(`${API_URL}/cart/get-checkout`, {
+      params: {
+        id_user: this.props.userGlobal.id_user,
+        status: "Menunggu Pembayaran",
+      },
+    }).then((result) => {
+      if (result.data.length) {
+        return this.setState({ checkout: true });
+      } else {
+        Axios.post(`${API_URL}/cart/checkout`, {
+          id_user: this.props.userGlobal.id_user,
+          total: this.grandTotal(),
+          status: "Menunggu Pembayaran",
+          tanggal: moment().format("YYYY-MM-DD"),
+        })
+          .then(() => {
+            this.setState({ checkout: true });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  };
+
   render() {
-    if (this.props.userGlobal.id_user) {
+    if (this.state.checkout === false && this.props.userGlobal.id_user) {
       return (
         <div className="container-fluid px-5">
           <div
@@ -285,22 +317,26 @@ class Checkout extends React.Component {
                   </h4>
                 </div>
                 <div className="card-body">
-                  <h6 className="font-weight-semi-bold m-0 text-uppercase text-center">
-                    Detail Belanja Obat
-                  </h6>
-                  <hr className="mt-0" />
-                  {this.renderCart()}
-                  <hr className="mt-0" />
-                  <div className="d-flex justify-content-between mb-3 pt-1">
-                    <strong className="font-weight-medium">Subtotal</strong>
-                    <strong className="font-weight-medium">
-                      Rp {this.renderTotal()}
-                    </strong>
-                  </div>
+                  {this.props.cartGlobal.cartList.length ? (
+                    <>
+                      <h6 className="font-weight-semi-bold m-0 text-uppercase text-center">
+                        Detail Belanja Obat
+                      </h6>
+                      <hr className="mt-0" />
+                      {this.renderCart()}
+                      <hr className="mt-0" />
+                      <div className="d-flex justify-content-between mb-3 pt-1">
+                        <strong className="font-weight-medium">Subtotal</strong>
+                        <strong className="font-weight-medium">
+                          Rp {this.renderTotal()}
+                        </strong>
+                      </div>
+                    </>
+                  ) : null}
                   {this.state.prescriptionData.length ? (
                     <>
                       <h6 className="font-weight-semi-bold m-0 text-uppercase text-center">
-                        Detail Obat Resep
+                        Permintaan Obat Resep
                       </h6>
                       <hr className="mt-0" />
                       {this.userPrescription()}
@@ -319,7 +355,7 @@ class Checkout extends React.Component {
                       Total Belanja
                     </strong>
                     <strong className="font-weight-medium">
-                      Rp {this.grandTotal()}
+                      Rp {this.grandTotal().toLocaleString("id")}
                     </strong>
                   </div>
                   <div className="d-flex justify-content-between">
@@ -332,7 +368,9 @@ class Checkout extends React.Component {
                 <div className="card-footer border-secondary bg-transparent">
                   <div className="d-flex justify-content-between mt-2">
                     <h5 className="text-uppercase">Grand Total</h5>
-                    <h5 className="font-weight-bold">Rp {this.grandTotal()}</h5>
+                    <h5 className="font-weight-bold">
+                      Rp {this.grandTotal().toLocaleString("id")}
+                    </h5>
                   </div>
                 </div>
               </div>
@@ -357,13 +395,12 @@ class Checkout extends React.Component {
                 </div>
                 {this.state.paymentMethod === "Transfer Bank" ? (
                   <div className="justify-content-center text-center">
-                    <Link
-                      to={`/payment-proof/${this.props.userGlobal.id_user}`}
+                    <button
+                      onClick={this.userCheckOut}
+                      className="btn btn-lg btn-primary font-weight-bold my-3 py-3"
                     >
-                      <button className="btn btn-lg btn-primary font-weight-bold my-3 py-3">
-                        Saya Telah Bayar
-                      </button>
-                    </Link>
+                      Saya Telah Bayar
+                    </button>
                   </div>
                 ) : (
                   <div className="justify-content-center text-center">
@@ -380,6 +417,10 @@ class Checkout extends React.Component {
           </div>
         </div>
       );
+    } else if (this.state.checkout === true) {
+      return (
+        <Redirect to={`/payment-proof/${this.props.userGlobal.id_user}`} />
+      );
     } else {
       return <Redirect to="/" />;
     }
@@ -395,6 +436,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   userKeepLogin,
+  getCartData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
