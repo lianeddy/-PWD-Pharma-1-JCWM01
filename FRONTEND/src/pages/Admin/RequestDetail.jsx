@@ -107,22 +107,6 @@ class RequestDetail extends React.Component {
       });
   };
 
-  servedButton = () => {
-    this.setState({ served: true });
-  };
-
-  rejectedButton = () => {
-    this.setState({ rejected: true });
-  };
-
-  cancelServingButton = () => {
-    this.setState({ served: false });
-  };
-
-  cancelRejectButton = () => {
-    this.setState({ rejected: false });
-  };
-
   reasonInput = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
@@ -143,7 +127,7 @@ class RequestDetail extends React.Component {
                   PROCEED
                 </button>
                 <button
-                  onClick={this.cancelServingButton}
+                  onClick={() => this.setState({ served: false })}
                   className="btn btn-danger"
                 >
                   CANCEL
@@ -246,7 +230,7 @@ class RequestDetail extends React.Component {
               REJECT
             </button>
             <button
-              onClick={this.cancelRejectButton}
+              onClick={() => this.setState({ rejected: false })}
               className="btn btn-danger"
             >
               Cancel
@@ -258,14 +242,14 @@ class RequestDetail extends React.Component {
       return (
         <div>
           <button
-            onClick={this.servedButton}
+            onClick={() => this.setState({ served: true })}
             className="btn btn-primary"
             style={{ marginRight: "5px" }}
           >
             SERVE
           </button>
           <button
-            onClick={this.rejectedButton}
+            onClick={() => this.setState({ rejected: true })}
             className="btn btn-danger mx-auto"
           >
             REJECT

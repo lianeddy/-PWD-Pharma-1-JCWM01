@@ -20,7 +20,7 @@ class Checkout extends React.Component {
     Axios.get(`${API_URL}/cart/render-prescription`, {
       params: {
         id_user: this.props.userGlobal.id_user,
-        status: "MENUNGGU PEMBAYARAN",
+        status: "Menunggu Pembayaran",
       },
     })
       .then((result) => {

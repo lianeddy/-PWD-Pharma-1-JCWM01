@@ -27,9 +27,9 @@ class CheckoutRequestPage extends React.Component {
           <td>
             {val.nama_depan} {val.nama_belakang}
           </td>
-          <td>Rp {val.total.toLocaleString("id")}</td>
           <td>{val.status}</td>
           <td>{moment(val.tanggal).format("DD MMMM YYYY")}</td>
+          <td>Rp {val.total.toLocaleString("id")}</td>
           <td>
             <img
               src={`${API_URL}/${val.payment_proof}`}
@@ -37,8 +37,12 @@ class CheckoutRequestPage extends React.Component {
               style={{ width: "50px" }}
             />
           </td>
-          <td>
-            <button type="button" className="btn btn-success mx-3">
+          <td className="d-flex justify-content-evenly">
+            <button
+              className="btn btn-sm btn-success"
+              type="button"
+              className="btn btn-success"
+            >
               Accept
             </button>
             <button type="button" className="btn btn-danger">
@@ -65,9 +69,9 @@ class CheckoutRequestPage extends React.Component {
             <tr>
               <th scope="col">Checkout ID</th>
               <th scope="col">Customer</th>
-              <th scope="col">Total Belanja</th>
               <th scope="col">Status</th>
               <th scope="col">Tanggal</th>
+              <th scope="col">Total Belanja</th>
               <th scope="col">Bukti Pembayaran</th>
               <th scope="col">Action</th>
             </tr>
