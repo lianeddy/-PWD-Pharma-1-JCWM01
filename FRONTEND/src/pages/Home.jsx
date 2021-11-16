@@ -3,237 +3,148 @@ import ProductCard from "../components/ProductCard";
 import Axios from "axios";
 import { connect } from "react-redux";
 import CategoriesCarousel from "../components/CategoriesCarousel";
-// import CategoriesCarousel from "../components/CategoriesCarousel";
+import { API_URL } from "../constants/API";
 
 class Home extends React.Component {
   state = {
     drugList: [],
-    categoryDrugList: [],
     page: 1,
     maxPage: 0,
     itemPerPage: 10,
-    searchProductName: "",
     searchCategory: "",
-    sortProduct: "",
+    sortBy: "default",
   };
 
-  // perlu fix sort by supaya saat next page ngga ke-reset
-
-  fetchProducts = () => {
-    Axios.get(
-      `http://localhost:3300/obat/get?page=${this.state.page - 1}&nama_obat=${
-        this.props.userGlobal.searchProduct
-      }&golongan=${this.state.searchCategory}`
-    )
-      .then((result) => {
-        this.setState({ drugList: result.data }, this.fetchMaxPage());
+  fetchDrugs = () => {
+    if (this.state.searchCategory === "") {
+      Axios.get(`${API_URL}/obat/get-drug`)
+        .then(
+          (result) =>
+            this.setState({
+              maxPage: Math.ceil(result.data.length / this.state.itemPerPage),
+            }),
+          Axios.get(`${API_URL}/obat/get-drug`, {
+            params: {
+              page: (this.state.page - 1) * this.state.itemPerPage,
+              item: this.state.itemPerPage,
+              sortBy: this.state.sortBy,
+            },
+          })
+            .then((result) => {
+              this.setState({
+                drugList: result.data,
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+        )
+        .catch((err) => console.log(err));
+    } else if (this.state.searchCategory !== "") {
+      Axios.get(`${API_URL}/obat/drug-list`, {
+        params: {
+          golongan: this.state.searchCategory,
+        },
       })
-      .catch(() => {
-        alert("Terjadi kesalahan server");
-      });
+        .then(
+          (result) =>
+            this.setState({
+              maxPage: Math.ceil(result.data.length / this.state.itemPerPage),
+            }),
+          Axios.get(`${API_URL}/obat/drug-list`, {
+            params: {
+              golongan: this.state.searchCategory,
+              sortBy: this.state.sortBy,
+              page: (this.state.page - 1) * this.state.itemPerPage,
+              item: this.state.itemPerPage,
+            },
+          })
+            .then((result) => {
+              this.setState({
+                drugList: result.data,
+              });
+            })
+            .catch((err) => console.log(err))
+        )
+        .catch((err) => console.log(err));
+    }
   };
 
-  fetchCategoryList = () => {
-    Axios.get(`http://localhost:3300/obat/get-drug-category`)
-      .then((result) => {
-        // console.log("hasil",result.data);
-        this.setState({ categoryDrugList: result.data });
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  };
-
-  categoryHandler = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState({ [name]: value }, this.fetchFilterDrug);
-    this.setState({page:1})
-  };
-
-  fetchMaxPage = () => {
-    console.log(this.state.searchCategory);
-    Axios.get(
-      `http://localhost:3300/obat/get-drug-max-page?golongan=${this.state.searchCategory}`
-    )
-      .then((result) => {
-        console.log(result.data[0]);
-        this.setState({
-          maxPage: Math.ceil(
-            result.data[0].sumProduct / this.state.itemPerPage
-          ),
-        });
-        console.log("checkMaxPage", this.state.maxPage);
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  };
-
-  renderProducts = () => {
-    let rawData = [...this.state.drugList];
-    return rawData.map((val) => {
+  renderDrugs = () => {
+    return this.state.drugList.map((val) => {
       return <ProductCard productData={val} />;
     });
   };
 
-  //   <option onClick={() => this.categoryHandler(val.golongan)}>
-  //   {capital}
-  // </option>
-
-  renderCategory = () => {
-    return this.state.categoryDrugList.map((val) => {
-      if (this.state.searchCategory === "") {
-        return <option value={val.golongan}>{val.golongan}</option>;
-      } else {
-        if (val.golongan === this.state.searchCategory) {
-          return <option value={val.golongan}>{val.golongan}</option>;
-        } else {
-          return <option value={val.golongan}>{val.golongan}</option>;
-        }
-      }
-    });
+  inputHandler = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value, page: 1 });
   };
-
-  clearFilter = () => {
-    this.setState({ searchCategory: "" });
-    this.fetchFilterDrug();
-    this.setState({page:1})
-  };
-
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.userGlobal.searchProduct !== this.props.userGlobal.searchProduct
-    ) {
-      this.fetchFilterDrug();
-    }
-  }
-
-  componentDidMount() {
-    this.fetchProducts();
-    this.fetchCategoryList();
-    this.fetchMaxPage();
-    console.log(this.props.userGlobal.searchProduct);
-  }
 
   nextPageHandler = () => {
-    this.setState({ page: this.state.page + 1 }, this.fetchProducts);
+    if (this.state.page < this.state.maxPage) {
+      this.setState({ page: this.state.page + 1 });
+    }
   };
 
   prevPageHandler = () => {
-    this.setState({ page: this.state.page - 1 }, this.fetchProducts);
+    if (this.state.page > 1) {
+      this.setState({ page: this.state.page - 1 });
+    }
   };
 
-  searchInputHandler = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState({ [name]: value });
-  };
-  searchButtonHandler = () => {
-    // Axios.get("http://localhost:3300/obat/sortBy")
-    // .then()
-    const filterDrugList = this.state.drugList.filter((val) => {
-      return (
-        val.nama_obat
-          .toLowerCase()
-          .includes(this.state.searchProductName.toLowerCase()) &&
-        val.golongan
-          .toLowerCase()
-          .includes(this.state.searchCategory.toLowerCase())
-      );
-    });
-    this.setState({
-      filterDrugList,
-      maxPage: Math.ceil(filterDrugList.length / this.state.itemPerPage),
-      page: 1,
-    });
-  };
-  // searchInputHandler = (event) => {
-  inputHandler = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState({ [name]: value });
-  };
+  componentDidMount() {
+    this.fetchDrugs();
+  }
 
-  searchButtonHandler = () => {
-    const filterDrugList = this.state.drugList.filter((val) => {
-      return (
-        val.nama_obat
-          .toLowerCase()
-          .includes(this.state.searchProductName.toLowerCase()) &&
-        val.golongan
-          .toLowerCase()
-          .includes(this.state.searchCategory.toLowerCase())
-      );
-    });
-    this.setState({
-      filterDrugList,
-      maxPage: Math.ceil(filterDrugList.length / this.state.itemPerPage),
-      page: 1,
-    });
-  };
-
-  sortHandler = (event) => {
-    const value = event.target.value;
-
-    this.setState({ sortProduct: value }, this.fetchFilterDrug);
-  };
-
-  fetchFilterDrug = () => {
-    console.log("sortby", this.state.sortProduct);
-    console.log("golongan", this.state.searchCategory);
-    console.log("nama_obat", this.props.userGlobal.searchProduct);
-    this.fetchMaxPage();
-
-    Axios.get(
-      `http://localhost:3300/obat/get?page=${this.state.page - 1}&sortby=${
-        this.state.sortProduct
-      }&golongan=${this.state.searchCategory}&nama_obat=${
-        this.props.userGlobal.searchProduct
-      }`
-    )
-      .then((result) => {
-        this.setState({ drugList: result.data });
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  };
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.searchCategory !== this.state.searchCategory ||
+      prevState.page !== this.state.page ||
+      prevState.sortBy !== this.state.sortBy
+    ) {
+      return this.fetchDrugs();
+    }
+  }
 
   render() {
     return (
       <div className="container-style px-5 my-3">
         <CategoriesCarousel />
-        <h4 className="display-5 text-uppercase text-center">Daftar Obat</h4>
+        <h4 className="display-5 text-uppercase text-center">Penawaran Obat</h4>
         <h6 className="text-start text-uppercase">
           filter <i className="fas fa-filter"></i>
         </h6>
-        <div className="d-flex flex-row col-3">
+        <div className="d-flex flex-row col-md-3">
           <select
-            onChange={this.sortHandler}
-            name="sortProduct"
+            onChange={this.inputHandler}
+            name="sortBy"
             className="form-control filter-style"
           >
-            <option value="">SORT BY</option>
-            <option value="price_asc">Lowest price</option>
-            <option value="price_desc">Highest price</option>
-            <option value="name_asc">A to Z</option>
-            <option value="name_desc">Z to A</option>
+            <option value="default">Default</option>
+            <option value="lowPrice">Harga Terendah</option>
+            <option value="highPrice">Harga Tertinggi</option>
+            <option value="az">Nama Obat A-Z</option>
+            <option value="za">Nama Obat Z-A</option>
           </select>
           <select
-            onChange={this.categoryHandler}
+            onChange={this.inputHandler}
             name="searchCategory"
             className="form-control filter-style"
           >
-            <option value="">CATEGORIES</option>
-            {this.renderCategory()}
+            <option value="">Semua Obat</option>
+            <option value="Obat Bebas">Obat Bebas</option>
+            <option value="Obat Bebas Terbatas">Obat Bebas Terbatas</option>
+            <option value="Obat Keras">Obat Keras</option>
+            <option value="Herbal">Herbal</option>
+            <option value="Covid-19">Covid-19</option>
+            <option value="Alat Kesehatan">Alat Kesehatan</option>
           </select>
-          <button
-            className="btn btn-dark btn-sm ms-2 filter"
-            onClick={this.clearFilter}
-          >
-            Reset
-          </button>
+        </div>
+        <div>
+          <a href="/product-list" style={{ color: "black" }}>
+            Lihat semua obat
+          </a>
         </div>
         <div className=" row col-12 bg-white mt-3">
           <div className="d-flex flex-direction-row align-items-center justify-content-center"></div>
@@ -246,14 +157,14 @@ class Home extends React.Component {
             <>
               <div className="d-flex flex-wrap  align-items-center flex-row justify-content-center">
                 {/* Render Products Here */}
-                {this.renderProducts()}
+                {this.renderDrugs()}
               </div>
               <div className="d-flex flex-direction-row align-items-center justify-content-center mt-3">
                 <div className="col-4 d-flex flex-direction-row align-items-center justify-content-center">
                   <button
                     disabled={this.state.page === 1}
                     onClick={this.prevPageHandler}
-                    className="btn btn-sm btn-dark"
+                    className="btn btn-sm btn-success"
                   >
                     {"<"}
                   </button>
@@ -263,7 +174,7 @@ class Home extends React.Component {
                   <button
                     disabled={this.state.page === this.state.maxPage}
                     onClick={this.nextPageHandler}
-                    className="btn btn-sm btn-dark"
+                    className="btn btn-sm btn-success"
                   >
                     {">"}
                   </button>

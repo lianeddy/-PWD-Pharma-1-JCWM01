@@ -1,10 +1,9 @@
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { userKeepLogin } from "../redux/actions/user";
 import Axios from "axios";
 import { API_URL } from "../constants/API";
-import moment from "moment";
 
 class EditProfilePicture extends React.Component {
   state = {

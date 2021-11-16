@@ -65,9 +65,9 @@ class CategoriesCarousel extends React.Component {
                         mt-3
                         text-dark
                       "
-                      href="#"
+                      href="/product-list"
                     >
-                      Learn More
+                      Cari Obat
                     </a>
                   </div>
                 </div>
@@ -155,13 +155,11 @@ class CategoriesCarousel extends React.Component {
                 <h6 className="text-white text-uppercase">Paket Covid-19</h6>
                 <h3 className="text-white mb-3">Diskon 20%</h3>
                 {this.props.userGlobal.id_user ? (
-                  <a href="" className="btn btn-info">
+                  <a href="/product-list" className="btn btn-info">
                     Shop Now
                   </a>
                 ) : (
-                  <a href="" className="btn btn-info disabled">
-                    Shop Now
-                  </a>
+                  <a className="btn btn-info disabled">Shop Now</a>
                 )}
               </div>
             </div>

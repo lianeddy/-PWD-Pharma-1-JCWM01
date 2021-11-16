@@ -50,6 +50,43 @@ module.exports = {
     });
   },
 
+  paymentProof: (req, res) => {
+    try {
+      let path = "/payment";
+      const upload = userUploader(path, "IMG").fields([{ name: "file" }]);
+
+      upload(req, res, (error) => {
+        if (error) {
+          console.log(error);
+          return res.status(500).send(error);
+        }
+
+        const { file } = req.files;
+        const filepath = file ? path + "/" + file[0].filename : null;
+
+        let sqlInsert = `UPDATE checkout set payment_proof = ${db.escape(
+          filepath
+        )}, status = "Menunggu Konfirmasi Pembayaran" where idcheckout = ${
+          req.params.id
+        };`;
+        console.log(sqlInsert);
+        db.query(sqlInsert, (err, results) => {
+          if (err) {
+            console.log(err);
+            fs.unlinkSync("./public" + filepath);
+            return res.status(500).send(err);
+          }
+          return res
+            .status(200)
+            .send({ message: "Bukti pembayaran telah kami terima" });
+        });
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send(error);
+    }
+  },
+
   // uploadImg : (req, res)=>{
   //   try{
   //       let path = `/images`

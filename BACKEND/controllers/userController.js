@@ -14,6 +14,7 @@ module.exports = {
         req.query.id_user
       )};`;
     }
+    console.log(scriptQuery);
     db.query(scriptQuery, (err, results) => {
       if (err) res.status(500).send(err);
       res.status(200).send(results);
@@ -257,7 +258,7 @@ module.exports = {
     let updateQuery = `UPDATE user set ${dataUpdate} where id_user = ${req.params.id};`;
     console.log(updateQuery);
     db.query(updateQuery, (err, results) => {
-      if (err) res.status(500).send(err);
+      if (err) return res.status(500).send(err);
       res.status(200).send(results);
     });
   },

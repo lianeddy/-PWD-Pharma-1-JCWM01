@@ -12,6 +12,7 @@ class ProductCard extends React.Component {
       params: {
         id_user: this.props.userGlobal.id_user,
         idobat: this.props.productData.idobat,
+        status: "Menunggu Pembayaran",
       },
     }).then((result) => {
       if (result.data.length) {
@@ -37,7 +38,7 @@ class ProductCard extends React.Component {
           idobat: this.props.productData.idobat,
           qty_obat: 1,
           harga: this.props.productData.harga,
-          status: "PENDING",
+          status: "Menunggu Pembayaran",
         })
           .then(() => {
             alert("Berhasil menambahkan obat ke cart");
@@ -90,7 +91,7 @@ class ProductCard extends React.Component {
             </h6>
             <div className="d-flex justify-content-start">
               <h6>
-                Rp.{this.props.productData.harga} /{" "}
+                Rp {this.props.productData.harga.toLocaleString("id")} /{" "}
                 {this.props.productData.satuan_jual}
               </h6>
             </div>

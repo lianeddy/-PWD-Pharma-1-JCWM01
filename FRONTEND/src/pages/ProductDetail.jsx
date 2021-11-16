@@ -12,14 +12,11 @@ class ProductDetail extends React.Component {
   };
 
   fetchProductData = () => {
-    Axios.get(
-      `http://localhost:3300/obat/get-drug-detail?product_id=${this.props.match.params.idobat}`,
-      {
-        params: {
-          idobat: this.props.match.params.obatid,
-        },
-      }
-    )
+    Axios.get(`${API_URL}/obat/get-drug`, {
+      params: {
+        idobat: this.props.match.params.obatid,
+      },
+    })
       .then((result) => {
         if (result.data.length) {
           this.setState({ productData: result.data[0] });
@@ -45,6 +42,7 @@ class ProductDetail extends React.Component {
       params: {
         id_user: this.props.userGlobal.id_user,
         idobat: this.state.productData.idobat,
+        status: "Menunggu Pembayaran",
       },
     }).then((result) => {
       if (result.data.length) {
@@ -71,7 +69,7 @@ class ProductDetail extends React.Component {
           idobat: this.state.productData.idobat,
           qty_obat: this.state.quantity,
           harga: this.state.productData.harga,
-          status: "PENDING",
+          status: "Menunggu Pembayaran",
         })
           .then(() => {
             alert("Berhasil menambahkan obat ke cart");
@@ -129,7 +127,7 @@ class ProductDetail extends React.Component {
                 {this.state.productData.nama_obat}
               </h3>
               <h3 className="font-weight-semi-bold mb-4">
-                Rp. {this.state.productData.harga},- /
+                Rp {this.state.productData.harga} /
                 {this.state.productData.satuan_jual}
               </h3>
               <div>
