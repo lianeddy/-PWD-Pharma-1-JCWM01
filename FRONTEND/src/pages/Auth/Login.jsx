@@ -42,7 +42,7 @@ class Login extends React.Component {
                   <h5 className="font-weight-bold mb-3">Masuk</h5>
                   <input
                     onChange={this.inputHandler}
-                    name="email" 
+                    name="email"
                     placeholder="E-mail"
                     type="text"
                     className="form-control my-2"

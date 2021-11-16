@@ -8,15 +8,16 @@ import {
 } from "reactstrap";
 import { connect } from "react-redux";
 import { logoutUser } from "../redux/actions/user";
+import SearchBar from "./SearchBar";
 
 class TheNavbar extends React.Component {
   render() {
     return (
-      <header className="sticky-top bg-dark text-white">
+      <header className="sticky-top bg-dark text-white container-fluid">
         <div className="d-flex flex-wrap align-items-center justify-content-between py-2 mx-5">
           <a
             href="/"
-            className="d-flex col-md-3 mb-2 mb-md-0 text-white text-decoration-none"
+            className="col-2 d-flex mb-md-0 text-white text-decoration-none text-start"
           >
             <h3>
               <span>
@@ -25,20 +26,8 @@ class TheNavbar extends React.Component {
               AMR{" "}
             </h3>
           </a>
-          <form className="nav form-group">
-            <div class="mx-sm-1 mb-2">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Temukan obat..."
-                aria-label="Search"
-              />
-            </div>
-            <button type="submit" className="btn btn-primary mb-2">
-              <i className="fa fa-search"></i>
-            </button>
-          </form>
-          <div className="text-end">
+          <SearchBar />
+          <div className="text-end col-2">
             {this.props.userGlobal.id_user ? (
               <UncontrolledDropdown>
                 <DropdownToggle
@@ -52,7 +41,7 @@ class TheNavbar extends React.Component {
                     <Link
                       style={{ textDecoration: "none" }}
                       className="text-dark"
-                      to={`/profile-page/${this.props.userGlobal.email}`}
+                      to={`/profile-page/${this.props.userGlobal.id_user}`}
                     >
                       PROFIL ANDA
                     </Link>
@@ -68,16 +57,17 @@ class TheNavbar extends React.Component {
                         KIRIM RESEP
                       </Link>
                     </DropdownItem>
-                  ) : null}
-                  <DropdownItem>
-                    <Link
-                      style={{ textDecoration: "none" }}
-                      className="text-dark"
-                      to="/admin"
-                    >
-                      ADMIN
-                    </Link>
-                  </DropdownItem>
+                  ) : (
+                    <DropdownItem>
+                      <Link
+                        style={{ textDecoration: "none" }}
+                        className="text-dark"
+                        to="/admin"
+                      >
+                        ADMIN
+                      </Link>
+                    </DropdownItem>
+                  )}
                   <DropdownItem>
                     <Link
                       style={{ textDecoration: "none" }}
@@ -103,12 +93,8 @@ class TheNavbar extends React.Component {
                 </DropdownMenu>
               </UncontrolledDropdown>
             ) : (
-              <button
-                type="button"
-                href="/"
-                className="btn btn-outline-success me-2 "
-              >
-                <Link to="/login" className="text-light text-decoration-none">
+              <button type="button" href="/" className="btn btn-success">
+                <Link to="/login" className="text-dark text-decoration-none">
                   Login / Register
                 </Link>
               </button>

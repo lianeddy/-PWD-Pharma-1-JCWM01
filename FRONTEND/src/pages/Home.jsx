@@ -1,207 +1,239 @@
-import React  from "react";
+import React from "react";
 import ProductCard from "../components/ProductCard";
 import Axios from "axios";
 import { connect } from "react-redux";
-// import CategoriesCarousel from "../components/CategoriesCarousel";
+import CategoriesCarousel from "../components/CategoriesCarousel";
+import { API_URL } from "../constants/API";
 
 class Home extends React.Component {
   state = {
     drugList: [],
-    categoryDrugList: [],
     page: 1,
     maxPage: 0,
-    itemPerPage: 6,
-    searchProductName: "",
+    itemPerPage: 10,
     searchCategory: "",
-    sortProduct: "",
+    sortBy: "default",
   };
 
-
-
-  fetchProducts = () => {
-    Axios.get(`http://localhost:3300/obat/get?page=${this.state.page-1}&nama_obat=${this.props.userGlobal.searchProduct}`)
-      .then((result) => {
-        this.setState({drugList: result.data},this.fetchMaxPage())
+  fetchDrugs = () => {
+    if (this.state.searchCategory === "") {
+      Axios.get(`${API_URL}/obat/get-drug`)
+        .then(
+          (result) =>
+            this.setState({
+              maxPage: Math.ceil(result.data.length / this.state.itemPerPage),
+            }),
+          Axios.get(`${API_URL}/obat/get-drug`, {
+            params: {
+              page: (this.state.page - 1) * this.state.itemPerPage,
+              item: this.state.itemPerPage,
+              sortBy: this.state.sortBy,
+            },
+          })
+            .then((result) => {
+              this.setState({
+                drugList: result.data,
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+        )
+        .catch((err) => console.log(err));
+    } else if (this.state.searchCategory !== "") {
+      Axios.get(`${API_URL}/obat/drug-list`, {
+        params: {
+          golongan: this.state.searchCategory,
+        },
       })
-      .catch(() => {
-        alert("Terjadi kesalahan server");
-      });
+        .then(
+          (result) =>
+            this.setState({
+              maxPage: Math.ceil(result.data.length / this.state.itemPerPage),
+            }),
+          Axios.get(`${API_URL}/obat/drug-list`, {
+            params: {
+              golongan: this.state.searchCategory,
+              sortBy: this.state.sortBy,
+              page: (this.state.page - 1) * this.state.itemPerPage,
+              item: this.state.itemPerPage,
+            },
+          })
+            .then((result) => {
+              this.setState({
+                drugList: result.data,
+              });
+            })
+            .catch((err) => console.log(err))
+        )
+        .catch((err) => console.log(err));
+    }
   };
 
-  fetchCategoryList=()=>{
-    Axios.get(`http://localhost:3300/obat/get-drug-category`)
-    .then((result)=>{
-      // console.log("hasil",result.data);
-      this.setState({categoryDrugList:result.data})
-    })
-    .catch((err)=>{
-      alert(err)
-    })
-  }
-
-  categoryHandler = (golongan) => {
-    this.setState({searchCategory : golongan})
-    this.setState({page : 1})
-  }
-
-
-  fetchMaxPage = ()=>{
-    console.log(this.state.searchCategory);
-    Axios.get(`http://localhost:3300/obat/get-drug-max-page?golongan=${this.state.searchCategory}`)
-    .then((result)=>{
-      console.log(result.data[0]);
-      this.setState({maxPage: Math.ceil((result.data[0].sumProduct)/this.state.itemPerPage)})
-      console.log("checkMaxPage", this.state.maxPage);
-    }).catch((err)=>{
-      alert(err)
-    })
-  }
-
-  renderProducts = () => {
-    let rawData = [...this.state.drugList];
-    return rawData.map((val) => {
+  renderDrugs = () => {
+    return this.state.drugList.map((val) => {
       return <ProductCard productData={val} />;
     });
   };
 
-    renderCategory = () => {
-      return this.state.categoryDrugList.map((val)=> {
-        const capital = val.golongan.charAt(0).toUpperCase() + val.golongan.slice(1);
-        if(this.state.searchCategory===""){
-          return <li><button onClick={()=>this.categoryHandler(val.golongan)} className="button-second btn btn-primary"><p>{capital}</p></button></li>
-        }else{
-          if(val.golongan===this.state.searchCategory){
-            return <li><button onClick={()=>this.categoryHandler(val.golongan)} className="button-second selected btn btn-info"><p>{capital}</p></button></li>
-          }else{
-            return <li><button onClick={()=>this.categoryHandler(val.golongan)} className="button-second" style={{color:'lightgrey'}}><p>{capital}</p></button></li>
-          }
-        }
-      })
-    }
-
-  clearFilter=()=>{
-    this.setState({searchCategory:""})
-    this.fetchProducts()
-  }
-
-  componentDidUpdate(prevProps){
-    if (prevProps.userGlobal.searchProduct !== this.props.userGlobal.searchProduct){
-      this.fetchFilterDrug()
-    }
-  }
-
-
-  componentDidMount() {
-    this.fetchProducts();
-    this.fetchCategoryList()
-    this.fetchMaxPage()
-    console.log(this.props.userGlobal.searchProduct);
-  }
+  inputHandler = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value, page: 1 });
+  };
 
   nextPageHandler = () => {
-    this.setState({page : this.state.page +1 }, this.fetchProducts)
+    if (this.state.page < this.state.maxPage) {
+      this.setState({ page: this.state.page + 1 });
+    }
   };
 
   prevPageHandler = () => {
-    this.setState({page: this.state.page -1}, this.fetchProducts)
+    if (this.state.page > 1) {
+      this.setState({ page: this.state.page - 1 });
+    }
   };
 
-  inputHandler = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState({ [name]: value });
-  };
-
-  sortHandler=(event)=>{
-    const value = event.target.value
-
-    this.setState({sortProduct : value}, this.fetchFilterDrug)
+  componentDidMount() {
+    this.fetchDrugs();
   }
 
-
-  fetchFilterDrug=()=>{
-    console.log("sortby",this.state.sortProduct);
-    console.log("golongan",this.state.searchCategory);
-    console.log("nama_obat",this.props.userGlobal.searchProduct);
-    this.fetchMaxPage()
-
-    Axios.get(`http://localhost:3300/obat/get?page=${this.state.page-1}&sortby=${this.state.sortProduct}&golongan=${this.state.searchCategory}&nama_obat=${this.props.userGlobal.searchProduct}`)
-    .then((result)=>{
-      this.setState({drugList: result.data})
-    })
-    .catch((err)=>{
-      alert(err)
-    })
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.searchCategory !== this.state.searchCategory ||
+      prevState.page !== this.state.page ||
+      prevState.sortBy !== this.state.sortBy
+    ) {
+      return this.fetchDrugs();
+    }
   }
 
-  render(){
-    return(
-      <div className=" mt-4 mb-5 container-style">
-        
-        <div className="row">
-          <div className="col-2 filter-bar">
-          <ul>
-                {this.renderCategory()}
-              </ul>
-            <div>
-              <button className="btn btn-dark btn-sm filter" onClick={this.fetchFilterDrug}><p>Filter</p></button>
-              <button className="btn btn-light btn-sm ms-2 filter" onClick={this.clearFilter}><p>Reset Filter</p></button>
+  render() {
+    return (
+      <div className="container-style px-5 my-3">
+        <CategoriesCarousel />
+        <h4 className="display-5 text-uppercase text-center">Penawaran Obat</h4>
+        <h6 className="text-start text-uppercase">
+          filter <i className="fas fa-filter"></i>
+        </h6>
+        <div className="d-flex flex-row col-md-3">
+          <select
+            onChange={this.inputHandler}
+            name="sortBy"
+            className="form-control filter-style"
+          >
+            <option value="default">Default</option>
+            <option value="lowPrice">Harga Terendah</option>
+            <option value="highPrice">Harga Tertinggi</option>
+            <option value="az">Nama Obat A-Z</option>
+            <option value="za">Nama Obat Z-A</option>
+          </select>
+          <select
+            onChange={this.inputHandler}
+            name="searchCategory"
+            className="form-control filter-style"
+          >
+            <option value="">Semua Obat</option>
+            <option value="Obat Bebas">Obat Bebas</option>
+            <option value="Obat Bebas Terbatas">Obat Bebas Terbatas</option>
+            <option value="Obat Keras">Obat Keras</option>
+            <option value="Herbal">Herbal</option>
+            <option value="Covid-19">Covid-19</option>
+            <option value="Alat Kesehatan">Alat Kesehatan</option>
+          </select>
+        </div>
+        <div>
+          <a href="/product-list" style={{ color: "black" }}>
+            Lihat semua obat
+          </a>
+        </div>
+        <div className=" row col-12 bg-white mt-3">
+          <div className="d-flex flex-direction-row align-items-center justify-content-center"></div>
+
+          {this.state.drugList.length === 0 ? (
+            <div className="d-flex align-items-center flex-row justify-content-center mt-5">
+              <h4>sorry error page!</h4>
             </div>
-          </div>
-
-          <div className="col-10 ">
-              <div className="d-flex flex-direction-row align-items-center justify-content-between mb-3">
-                <div className="d-flex flex-direction-row align-items-center justify-content-start col-4 px-3">
-                  <select onChange={this.sortHandler} name="sortProduct" className="form-control filter-style">
-                    <option value="">SORT BY</option>
-                    <option value="price_asc">Lowest price</option>
-                    <option value="price_desc">Highest price</option>
-                    <option value="name_asc">A to Z</option>
-                    <option value="name_desc">Z to A</option>
-                  </select>
-                </div>
-                <div className="col-4 "> </div>
-                <div className="d-flex flex-direction-row align-items-center justify-content-end col-4 px-5">
-                  <p>{this.state.drugList.length} item(s)</p>
+          ) : (
+            <>
+              <div className="d-flex flex-wrap  align-items-center flex-row justify-content-center">
+                {/* Render Products Here */}
+                {this.renderDrugs()}
+              </div>
+              <div className="d-flex flex-direction-row align-items-center justify-content-center mt-3">
+                <div className="col-4 d-flex flex-direction-row align-items-center justify-content-center">
+                  <button
+                    disabled={this.state.page === 1}
+                    onClick={this.prevPageHandler}
+                    className="btn btn-sm btn-success"
+                  >
+                    {"<"}
+                  </button>
+                  <p className="text-center text-page my-0 mx-2">
+                    Page {this.state.page} of {this.state.maxPage}
+                  </p>
+                  <button
+                    disabled={this.state.page === this.state.maxPage}
+                    onClick={this.nextPageHandler}
+                    className="btn btn-sm btn-success"
+                  >
+                    {">"}
+                  </button>
                 </div>
               </div>
-
-              {
-                this.state.drugList.length===0 ?
-                <div className="d-flex align-items-center flex-row justify-content-center mt-5">
-                  <h4>sorry error page!</h4>
-                </div>
-                :
-                <>
-                <div className="d-flex flex-wrap  align-items-center flex-row justify-content-start">
-                  {/* Render Products Here */}
-                  {this.renderProducts()}
-                </div>
-                  <div className="d-flex flex-direction-row align-items-center justify-content-between mt-3">
-                    <div className="col-4"></div>
-                    <div className="col-4 d-flex flex-direction-row align-items-center justify-content-center"> 
-                      <button disabled={this.state.page===1} onClick={this.prevPageHandler} className="btn btn-sm btn-dark">
-                        {"<"}
-                      </button>
-                      <p className="text-center text-page my-0 mx-2">Page {this.state.page} of {this.state.maxPage}</p>
-                      <button disabled={this.state.page===this.state.maxPage}  onClick={this.nextPageHandler} className="btn btn-sm btn-dark">
-                        {">"}
-                      </button>
-                    </div>
-                    <div className="col-4"></div>
-                  </div>
-                </>
-              }
+            </>
+          )}
+        </div>
+        <div className="container-fluid pt-5">
+          <div className="row px-xl-5 pb-3">
+            <div className="col-lg-3 col-md-6 col-sm-12 pb-1">
+              <div
+                className="d-flex align-items-center bg-dark mb-4"
+                style={{ padding: "30px" }}
+              >
+                <h1 className="fa fa-check text-white m-0"></h1>
+                <h5 className="font-weight-semi-bold text-white mx-auto">
+                  Obat Berkualitas
+                </h5>
+              </div>
+            </div>
+            <div className="col-lg-3 col-md-6 col-sm-12 pb-1">
+              <div
+                className="d-flex align-items-center bg-dark mb-4"
+                style={{ padding: "30px" }}
+              >
+                <h1 className="fa fa-shipping-fast text-white m-0"></h1>
+                <h5 className="font-weight-semi-bold text-white mx-auto">
+                  Gratis Ongkir
+                </h5>
+              </div>
+            </div>
+            <div className="col-lg-3 col-md-6 col-sm-12 pb-1">
+              <div
+                className="d-flex align-items-center bg-dark mb-4"
+                style={{ padding: "30px" }}
+              >
+                <h1 className="fas fa-exchange-alt text-white m-0"></h1>
+                <h5 className="font-weight-semi-bold text-white mx-auto">
+                  Garansi Obat Kembali
+                </h5>
+              </div>
+            </div>
+            <div className="col-lg-3 col-md-6 col-sm-12 pb-1">
+              <div
+                className="d-flex align-items-center bg-dark mb-4"
+                style={{ padding: "30px" }}
+              >
+                <h1 className="fa fa-user-check text-white m-0"></h1>
+                <h5 className="font-weight-semi-bold text-white mx-auto">
+                  Apoteker Handal
+                </h5>
+              </div>
+            </div>
           </div>
-
-
         </div>
       </div>
-    )
+    );
   }
-
-
-  
 }
 
 const mapStateToProps = (state) => {

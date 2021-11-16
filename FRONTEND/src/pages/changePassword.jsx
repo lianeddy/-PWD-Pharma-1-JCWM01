@@ -12,7 +12,7 @@ class changePassword extends React.Component {
   }
 
 changePasswordBtn=()=>{
-  console.log(this.props.userGlobal.username);
+  console.log(this.props.userGlobal.email);
   const {
     currentPassword,
     newPassword,
@@ -20,7 +20,7 @@ changePasswordBtn=()=>{
   Axios.post(`${API_URL}/user/change-password`,{
     currentPassword,
     newPassword,
-    username: this.props.userGlobal.username
+    email: this.props.userGlobal.email
   }).then(()=>{
     alert("berhasil ganti password")
   })

@@ -56,59 +56,43 @@ export const registerUser = ({
   };
 };
 
-// export const loginUser = (username, password) => {
-//   return (dispatch) => {
-//     Axios.post(`${API_URL}/user/login`, {
-//       username,
-//       password,
-//     })
-//       .then((res) => {
-//         localStorage.setItem("userDataAMR", res.data.token);
-//         dispatch({
-//           type: "USER_LOGIN",
-//           payload: res.data[0],
-//         });
-//       })
-//       .catch((err) => console.log(err));
-//   };
-// };
-
 export const loginUser = ({ email, password }) => {
   return (dispatch) => {
-    Axios.get(`${API_URL}/user/get`, {
-      params: {
-        email,
-        password,
-      },
+    if (email == "" || password == "") {
+      alert("Please fill all the form");
+    }
+    Axios.post(`${API_URL}/user/login`, {
+      email,
+      password,
     })
-      .then((result) => {
-        if (result.data.length) {
-          // if (password === result.data[0].password) {
-          localStorage.setItem("userDataAMR", JSON.stringify(result.data[0]));
-          console.log(result.data[0].password);
-          if (password === result.data[0].password) {
+      .then((res) => {
+        if (res.data.dataLogin !== 1) {
+          if (res.data.dataLogin) {
+            localStorage.setItem(
+              "userDataAMR",
+              JSON.stringify(res.data.dataLogin)
+            );
             dispatch({
               type: "USER_LOGIN",
-              payload: result.data[0],
+              payload: res.data.dataLogin,
             });
-            dispatch(getCartData(result.data[0].id_user));
+            dispatch(getCartData(res.data.dataLogin.id_user));
           } else {
-            // handle wrong password
             dispatch({
               type: "USER_ERROR",
-              payload: "Password salah!",
+              payload:
+                "Your Account is not Verified. Please Verify your Account",
             });
           }
         } else {
-          // handle username not found
           dispatch({
             type: "USER_ERROR",
-            payload: "Akun tidak ditemukan",
+            payload: "Wrong Username or Password",
           });
         }
       })
       .catch((err) => {
-        alert("Terjadi kesalahan di server");
+        alert("Kesalahan saat Login");
       });
   };
 };
@@ -122,24 +106,20 @@ export const logoutUser = () => {
 
 export const userKeepLogin = (userData) => {
   return (dispatch) => {
-    Axios.get(`${API_URL}/user/get`, {
-      params: {
-        id: userData.id_user,
-      },
-      //   email: userData.email,
-      // },
+    Axios.post(`${API_URL}/user/keep-login`, {
+      id_user: userData.id_user,
     })
-      .then((result) => {
-        delete result.data[0].password;
-        localStorage.setItem("userDataAMR", JSON.stringify(result.data[0]));
+      .then((res) => {
+        localStorage.setItem("userDataAMR", JSON.stringify(res.data.dataLogin));
         dispatch({
           type: "USER_LOGIN",
-          payload: result.data[0],
+          payload: res.data.dataLogin,
         });
-        dispatch(getCartData(result.data[0].id_user));
+        dispatch(getCartData(res.data.dataLogin.id_user));
       })
-      .catch(() => {
-        alert(`Terjadi kesalahan di server`);
+      .catch((err) => {
+        alert("Error has occurred");
+        console.log(err);
       });
   };
 };
@@ -149,7 +129,6 @@ export const checkStorage = () => {
     type: "CHECK_STORAGE",
   };
 };
-
 
 export const searchProduct = (searchProduct) => {
   return (dispatch) => {

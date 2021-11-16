@@ -3,6 +3,7 @@ const drugsRouters = require("./drugsRouters");
 const userRouter = require("./userRouter");
 const userUploadRouter = require("./userUploaderRouter");
 const cartRouter = require("./cartRouter");
+const rawDrugsRouter = require("./rawDrugsRouter");
 
 module.exports = {
   adminRoute,
@@ -10,4 +11,5 @@ module.exports = {
   userRouter,
   userUploadRouter,
   cartRouter,
+  rawDrugsRouter,
 };

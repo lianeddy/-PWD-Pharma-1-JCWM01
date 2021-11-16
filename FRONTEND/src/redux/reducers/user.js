@@ -10,7 +10,6 @@ const init_state = {
   role: "",
   foto_profile: "",
   errMsg: "",
-  searchProduct: "",
   storageIsChecked: false,
 };
 

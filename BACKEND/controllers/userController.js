@@ -4,51 +4,81 @@ const Crypto = require("crypto");
 const transporter = require("../helper/nodemailer");
 const { uploader } = require("../helpers/uploader");
 const fs = require("fs");
+const moment = require("moment");
 
 module.exports = {
   getUser: (req, res) => {
     let scriptQuery = "Select * from user;";
-    if (req.query.email) {
-      scriptQuery = `Select * from user where email = ${db.escape(
-        req.query.email
+    if (req.query.id_user) {
+      scriptQuery = `Select * from user where id_user= ${db.escape(
+        req.query.id_user
       )};`;
     }
+    console.log(scriptQuery);
     db.query(scriptQuery, (err, results) => {
       if (err) res.status(500).send(err);
       res.status(200).send(results);
     });
   },
 
-  //{
+  loginUser: (req, res) => {
+    req.body.password = Crypto.createHmac("sha1", "hash123")
+      .update(req.body.password)
+      .digest("hex");
+    let scriptQuery = `SELECT * FROM user WHERE email = ${db.escape(
+      req.body.email
+    )} AND password = ${db.escape(req.body.password)};`;
 
-  // },
+    db.query(scriptQuery, (err, results) => {
+      if (err) return res.status(500).send(err);
+      if (results[0]) {
+        let {
+          id_user,
+          nama_depan,
+          nama_belakang,
+          email,
+          password,
+          jenis_kelamin,
+          tanggal_lahir,
+          usia,
+          foto_profil,
+          role,
+          status,
+        } = results[0];
 
-  // req.body.password = Crypto.createHmac("sha1", "hash123")
-  //     .update(JSON.stringify(req.body.password))
-  //     .digest("hex");
-  //   let scriptQuery = `Select * from user where email = ${db.escape(
-  //     req.body.email
-  //   )} and password = ${db.escape(req.body.password)};`;
-  //   db.query(scriptQuery, (err, results) => {
-  //     if (err) return res.status(500).send(err);
-  //     if (results[0]) {
-  //       let { id_user, email, password, role, status } = results[0];
-  //       let token = createToken({
-  //         id_user,
-  //         email,
-  //         password,
-  //         role,
-  //         status,
-  //       });
-  //       if (status != "VERIFIED") {
-  //         res.status(200).send({ message: "Akun anda belum terverifikasi" });
-  //       } else {
-  //         res
-  //           .status(200)
-  //           .send({ dataLogin: results[0], token, message: "Login Success" });
-  //       }
-  //     }
-  //   });
+        let token = createToken({
+          id_user,
+          nama_depan,
+          nama_belakang,
+          email,
+          password,
+          jenis_kelamin,
+          tanggal_lahir,
+          usia,
+          foto_profil,
+          role,
+          status,
+        });
+
+        if (status != "VERIFIED") {
+          return res.status(200).send({
+            dataLogin: null,
+            token: null,
+            message: "Your account is not verified",
+          });
+        } else {
+          return res
+            .status(200)
+            .send({ dataLogin: results[0], token, message: "Login Success" });
+        }
+      } else {
+        // Jika tidak dapat data (user not found)
+        return res
+          .status(200)
+          .send({ dataLogin: 1, token: null, message: "Login Failed" });
+      }
+    });
+  },
 
   addUser: (req, res) => {
     let {
@@ -74,21 +104,19 @@ module.exports = {
       }
       if (result.length > 0) {
         return res.status(200).send({
-          messages: "Username atau email telah terdaftar !",
+          messages: "Email telah terdaftar !",
           registered: true,
           redirect: false,
           alert: "alert-warning",
         });
       }
       console.log(password);
-      let insertQuery = `Insert into user values (null, ${db.escape(
+      let insertQuery = `insert into user (nama_depan, nama_belakang, email, password, jenis_kelamin, status, tanggal_lahir, role) values (${db.escape(
         nama_depan
       )}, ${db.escape(nama_belakang)}, ${db.escape(email)}, ${db.escape(
         password
       )}, ${db.escape(jenis_kelamin)}, ${db.escape(status)}, ${db.escape(
-        alamat
-      )}, ${db.escape(tanggal_lahir)}, ${db.escape(usia)}, ${db.escape(
-        foto_profil
+        tanggal_lahir
       )}, ${db.escape(role)});`;
       console.log(insertQuery);
       db.query(insertQuery, (err, result) => {
@@ -104,9 +132,9 @@ module.exports = {
               return res.status(500).send(err2);
             }
             // bahan buat token
-            let { id_user, username, email, role } = results2[0];
+            let { id_user, email, role } = results2[0];
             // membuat token
-            let token = createToken({ id_user, username, email, role });
+            let token = createToken({ id_user, email, role });
 
             let mail = {
               from: `Admin <shabrinaartarini46@gmail.com>`,
@@ -160,6 +188,10 @@ module.exports = {
     req.body.newPassword = Crypto.createHmac("sha1", "hash123")
       .update(req.body.newPassword)
       .digest("hex");
+    selectQuery = `SELECT password FROM user WHERE email = ${db.escape(
+      req.body.email
+    )}`;
+    console.log(selectQuery);
     let updateQuery = `UPDATE user SET password = ${db.escape(
       req.body.newPassword
     )} WHERE email = ${db.escape(req.body.email)}`;
@@ -197,10 +229,11 @@ module.exports = {
       // membuat nama file untuk image
       const { file } = req.files;
       const filePath = file ? path + "/" + file[0].filename : null;
+      const tanggal = moment().format("YYYY-MM-DD");
       console.log("file", filePath);
-      let insertQuery = `INSERT INTO prescriptions VALUES (null,${id},${db.escape(
+      let insertQuery = `INSERT INTO prescriptions (id_user, foto_prescription, tanggal) values (${id}, ${db.escape(
         filePath
-      )},default);`;
+      )}, ${db.escape(tanggal)});`;
 
       db.query(insertQuery, (err, result) => {
         if (err) {
@@ -210,7 +243,7 @@ module.exports = {
           return res.status(500).send(err);
         }
         res.status(200).send({
-          message: "Data product berhasil ditambahkan",
+          message: "Permintaan resep anda telah kami terima",
           success: true,
         });
       });
@@ -225,8 +258,58 @@ module.exports = {
     let updateQuery = `UPDATE user set ${dataUpdate} where id_user = ${req.params.id};`;
     console.log(updateQuery);
     db.query(updateQuery, (err, results) => {
-      if (err) res.status(500).send(err);
+      if (err) return res.status(500).send(err);
       res.status(200).send(results);
+    });
+  },
+
+  keepLogin: (req, res) => {
+    let scriptQuery = `SELECT * FROM user WHERE id_user = ${db.escape(
+      req.body.id_user
+    )};`;
+
+    db.query(scriptQuery, (err, results) => {
+      if (err) return res.status(500).send(err);
+      if (results[0]) {
+        let {
+          id_user,
+          nama_depan,
+          nama_belakang,
+          email,
+          password,
+          jenis_kelamin,
+          tanggal_lahir,
+          usia,
+          foto_profil,
+          role,
+          status,
+        } = results[0];
+
+        let token = createToken({
+          id_user,
+          nama_depan,
+          nama_belakang,
+          email,
+          password,
+          jenis_kelamin,
+          tanggal_lahir,
+          usia,
+          foto_profil,
+          role,
+          status,
+        });
+
+        return res.status(200).send({
+          dataLogin: results[0],
+          token,
+          message: "Keep Login Success",
+        });
+      } else {
+        // Jika tidak dapat data (user not found)
+        return res
+          .status(200)
+          .send({ dataLogin: null, token: null, message: "Keep Login Failed" });
+      }
     });
   },
 };
