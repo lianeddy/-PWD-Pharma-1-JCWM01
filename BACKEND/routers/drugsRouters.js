@@ -10,6 +10,7 @@ routers.patch("/edit-obat/:id", drugsController.editData);
 routers.delete("/delete-obat/:idobat", drugsController.deleteData);
 routers.get("/sortby/:nama_obat", drugsController.sortBy);
 routers.get("/get-raw-drug", drugsController.getRawDrug);
+routers.get("/raw-drug-list", drugsController.rawDrugList);
 
 module.exports = routers;
 

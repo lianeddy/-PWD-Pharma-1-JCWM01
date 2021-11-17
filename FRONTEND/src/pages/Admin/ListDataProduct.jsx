@@ -222,6 +222,11 @@ class ListDataProduct extends React.Component {
 
   inputHandler = (event) => {
     const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
+
+  sortCategoryHandler = (event) => {
+    const { name, value } = event.target;
     this.setState({ [name]: value, page: 1 });
   };
 
@@ -256,7 +261,7 @@ class ListDataProduct extends React.Component {
       <div className="px-5 py-5">
         <div className="d-flex flex-row col-md-3">
           <select
-            onChange={this.inputHandler}
+            onChange={this.sortCategoryHandler}
             name="searchCategory"
             className="form-control"
           >
@@ -271,7 +276,7 @@ class ListDataProduct extends React.Component {
           </select>
 
           <select
-            onChange={this.inputHandler}
+            onChange={this.sortCategoryHandler}
             name="sortBy"
             className="form-control"
           >

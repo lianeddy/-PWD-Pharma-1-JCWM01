@@ -2,10 +2,12 @@ import Axios from "axios";
 import React from "react";
 import { API_URL } from "../../constants/API";
 import moment from "moment";
+import CheckoutModal from "../../components/CheckoutModal";
 
 class CheckoutRequestPage extends React.Component {
   state = {
     checkoutList: [],
+    prescriptionData: [],
   };
 
   fetchCheckoutRequest = () => {
@@ -27,9 +29,11 @@ class CheckoutRequestPage extends React.Component {
           <td>
             {val.nama_depan} {val.nama_belakang}
           </td>
-          <td>{val.status}</td>
           <td>{moment(val.tanggal).format("DD MMMM YYYY")}</td>
           <td>Rp {val.total.toLocaleString("id")}</td>
+          <td>
+            <CheckoutModal />
+          </td>
           <td>
             <img
               src={`${API_URL}/${val.payment_proof}`}
@@ -43,10 +47,10 @@ class CheckoutRequestPage extends React.Component {
               type="button"
               className="btn btn-success"
             >
-              Accept
+              Konfirmasi
             </button>
             <button type="button" className="btn btn-danger">
-              Reject
+              Tolak
             </button>
           </td>
         </tr>
@@ -69,9 +73,9 @@ class CheckoutRequestPage extends React.Component {
             <tr>
               <th scope="col">Checkout ID</th>
               <th scope="col">Customer</th>
-              <th scope="col">Status</th>
-              <th scope="col">Tanggal</th>
+              <th scope="col">Tanggal Checkout</th>
               <th scope="col">Total Belanja</th>
+              <th scope="col">Detail Checkout</th>
               <th scope="col">Bukti Pembayaran</th>
               <th scope="col">Action</th>
             </tr>

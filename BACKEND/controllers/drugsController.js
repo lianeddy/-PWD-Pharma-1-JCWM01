@@ -162,10 +162,76 @@ module.exports = {
   getRawDrug: (req, res) => {
     let scriptQuery = "Select * from obat_bahan;";
     if (req.query.idobat) {
-      scriptQuery = `Select * from obat where id_bahan_obat = ${db.escape(
+      scriptQuery = `Select * from obat_bahan where id_bahan_obat = ${db.escape(
         req.query.idobat
       )};`;
+    } else if (req.query.sortBy) {
+      switch (req.query.sortBy) {
+        case "lowPrice":
+          scriptQuery = `Select * from obat_bahan order by harga_per_mg asc limit ${req.query.page}, ${req.query.item};`;
+          break;
+        case "highPrice":
+          scriptQuery = `Select * from obat_bahan order by harga_per_mg desc limit ${req.query.page}, ${req.query.item};`;
+          break;
+        case "az":
+          scriptQuery = `Select * from obat_bahan order by nama_bahan_obat limit ${req.query.page}, ${req.query.item};`;
+          break;
+        case "za":
+          scriptQuery = `Select * from obat_bahan order by nama_bahan_obat desc limit ${req.query.page}, ${req.query.item};`;
+          break;
+        default:
+          scriptQuery = `Select * from obat_bahan limit ${req.query.page}, ${req.query.item};`;
+          break;
+      }
     }
+    db.query(scriptQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
+    });
+  },
+
+  rawDrugList: (req, res) => {
+    let scriptQuery = `Select * from obat_bahan where golongan = ${db.escape(
+      req.query.golongan
+    )};`;
+    if (req.query.sortBy) {
+      switch (req.query.sortBy) {
+        case "lowPrice":
+          scriptQuery = `Select * from obat_bahan where golongan = ${db.escape(
+            req.query.golongan
+          )} order by harga_per_mg asc limit ${req.query.page}, ${
+            req.query.item
+          };`;
+          break;
+        case "highPrice":
+          scriptQuery = `Select * from obat_bahan where golongan = ${db.escape(
+            req.query.golongan
+          )} order by harga_per_mg desc limit ${req.query.page}, ${
+            req.query.item
+          };`;
+          break;
+        case "az":
+          scriptQuery = `Select * from obat_bahan where golongan = ${db.escape(
+            req.query.golongan
+          )} order by nama_bahan_obat limit ${req.query.page}, ${
+            req.query.item
+          };`;
+          break;
+        case "za":
+          scriptQuery = `Select * from obat_bahan where golongan = ${db.escape(
+            req.query.golongan
+          )} order by nama_bahan_obat desc limit ${req.query.page}, ${
+            req.query.item
+          };`;
+          break;
+        default:
+          scriptQuery = `Select * from obat_bahan where golongan = ${db.escape(
+            req.query.golongan
+          )} limit ${req.query.page}, ${req.query.item}`;
+          break;
+      }
+    }
+
     db.query(scriptQuery, (err, results) => {
       if (err) res.status(500).send(err);
       res.status(200).send(results);

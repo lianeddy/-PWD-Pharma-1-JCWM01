@@ -76,9 +76,7 @@ class PaymentProof extends React.Component {
           status: "Menunggu Konfirmasi Pembayaran",
         }
       )
-        .then(() => {
-          alert("status resep diperbarui");
-        })
+        .then(() => {})
         .catch((err) => console.log(err));
     });
   };

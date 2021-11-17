@@ -49,7 +49,7 @@ module.exports = {
   },
 
   getCheckOut: (req, res) => {
-    let scriptQuery = `select checkout.idcheckout, checkout.id_user, user.nama_depan, user.nama_belakang, checkout.total, checkout.status, checkout.payment_proof from checkout
+    let scriptQuery = `select checkout.idcheckout, checkout.id_user, checkout.tanggal, user.nama_depan, user.nama_belakang, checkout.total, checkout.status, checkout.payment_proof from checkout
     left join user on
     user.id_user = checkout.id_user;`;
     if (req.query.status) {
