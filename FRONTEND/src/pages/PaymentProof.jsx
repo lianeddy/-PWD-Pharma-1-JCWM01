@@ -74,6 +74,7 @@ class PaymentProof extends React.Component {
         `${API_URL}/cart/edit-prescription/${val.idprescription_cart}`,
         {
           status: "Menunggu Konfirmasi Pembayaran",
+          idcheckout: this.state.idcheckout,
         }
       )
         .then(() => {})
@@ -85,6 +86,7 @@ class PaymentProof extends React.Component {
     this.props.cartGlobal.cartList.map((val) => {
       Axios.patch(`${API_URL}/cart/edit-cart/${val.id_cart}`, {
         status: "Menunggu Konfirmasi Pembayaran",
+        idcheckout: this.state.idcheckout,
       })
         .then(() => {
           this.props.getCartData(this.props.userGlobal.id_user);

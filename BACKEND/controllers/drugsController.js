@@ -102,9 +102,7 @@ module.exports = {
     console.log(req.body);
     let insertQuery = `Insert into obat values (null, ${db.escape(
       nama_obat
-    )}, ${db.escape(deskripsi)}, ${db.escape(manfaat)}, ${db.escape(
-      komposisi
-    )}, ${db.escape(dosis)}, ${db.escape(golongan)}, ${db.escape(
+    )}, ${db.escape(deskripsi)},  ${db.escape(golongan)}, ${db.escape(
       kemasan
     )}, ${db.escape(harga_pokok)}, ${db.escape(harga_jual)}, ${db.escape(
       foto_obat

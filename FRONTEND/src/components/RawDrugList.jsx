@@ -244,7 +244,7 @@ class RawDrugList extends React.Component {
         </table>
         <div className="mt-2 mb-2">
           <div className="d-flex flex-row justify-content-center align-items-center">
-            <button onClick={this.prevPageHandler} className="btn btn-success">
+            <button onClick={this.prevPageHandler} className="btn btn-warning">
               {"<"}
             </button>
             <div className="text-center mx-2">
@@ -252,7 +252,7 @@ class RawDrugList extends React.Component {
                 Page {this.state.page} of {this.state.maxPage}
               </strong>
             </div>
-            <button onClick={this.nextPageHandler} className="btn btn-success">
+            <button onClick={this.nextPageHandler} className="btn btn-warning">
               {">"}
             </button>
           </div>

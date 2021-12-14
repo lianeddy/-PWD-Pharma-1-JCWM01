@@ -64,6 +64,54 @@ module.exports = {
     });
   },
 
+  unconfirmedCheckout: (req, res) => {
+    let scriptQuery = `select checkout.idcheckout, checkout.id_user, checkout.tanggal, user.nama_depan, user.nama_belakang, checkout.total, checkout.status, checkout.payment_proof from checkout
+    left join user on
+    user.id_user = checkout.id_user
+    where checkout.status = 'Menunggu Konfirmasi Pembayaran';`;
+    if (req.query.status) {
+      scriptQuery = `Select * from checkout where id_user = ${db.escape(
+        req.query.id_user
+      )} and status = ${db.escape(req.query.status)};`;
+    }
+    console.log(scriptQuery);
+    db.query(scriptQuery, (err, results) => {
+      if (err) return res.status(500).send(err);
+      return res.status(200).send(results);
+    });
+  },
+
+  renderCheckOut: (req, res) => {
+    let scriptQuery = `select checkout.idcheckout, checkout.id_user, checkout.tanggal, user.nama_depan, user.nama_belakang, checkout.total, checkout.status, checkout.payment_proof from checkout
+    left join user on
+    user.id_user = checkout.id_user limit ${req.query.page}, ${req.query.item};`;
+    console.log(scriptQuery);
+    db.query(scriptQuery, (err, results) => {
+      if (err) return res.status(500).send(err);
+      return res.status(200).send(results);
+    });
+  },
+
+  renderUnconfirmedCheckout: (req, res) => {
+    let scriptQuery = `select checkout.idcheckout, checkout.id_user, checkout.tanggal, user.nama_depan, user.nama_belakang, checkout.total, checkout.status, checkout.payment_proof from checkout
+    left join user on
+    user.id_user = checkout.id_user where checkout.status = 'Menunggu Konfirmasi Pembayaran' limit ${req.query.page}, ${req.query.item};`;
+    console.log(scriptQuery);
+    db.query(scriptQuery, (err, results) => {
+      if (err) return res.status(500).send(err);
+      return res.status(200).send(results);
+    });
+  },
+
+  checkoutPayment: (req, res) => {
+    let scriptQuery = `select * from checkout where idcheckout = ${req.query.idcheckout};`;
+    console.log(scriptQuery);
+    db.query(scriptQuery, (err, results) => {
+      if (err) return res.status(500).send(err);
+      return res.status(200).send(results);
+    });
+  },
+
   userCheckOut: (req, res) => {
     console.log(req.body);
     let { id_user, total, status, tanggal } = req.body;
@@ -200,6 +248,43 @@ module.exports = {
     console.log(scriptQuery);
     db.query(scriptQuery, (err, results) => {
       if (err) res.status(500).send(err);
+      res.status(200).send(results);
+    });
+  },
+
+  prescriptionCheckout: (req, res) => {
+    let scriptQuery = `select obat_bahan.nama_bahan_obat, prescription_cart.kandungan, obat_bahan.harga_per_mg from checkout
+    left join user on user.id_user = checkout.id_user
+    left join prescription_cart on prescription_cart.idcheckout = checkout.idcheckout
+    left join obat_bahan on obat_bahan.id_bahan_obat = prescription_cart.id_bahan_obat where checkout.idcheckout = ${req.query.idcheckout};`;
+    console.log(scriptQuery);
+    db.query(scriptQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
+    });
+  },
+
+  drugCheckout: (req, res) => {
+    let scriptQuery = `select checkout.payment_proof, obat.nama_obat, obat.satuan_jual, cart.qty_obat, cart.harga from checkout
+    left join user on user.id_user = checkout.id_user
+    left join cart on cart.idcheckout = checkout.idcheckout
+    left join obat on obat.idobat = cart.idobat where checkout.idcheckout = ${req.query.idcheckout};`;
+    console.log(scriptQuery);
+    db.query(scriptQuery, (err, results) => {
+      if (err) res.status(500).send(err);
+      res.status(200).send(results);
+    });
+  },
+
+  checkoutUpdate: (req, res) => {
+    let dataUpdate = [];
+    for (let prop in req.body) {
+      dataUpdate.push(`${prop} = ${db.escape(req.body[prop])}`);
+    }
+    let updateQuery = `UPDATE checkout set ${dataUpdate} where idcheckout = ${req.params.id};`;
+    console.log(updateQuery);
+    db.query(updateQuery, (err, results) => {
+      if (err) return res.status(500).send(err);
       res.status(200).send(results);
     });
   },

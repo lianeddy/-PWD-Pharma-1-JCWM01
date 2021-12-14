@@ -137,7 +137,7 @@ module.exports = {
             let token = createToken({ id_user, email, role });
 
             let mail = {
-              from: `Admin <shabrinaartarini46@gmail.com>`,
+              from: `shabrinaartarini46@gmail.com`,
               to: `${email}`,
               subject: "Verifikasi Akun AMR Pharmacy Anda",
               html: `<a href= 'http://localhost:3000/verification/${token}'> Klik sini untuk verifikasi akun AMR Pharmacy anda</a>`,

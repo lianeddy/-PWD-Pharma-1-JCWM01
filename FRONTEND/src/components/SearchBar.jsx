@@ -63,7 +63,7 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-      <form className="flex-column form-group justify-content-center">
+      <form className="flex-md-column form-group justify-content-center">
         <input
           onChange={this.inputHandler}
           type="text"
